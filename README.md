@@ -33,4 +33,10 @@ to assist software architects to deliver fit-for-purpose solutions agentically.
 
 For more details see [Weaver Engineering Workflows](workflows/weaver-workflows.md).
 
+## Documentation Standards
+Project documentation is written to be read by AI agents as much as by architects, so it follows a set of minimum
+standards: focused single-concept documents, a maintained index, explicit bidirectional links, and marked (`//TODO`)
+gaps rather than silent ones.
+
+For more details see [Documentation Standards](standards/documentation-standards.md).
 
