@@ -53,10 +53,12 @@ polices that separation — it does not apply to itself by exception (see this d
 Every directory under `docs/` (in this repo: every directory holding documents subject to this standard) gets a
 `.index/` subdirectory. For each `<slug>.md` in that directory:
 
-* `.index/<slug>.sections.yaml` — one entry per numbered section/code-block: id, title, type (`section` |
+* `.index/<slug>.sections.yaml` — one entry per section/code-block, **keyed by its title** (markdown doesn't
+  enforce heading numbers, so a title is the only thing guaranteed to exist): a `number` attribute, present
+  only if the heading/figure is actually numbered (including the implicit `0` case from §3), `type` (`section` |
   `code-block`), `start_line`, `end_line`.
-* `.index/<slug>.words.yaml` — significant words (stopwords excluded), each with the section(s) it appears in
-  and the count per section.
+* `.index/<slug>.words.yaml` — significant words (stopwords excluded) per section, keyed by title the same way,
+  so a section's structural entry and its word counts share the same key.
 
 Together these support full-text search across a doc, a directory, or a whole docs repo — finding which
 document or section covers a subject — and extraction of just the relevant section instead of a full-document
@@ -116,28 +118,28 @@ the sections index (`this-is-a-title.sections.yaml`) is:
 
 ```yaml
 sections:
-  "0":
-    title: "Unnumbered First Section"
+  "Unnumbered First Section":
+    number: 0
     type: section
     start_line: 9
     end_line: 11
-  "1":
-    title: "The First Numbered Section"
+  "The First Numbered Section":
+    number: "1"
     type: section
     start_line: 12
     end_line: 23
-  "1.0":
-    title: "Another Unnumbered First Section"
+  "Another Unnumbered First Section":
+    number: "1.0"
     type: section
     start_line: 15
     end_line: 17
-  "1.1":
-    title: "The First Numbered Section Of The Subsection"
+  "The First Numbered Section Of The Subsection":
+    number: "1.1"
     type: section
     start_line: 18
     end_line: 23
-  "1.1.a":
-    title: "Figure Title"
+  "Figure Title":
+    number: "1.1.a"
     type: code-block
     start_line: 21
     end_line: 23
@@ -151,15 +153,15 @@ preamble:
   initial: 1
   blurb: 1
 sections:
-  "0":
+  "Unnumbered First Section":
     blurb: 1
-  "1":
+  "The First Numbered Section":
     blurb: 1
-  "1.0":
+  "Another Unnumbered First Section":
     blurb: 1
-  "1.1":
+  "The First Numbered Section Of The Subsection":
     blurb: 1
-  "1.1.a":
+  "Figure Title":
     some: 1
     code: 1
     block: 1
@@ -207,3 +209,11 @@ weaver-engineering workspace and canonically on GitHub, so a plain relative mark
 resolves in one of those two contexts. The `@{repo-slug}/{path}` form sidesteps that by naming the repo
 explicitly rather than encoding a filesystem-relative or GitHub-relative path, leaving resolution (local
 checkout vs. GitHub URL) to whatever's reading the reference rather than baking one choice into the link itself.
+
+§4's `.index/` entries key by title rather than number — an earlier draft of this section keyed by number, which
+baked in the assumption that a heading is always numbered. Markdown doesn't enforce that, and this standard
+itself allows a section to stay deliberately unnumbered (§3's implicit `0`); a title is the only thing every
+section is guaranteed to have, so it's the only safe key. `number` moved to being an optional attribute on the
+entry instead. Existing hand-written `.index/` files predating this correction are left as they are rather than
+retrofitted — they'll get corrected the next time their subject document is edited, or once the indexing tool
+itself exists and does a real pass; this reference description, however, has to be right now.
