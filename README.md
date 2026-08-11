@@ -41,3 +41,9 @@ not left aspirational.
 
 For more details see [Documentation Standards](standards/documentation-standards.md).
 
+## Templates
+Reusable document templates for shapes that recur across projects — currently just the use-case template, since
+it applies to any project's docs repo, not one in particular.
+
+For more details see [Use Case Template](templates/USE-CASE-TEMPLATE.md).
+
