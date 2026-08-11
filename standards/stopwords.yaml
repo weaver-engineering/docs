@@ -1,8 +1,10 @@
 # Canonical stopword list (root forms) for .index/<slug>.words.yaml, per
 # documentation-standards.md §4. Words reduce to a root before this list is
-# checked, so an entry here blocks all its inflections too (e.g. "be" blocks
-# is/are/was/were/been/being; "document" blocks doc/docs/documents/
-# documented/documentation).
+# checked, so an entry here blocks all its regularly-inflected forms too
+# (e.g. "document" blocks doc/docs/documents/documented/documentation).
+# Irregular forms that a simple stemmer can't cheaply derive from a root
+# (is/are/was/were/been/being under "be"; has/had/having under "have";
+# does/did/doing under "do") are listed directly instead.
 #
 # This is a starting point: a generic English list plus domain terms whose
 # ubiquity in this corpus gives them little discriminating power for search.
@@ -40,6 +42,9 @@ stopwords:
   - why
   - how
   - do
+  - does
+  - did
+  - doing
   - can
   - could
   - should
@@ -57,7 +62,16 @@ stopwords:
   - those
   - it
   - be
+  - is
+  - are
+  - was
+  - were
+  - been
+  - being
   - have
+  - has
+  - had
+  - having
   - of
   - to
   - in
