@@ -24,7 +24,6 @@ sections:
     through: 1
   "2":
     repo: 4
-    docs: 3
     project: 2
     project's: 2
     structure: 2
@@ -37,11 +36,6 @@ sections:
     content: 1
     defined: 1
     directories: 1
-    docs/analysis: 1
-    docs/analysis/use-cases: 1
-    docs/analysis/user-personas: 1
-    docs/architecture: 1
-    docs/design: 1
     docs/features: 1
     docs/templates: 1
     e.g: 1
@@ -51,7 +45,6 @@ sections:
     least: 1
     minimum: 1
     new: 1
-    notes: 1
     organizes: 1
     projects: 1
     purpose: 1
@@ -207,3 +200,66 @@ sections:
     time: 1
     tooling: 1
     touching: 1
+  "6":
+    reference: 3
+    renumbering: 3
+    section: 3
+    different: 2
+    document: 2
+    file: 2
+    link: 2
+    m.n: 2
+    magpieweaver-docs/docs/glossary.md: 2
+    markdown: 2
+    never: 2
+    same-document: 2
+    sections: 2
+    text: 2
+    token: 2
+    tool: 2
+    a.b.c: 1
+    anchor: 1
+    appearing: 1
+    bare: 1
+    current: 1
+    docs: 1
+    e.g: 1
+    elsewhere: 1
+    entirely: 1
+    exempt: 1
+    heading: 1
+    link's: 1
+    m.n.o: 1
+    makes: 1
+    move: 1
+    names: 1
+    number: 1
+    only: 1
+    outside: 1
+    path: 1
+    plain: 1
+    project's: 1
+    prose: 1
+    reach: 1
+    repo: 1
+    repo-slug: 1
+    repository: 1
+    rewrite: 1
+    say: 1
+    see: 1
+    shaped: 1
+    sigil: 1
+    since: 1
+    something: 1
+    specific: 1
+    string: 1
+    target: 1
+    together: 1
+    tokens: 1
+    tool's: 1
+    touch: 1
+    touched: 1
+    uses: 1
+    version: 1
+    whole: 1
+    within: 1

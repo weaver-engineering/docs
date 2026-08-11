@@ -68,6 +68,20 @@ Any PR touching `docs/` must leave every document it adds or modifies compliant 
 entries included, before it can merge. This is checked at review time; there is no tooling yet that enforces it
 automatically (see Rationale).
 
+## 6 Cross-References
+
+Within a document, a section reference is a `§M.N` or `§M.N.O` token — either plain text ("see §3.2") or the
+text of a markdown link (`[§3.2](#3-2-title)`). These, together with any markdown link's `#anchor` target, are
+the only same-document tokens a renumbering tool may rewrite when sections move. A bare `A.B.C`-shaped string
+elsewhere in the prose (a version number, say) is never touched — the `§` sigil, or appearing as a link, is
+what makes something a reference.
+
+A reference to a heading or section in a *different* project's docs repo uses
+`@{repo-slug}/{path}[/][§M.N]` — e.g. `@magpieweaver-docs/docs/glossary.md/§4` for a specific section, or
+`@magpieweaver-docs/docs/glossary.md` for the whole document. This is exempt from same-document renumbering:
+a tool renumbering sections in the current file must never touch an `@{...}` token, since it names a different
+repository and file entirely, outside that tool's reach.
+
 # Appendix
 
 Worked example. Given:
@@ -186,3 +200,10 @@ split (§2) apply only to each project's own `<project>-docs` repo, not to this 
 predates that structure, already has an established and populated organization (`workflows/`, `projects/`,
 `standards/`), and isn't documenting one project's own analysis/design/architecture — restructuring it to fit a
 shape designed for a single project's docs would cost real migration effort for no clarity gain here.
+
+§6's `@{repo-slug}/{path}[/§M.N]` syntax settles what AgentPlugins' UC-001 (Discuss A Project Concept And
+Document It) had flagged as an open design question: each project's docs exist both as a local repo in the
+weaver-engineering workspace and canonically on GitHub, so a plain relative markdown link across repos only
+resolves in one of those two contexts. The `@{repo-slug}/{path}` form sidesteps that by naming the repo
+explicitly rather than encoding a filesystem-relative or GitHub-relative path, leaving resolution (local
+checkout vs. GitHub URL) to whatever's reading the reference rather than baking one choice into the link itself.
