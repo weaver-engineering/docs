@@ -35,13 +35,14 @@ forward reference to §7 if there's a longer list}
 ## 4 Main Success Scenario
 
 {numbered steps. A step that relies on another use case's functionality
-references it inline, by id, at that step — e.g. "...generates the section
-index (UC-003)...". This is the only place dependencies are declared: no
-separate "Depends On" summary field. Once the word-indexer (UC-004) exists,
-a document's dependency set is mechanically recoverable anyway, by scanning
-its own word index for `UC-\d+` tokens outside `## Context` — so a bespoke
-field would just be a second place for the same information to drift out of
-sync with the actual steps.}
+references it inline, by id, at that step, as an actual markdown link to
+that use case's file — e.g. "...generates the section index
+([UC-003](../UC-003-....md))...". This is the only place dependencies are
+declared: no separate "Depends On" summary field. Once the word-indexer
+(UC-004) exists, a document's dependency set is mechanically recoverable
+anyway, by scanning its own word index for `UC-\d+` tokens outside
+`## Context` — so a bespoke field would just be a second place for the same
+information to drift out of sync with the actual steps.}
 
 ## 5 Postconditions
 
