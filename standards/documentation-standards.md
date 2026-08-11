@@ -57,8 +57,35 @@ Every directory under `docs/` (in this repo: every directory holding documents s
   enforce heading numbers, so a title is the only thing guaranteed to exist): a `number` attribute, present
   only if the heading/figure is actually numbered (including the implicit `0` case from §3), `type` (`section` |
   `code-block`), `start_line`, `end_line`.
-* `.index/<slug>.words.yaml` — significant words (stopwords excluded) per section, keyed by title the same way,
-  so a section's structural entry and its word counts share the same key.
+* `.index/<slug>.words.yaml` — significant words per section, keyed by title the same way, so a section's
+  structural entry and its word counts share the same key. The document itself is a node too, keyed by its own
+  `# Title` — its word counts are whatever text appears before `## Context` (there is no more special
+  `preamble` key; the document is just the root of the same title-keyed scheme every section uses).
+
+  Word extraction rules:
+  * Case-insensitive.
+  * `-`, `_`, `.`, `:`, `/` stay inside a token (not word breaks); every other character is whitespace, except
+    `@`, which starts a verbatim `@{repo-slug}/{path}[/§M.N]` token — indexed exactly as written, never
+    decomposed (see §6).
+  * A markdown link (`[text](url)`) is indexed by its **URL only**, truncated to the URI (no query string, no
+    `#anchor`) — the visible link text is not separately indexed as prose.
+  * Words reduce to a root form before indexing and before stopword matching — plurals and possessive `'s`
+    contract to the base (`architects`/`architect's` → `architect`). The canonical root stopword list is
+    [`stopwords.yaml`](stopwords.yaml): a generic English list plus domain terms whose ubiquity in this corpus gives
+    them little discriminating power for search (e.g. `document`, which blocks `doc`/`docs`/`documents`/
+    `documented`/`documentation` too, since stopwords apply to the root). It's a starting point, expected to be
+    refined over time via retrospective analysis of index bloat, not fixed permanently at authoring time.
+  * No minimum word length, no minimum occurrence count.
+  * Section numbers, non-numbered code blocks, and `## Context` content are never indexed.
+  * A word's count is scoped only to the node (document or section) where it textually appears — never rolled
+    up into ancestor sections. Aggregation across a tree of documents is the search tool's job at query time
+    (reading every `.words.yaml` under a scope and walking it), not the indexer's job at index time.
+* `.index/<slug>.todo.yaml` — every `//TODO`-style marker in the document: `text` (its content), `section`
+  (the containing node's title — the document's own title if it's before `## Context`), `line`, and `ref` (a
+  task reference like `WVR-88`, pulled out separately when the text contains one, rather than left buried in
+  `text`). A marker is recognized case-insensitively as `todo` or `to-do`, either prefixed by `//` or `#`
+  (any amount of whitespace between the prefix and the word, including none) or postfixed by `:` (same
+  whitespace rule) — so `//TODO`, `# todo`, and `TODO:` all match.
 
 Together these support full-text search across a doc, a directory, or a whole docs repo — finding which
 document or section covers a subject — and extraction of just the relevant section instead of a full-document
@@ -101,7 +128,9 @@ Some initial blurb
 blurb
 
 ## 1 The First Numbered Section
-blurb
+The architects manage the architect's own blurb.
+
+//TODO - expand this section (WVR-99)
 
 ### Another Unnumbered First Section
 blurb
@@ -127,49 +156,63 @@ sections:
     number: "1"
     type: section
     start_line: 12
-    end_line: 23
+    end_line: 25
   "Another Unnumbered First Section":
     number: "1.0"
     type: section
-    start_line: 15
-    end_line: 17
+    start_line: 17
+    end_line: 19
   "The First Numbered Section Of The Subsection":
     number: "1.1"
     type: section
-    start_line: 18
-    end_line: 23
+    start_line: 20
+    end_line: 25
   "Figure Title":
     number: "1.1.a"
     type: code-block
-    start_line: 21
-    end_line: 23
+    start_line: 23
+    end_line: 25
 ```
 
-and the word index (`this-is-a-title.words.yaml`) is:
+the word index (`this-is-a-title.words.yaml`) is:
 
 ```yaml
-preamble:
-  some: 1
+"This Is A Title":
   initial: 1
   blurb: 1
 sections:
   "Unnumbered First Section":
     blurb: 1
   "The First Numbered Section":
+    architect: 2
+    manage: 1
     blurb: 1
   "Another Unnumbered First Section":
     blurb: 1
   "The First Numbered Section Of The Subsection":
     blurb: 1
   "Figure Title":
-    some: 1
     code: 1
     block: 1
     content: 1
 ```
 
-`preamble` holds words from any text before `## Context` (title blurb) — it exists outside the numbered-section
-scheme entirely, since that text isn't part of section `0` or any other section.
+`some` and `own` don't appear — both are on the stopword list. `architects` and `architect's` both reduce to
+the root `architect`, so `The First Numbered Section` shows `architect: 2`, not two separate entries.
+
+and the TODO index (`this-is-a-title.todo.yaml`) is:
+
+```yaml
+todos:
+  - text: "expand this section (WVR-99)"
+    section: "The First Numbered Section"
+    line: 15
+    ref: "WVR-99"
+```
+
+The document itself is a node too, keyed by its own `# Title` (`"This Is A Title"`) — its word counts are
+whatever text appears before `## Context`. There's no separate `preamble` key; the document root uses the same
+title-keyed scheme every section uses, it's just keyed by the document's own title instead of a section's.
 
 # Rationale
 
@@ -217,3 +260,13 @@ section is guaranteed to have, so it's the only safe key. `number` moved to bein
 entry instead. Existing hand-written `.index/` files predating this correction are left as they are rather than
 retrofitted — they'll get corrected the next time their subject document is edited, or once the indexing tool
 itself exists and does a real pass; this reference description, however, has to be right now.
+
+§4's word-indexing rules (stemming, stopwords, link-by-URL-only, `todo.yaml`) were elicited while writing
+AgentPlugins' UC-003 (Index A Path) — the section-structure schema was settled first, but the actual word-index
+mechanics had never been asked about at all and were being invented ad hoc per retrofit. Two choices worth
+flagging: indexing markdown links by URL rather than link text is deliberate, not an oversight — in this
+workspace's convention, meaningful slugs live in the path (`architects-assistant.md`), so link text is often
+redundant with it, and indexing both would double-count the same signal. And `todo.yaml` exists as a separate
+file rather than folded into `words.yaml` because a `//TODO` is a distinct kind of fact (outstanding work, with
+its own optional task reference) rather than ordinary indexed prose — conflating the two would make "find open
+TODOs" and "search document content" the same query when they're not.

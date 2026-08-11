@@ -1,0 +1,121 @@
+# Canonical stopword list (root forms) for .index/<slug>.words.yaml, per
+# documentation-standards.md §4. Words reduce to a root before this list is
+# checked, so an entry here blocks all its inflections too (e.g. "be" blocks
+# is/are/was/were/been/being; "document" blocks doc/docs/documents/
+# documented/documentation).
+#
+# This is a starting point: a generic English list plus domain terms whose
+# ubiquity in this corpus gives them little discriminating power for search.
+# Expected to be refined over time via retrospective analysis of index
+# bloat, not fixed permanently at authoring time.
+
+stopwords:
+  # generic English
+  - a
+  - an
+  - the
+  - and
+  - or
+  - but
+  - if
+  - then
+  - than
+  - so
+  - such
+  - from
+  - into
+  - each
+  - every
+  - any
+  - all
+  - some
+  - most
+  - other
+  - which
+  - who
+  - whom
+  - what
+  - when
+  - where
+  - why
+  - how
+  - do
+  - can
+  - could
+  - should
+  - would
+  - will
+  - shall
+  - must
+  - may
+  - might
+  - there
+  - here
+  - this
+  - that
+  - these
+  - those
+  - it
+  - be
+  - have
+  - of
+  - to
+  - in
+  - on
+  - with
+  - as
+  - at
+  - by
+  - for
+  - not
+  - no
+  - i
+  - we
+  - you
+  - they
+  - he
+  - she
+  - them
+  - my
+  - your
+  - our
+  - their
+  - his
+  - her
+  - its
+  - also
+  - just
+  - still
+  - yet
+  - own
+  - same
+  - both
+  - either
+  - neither
+  - more
+  - less
+  - many
+  - much
+  - one
+  - two
+  - above
+  - below
+  - between
+  - during
+  - after
+  - before
+  - out
+  - about
+  - over
+  - under
+  - again
+  - further
+  - once
+  - only
+  - very
+  - get
+  - see
+
+  # domain-specific (this corpus is documentation about documentation;
+  # near-universal here, so low signal for search)
+  - document
