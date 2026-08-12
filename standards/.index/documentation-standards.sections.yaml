@@ -24,3 +24,8 @@ sections:
     type: section
     start_line: 65
     end_line: 70
+  "6":
+    title: "Cross-References"
+    type: section
+    start_line: 71
+    end_line: 84
