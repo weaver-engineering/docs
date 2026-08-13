@@ -67,7 +67,7 @@ Turn on a branch's ruleset **after** confirming its required workflow actually r
 |---|---|---|
 | The Loom | ✅ | ✅ |
 | Magpie Weaver | ✅ | ✅ |
-| AgentPlugins | ⚠️ rulesets already correct; workflows exist but `package.json` doesn't provide `gate-checks`/`task` (WVR-104) | ✅ |
+| AgentPlugins | ✅ (`main-gate`'s coverage check can't pass on this repo yet — no packages exist to instrument; bypassed deliberately until real code lands) | ✅ |
 | Weaver Projects | ❌ no CI at all | ❌ no CI at all |
 | Weaver Engineering (this repo) | n/a (docs only) | ✅ |
 

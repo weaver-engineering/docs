@@ -441,22 +441,26 @@ sections:
     add: 1
   "Compliance":
     project: 2
-    code: 1
-    repo: 3
+    code: 2
+    repo: 4
     docs: 2
     loom: 1
     magpie: 1
     weaver: 3
     agentplugins: 1
-    rulesets: 1
-    already: 1
-    correct: 1
-    workflows: 1
+    main-gate: 1
+    coverage: 1
+    check: 1
+    pass: 1
+    yet: 1
+    packages: 1
     exist: 1
-    package.json: 1
-    provide: 1
-    gate-checks/task: 1
-    wvr-104: 1
+    instrument: 1
+    bypassed: 1
+    deliberately: 1
+    until: 1
+    real: 1
+    lands: 1
     projects: 1
     ci: 2
     engineering: 1
