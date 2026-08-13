@@ -1,0 +1,16 @@
+sections:
+  "GitHub Packages Access":
+    number: "1"
+    type: section
+    start_line: 6
+    end_line: 11
+  "Machine-Global `~/.npmrc`":
+    number: "2"
+    type: section
+    start_line: 12
+    end_line: 24
+  "Verification":
+    number: "3"
+    type: section
+    start_line: 25
+    end_line: 32
