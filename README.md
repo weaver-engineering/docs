@@ -47,3 +47,9 @@ it applies to any project's docs repo, not one in particular.
 
 For more details see [Use Case Template](templates/USE-CASE-TEMPLATE.md).
 
+## Environment Setup
+One-off steps for getting a new weaver-engineering development environment working — not specific to any one
+project, e.g. authenticating a new machine to GitHub Packages so it can resolve packages like `@weaver-engineering/gate-checks`.
+
+For more details see [Dev Environment Setup](onboarding/dev-environment-setup.md).
+
