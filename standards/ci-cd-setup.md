@@ -68,7 +68,7 @@ Turn on a branch's ruleset **after** confirming its required workflow actually r
 | The Loom | ✅ | ✅ |
 | Magpie Weaver | ✅ | ✅ |
 | AgentPlugins | ✅ (`main-gate`'s coverage check can't pass on this repo yet — no packages exist to instrument; bypassed deliberately until real code lands) | ✅ |
-| Weaver Projects | ❌ no CI at all | ❌ no CI at all |
+| Weaver Projects | ✅ (same coverage-on-empty-repo caveat as AgentPlugins — bypassed deliberately) | ✅ |
 | Weaver Engineering (this repo) | n/a (docs only) | ✅ |
 
 Update this table as each gap closes — it's the thing that should make "is project X set up right" a lookup, not a re-investigation.
