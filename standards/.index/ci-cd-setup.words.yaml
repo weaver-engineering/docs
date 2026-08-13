@@ -443,20 +443,21 @@ sections:
     project: 2
     code: 1
     repo: 3
-    docs: 3
+    docs: 2
     loom: 1
     magpie: 1
-    weaver: 2
-    agentplugins: 2
+    weaver: 3
+    agentplugins: 1
+    rulesets: 1
+    already: 1
+    correct: 1
     workflows: 1
     exist: 1
     package.json: 1
     provide: 1
     gate-checks/task: 1
-    protection: 1
-    either: 1
-    correct: 1
-    projects: 2
+    wvr-104: 1
+    projects: 1
     ci: 2
     engineering: 1
     n/a: 1
@@ -469,5 +470,7 @@ sections:
     should: 1
     make: 1
     x: 1
+    up: 1
+    right: 1
     lookup: 1
     re-investigation: 1
