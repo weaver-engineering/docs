@@ -69,6 +69,6 @@ Turn on a branch's ruleset **after** confirming its required workflow actually r
 | Magpie Weaver | ✅ | ✅ |
 | AgentPlugins | ⚠️ workflows exist but package.json doesn't provide `gate-checks`/`task`; no branch protection on either repo | ⚠️ workflow correct; no branch protection |
 | Weaver Projects | ❌ no CI at all | ❌ no CI at all |
-| Weaver Engineering (this repo) | n/a (docs only) | ❌ no workflow, no branch protection |
+| Weaver Engineering (this repo) | n/a (docs only) | ✅ |
 
 Update this table as each gap closes — it's the thing that should make "is project X set up right" a lookup, not a re-investigation.

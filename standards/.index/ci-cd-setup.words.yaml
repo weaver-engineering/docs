@@ -453,10 +453,8 @@ sections:
     package.json: 1
     provide: 1
     gate-checks/task: 1
-    branch: 1
-    protection: 2
+    protection: 1
     either: 1
-    workflow: 1
     correct: 1
     projects: 2
     ci: 2
