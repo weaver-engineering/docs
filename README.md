@@ -41,6 +41,12 @@ not left aspirational.
 
 For more details see [Documentation Standards](standards/documentation-standards.md).
 
+## CI/CD Setup
+Every project's code and docs repos are set up the same way: a gate-check workflow validating every PR, and
+branch protection enforcing that it actually ran and passed before a merge is possible.
+
+For more details see [CI/CD Setup](standards/ci-cd-setup.md).
+
 ## Templates
 Reusable document templates for shapes that recur across projects — currently just the use-case template, since
 it applies to any project's docs repo, not one in particular.
