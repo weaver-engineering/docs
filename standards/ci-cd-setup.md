@@ -67,7 +67,7 @@ Turn on a branch's ruleset **after** confirming its required workflow actually r
 |---|---|---|
 | The Loom | ✅ | ✅ |
 | Magpie Weaver | ✅ | ✅ |
-| AgentPlugins | ⚠️ workflows exist but package.json doesn't provide `gate-checks`/`task`; no branch protection on either repo | ⚠️ workflow correct; no branch protection |
+| AgentPlugins | ⚠️ rulesets already correct; workflows exist but `package.json` doesn't provide `gate-checks`/`task` (WVR-104) | ✅ |
 | Weaver Projects | ❌ no CI at all | ❌ no CI at all |
 | Weaver Engineering (this repo) | n/a (docs only) | ✅ |
 
