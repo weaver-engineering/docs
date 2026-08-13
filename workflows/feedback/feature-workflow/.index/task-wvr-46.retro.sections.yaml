@@ -1,0 +1,21 @@
+sections:
+  "What Went Well":
+    number: "1"
+    type: section
+    start_line: 12
+    end_line: 25
+  "What Didn't Go Well":
+    number: "2"
+    type: section
+    start_line: 26
+    end_line: 39
+  "Future Actions":
+    number: "3"
+    type: section
+    start_line: 40
+    end_line: 47
+  "Rejected Actions":
+    number: "4"
+    type: section
+    start_line: 48
+    end_line: 50
