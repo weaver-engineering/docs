@@ -447,7 +447,7 @@ sections:
     loom: 1
     magpie: 1
     weaver: 3
-    agentplugins: 1
+    agentplugins: 2
     main-gate: 1
     coverage: 1
     check: 1
@@ -456,13 +456,15 @@ sections:
     packages: 1
     exist: 1
     instrument: 1
-    bypassed: 1
-    deliberately: 1
+    bypassed: 2
+    deliberately: 2
     until: 1
     real: 1
     lands: 1
+    same: 1
+    coverage-on-empty-repo: 1
+    caveat: 1
     projects: 1
-    ci: 2
     engineering: 1
     n/a: 1
     only: 1
