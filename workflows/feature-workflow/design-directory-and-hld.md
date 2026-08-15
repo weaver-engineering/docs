@@ -2,6 +2,8 @@
 
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step (`2 Design The Feature`) this document defines the output of
+* [Design Feature Instructions](design-feature-instructions.md) - the process that produces and checks this document's content; this document defines the shape, that one defines how to get there
+* [Pseudocode Style](pseudocode-style.md) - the notation a top-level function's own pseudocode (§4.5) is written in
 * [Use Cases](use-cases.md) - the analysis-step artifact a design translates into concrete decisions
 * [Required Behaviors](required-behaviors.md) - the broader analysis output a design must satisfy
 * [Specific Behaviors](specific-behaviors.md) - the Given/When/Then behaviors a design identifies; this document defines where they come from, that one defines their format
@@ -148,9 +150,11 @@ facts for the same reason external dependency documents are (§3.2's ownership r
 component this Feature introduces may be exactly what a later, unrelated Feature needs to extend or call.
 
 Each function also declares, on itself, every address it may call (`calls:`, a small YAML block — see the
-[Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md)). There is no separate call-graph
-document: the project's whole call graph is just the union of every function's own declaration, assembled by
-reading them rather than maintained as a second copy — see [Specific Behaviors §2.6](specific-behaviors.md).
+[Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md)) and, the reverse, every address
+whose own `calls:` names it (`called_from:`) — maintained together, one edit adding both sides. There is no
+separate call-graph document: the project's whole call graph is just the union of every function's own
+declaration, assembled by reading them rather than maintained as a second copy — see [Specific Behaviors
+§2.6](specific-behaviors.md).
 
 ### 4.2 Deciding An Interface Versus Observing One
 
@@ -206,8 +210,9 @@ system itself is expected to do: a top-level function may be relied on by severa
 possibly demanding something slightly different of it, and its own pseudocode has to actually satisfy all of
 them at once — the lists are what makes that checkable at design review, by the same kind of pseudocode-to-
 pseudocode comparison §3.4 uses for shims (see [Specific Behaviors §2.8](specific-behaviors.md)). Only `IC-000`'s
-own functions carry this — an internal, non-entry-point function is reached only through `IC-000`'s own
-functions and the call trees that lead to it, which is enough traceability on its own.
+own functions carry this — an internal, non-entry-point function's usage is found instead by walking its own
+`called_from:` (§4.1) back to whichever `IC-000` function it terminates at, then reading that function's usage
+lists; there's no need for every function in between to carry a copy of the same lists.
 
 ## 5 Navigability
 

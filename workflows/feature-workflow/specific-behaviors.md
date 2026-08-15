@@ -2,6 +2,7 @@
 
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step (`2 Design The Feature`) this document is an output of, and step `3 Chunk The Design`, which scopes each Chunk around delivering one or more of these
+* [Design Feature Instructions](design-feature-instructions.md) - the process that produces and checks this document's content; this document defines the shape, that one defines how to get there
 * [Design Directory And HLD](design-directory-and-hld.md) - Internal Components and External Dependencies, whose declared `calls:` this document's traced call trees walk, and where `IC-000`'s top-level functions and their pseudocode live
 * [Use Cases](use-cases.md) - the Main Success Scenario steps and Extensions a specific behavior walks through
 * [Use Case Template §Technical Interpretation](../../templates/USE-CASE-TEMPLATE.md) - the pseudocode appendix a use case grows during Design, that §2.1 below is built from

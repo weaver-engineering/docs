@@ -3,6 +3,7 @@
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered sections, Rationale/Appendix) this template follows
 * [Design Directory And HLD §3](../workflows/feature-workflow/design-directory-and-hld.md) - what an external dependency is, the thin-shim convention, and where its document lives
+* [Pseudocode Style §3](../workflows/feature-workflow/pseudocode-style.md) - how the error modes named below back an `ON FAILURE` clause in a caller's pseudocode
 
 Template for an external dependency document, one file per dependency, filed as `ED-NNN-{slug}.md` under
 `docs/architecture/external-dependencies/` in the depending project's own docs repo. The template itself is in
@@ -24,7 +25,7 @@ the Appendix below, since it's reference material to copy from, not indexed cont
 
 ## 1 {Operation Or Interaction Name}
 
-{concrete request shape, response shape, and error modes — specific enough for a specific behavior's Given/Then to cite this section directly. This is the shim's own interface, not a restatement of the dependency's full API.}
+{concrete request shape, response shape, and error modes — specific enough for a specific behavior's Given/Then to cite this section directly. This is the shim's own interface, not a restatement of the dependency's full API. Each named error mode is an exception class a caller's `ON FAILURE` clause can reference (Pseudocode Style §3) — name them precisely enough to be used that way, not just described in passing.}
 
 {no `calls:` declaration here — an External Dependency's own operation is always a leaf in the call graph; what a third-party system does internally isn't something this project observes or declares. See Design Directory And HLD §3 and Specific Behaviors §2.6.}
 
