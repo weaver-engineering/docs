@@ -3,6 +3,7 @@
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered sections, Rationale/Appendix) this template follows
 * [Use Cases](../workflows/feature-workflow/use-cases.md) - what a use case is within the Feature Workflow (`//TODO`)
+* [Specific Behaviors §2.1](../workflows/feature-workflow/specific-behaviors.md) - what the Technical Interpretation appendix below is for, and how design review uses it
 
 Template for a single use case, one file per use case, filed under a project's own `docs/analysis/use-cases/`
 (project-scoped `UC-NNN` ids, mirroring that project's `ADR-NNN` sequence if it has one). The template itself is
@@ -58,6 +59,21 @@ each naming the branching condition and what happens instead}
 {things this use case deliberately leaves undecided, and why — scope
 boundaries, not justification for what *is* decided; justification belongs
 in a `# Rationale` section per the documentation standard, if one is needed}
+
+# Appendix
+
+## Technical Interpretation
+
+{pseudocode for the steps and Extensions above, in technical language, but independent of any solution — no
+Internal Component or External Dependency named, no call trees. This is the design's own crystallization of
+what this use case actually requires, grown and maintained during the Design step (not Analysis), and it does
+not change just because the chosen solution around it does. Design review compares it, pseudocode to pseudocode,
+against the current pseudocode of whichever top-level system functions realize it — see Specific Behaviors §2.1
+and §2.8.
+
+Once each operation this use case performs is identified (Specific Behaviors §2.4), link each one to the
+`SB-NNN` document it causes to exist — a use case may perform several operations, so this is usually more than
+one link.}
 ```
 
 # Rationale
@@ -70,3 +86,12 @@ Putting the template in `# Appendix` rather than a numbered body section is a di
 standard's own vocabulary: it's supplementary reference material to copy from, not indexed content in its own
 right — placeholder text (`{...}`) throughout would make for a fairly useless search index anyway. This mirrors
 how `magpieweaver-docs`' `ADR-TEMPLATE.md`/`SPEC-TEMPLATE.md` are treated, predating this indexing scheme.
+
+Technical Interpretation lives in the use case's own `# Appendix`, produced during Design, rather than in the
+design directory alongside everything else Design produces. It's the pseudocode reflection of *this* use case
+specifically, tightly coupled to its own steps and Extensions, and it needs to sit next to the narrative it
+reflects for the pseudocode-to-pseudocode review comparison to be a comparison at all — filing it in the design
+directory instead would mean flipping between two files to do the one thing this section exists for. It stays
+unindexed and un-numbered because, like the rest of `# Appendix`, it's supplementary to the use case's own
+actor-level narrative, not part of it — an agent reading the use case for its "wh...s" (per the Feature
+Workflow's Analyse step) doesn't need it, only Design and design review do.
