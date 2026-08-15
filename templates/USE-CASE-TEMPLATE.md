@@ -4,6 +4,7 @@
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered sections, Rationale/Appendix) this template follows
 * [Use Cases](../workflows/feature-workflow/use-cases.md) - what a use case is within the Feature Workflow (`//TODO`)
 * [Specific Behaviors §2.1](../workflows/feature-workflow/specific-behaviors.md) - what the Technical Interpretation appendix below is for, and how design review uses it
+* [Pseudocode Style](../workflows/feature-workflow/pseudocode-style.md) - the notation the Technical Interpretation appendix below is written in
 
 Template for a single use case, one file per use case, filed under a project's own `docs/analysis/use-cases/`
 (project-scoped `UC-NNN` ids, mirroring that project's `ADR-NNN` sequence if it has one). The template itself is
@@ -64,7 +65,7 @@ in a `# Rationale` section per the documentation standard, if one is needed}
 
 ## Technical Interpretation
 
-{pseudocode for the steps and Extensions above, in technical language, but independent of any solution — no
+{pseudocode for the steps and Extensions above, in the [Pseudocode Style](../workflows/feature-workflow/pseudocode-style.md), but independent of any solution — no
 Internal Component or External Dependency named, no call trees. This is the design's own crystallization of
 what this use case actually requires, grown and maintained during the Design step (not Analysis), and it does
 not change just because the chosen solution around it does. Design review compares it, pseudocode to pseudocode,

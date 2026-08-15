@@ -6,6 +6,7 @@
 * [Specific Behaviors §2.6](../workflows/feature-workflow/specific-behaviors.md) - how a `calls:` declaration below is walked into a specific behavior's traced call tree
 * [Specific Behaviors §2.7](../workflows/feature-workflow/specific-behaviors.md) - why `calls:` is a declared expectation rather than a verified fact, and how it's reconciled against a traced call tree
 * [Design Directory And HLD §4.5](../workflows/feature-workflow/design-directory-and-hld.md) - the extra pseudocode and usage lists `IC-000`'s own functions carry, beyond what's shown below
+* [Pseudocode Style](../workflows/feature-workflow/pseudocode-style.md) - the notation `pseudocode:` below is written in, including how a declared exception class backs an `ON FAILURE` clause elsewhere
 
 Template for an internal component document, one file per component, filed as `IC-NNN-{slug}.md` under
 `docs/architecture/components/` in the owning project's own docs repo. `IC-000` is reserved for the system's own
@@ -37,6 +38,8 @@ its own right.
 ```yaml
 calls:
   - "{IC-NNN §M or ED-NNN §M.N — every address this function is expected to call, from this function's own Purpose, not verified against its actual logic}"
+called_from:
+  - "{IC-NNN §M — every address whose calls: names this function; added here in the same edit that adds it there, never authored independently}"
 ```
 
 {and/or a sequence diagram describing this function's own expected behaviour — not limited to functions that call other things. A leaf function (empty or absent `calls:`) can still be complex enough internally (branching, looping, multiple steps) to need one; a diagram here describes what happens *inside* this one function, independent of which specific behavior's call tree happens to reach it. Same Mermaid `sequenceDiagram` format a specific behavior's optional diagram would use, if it had one (see Specific Behaviors §2.6) — but scoped to this function alone:}
@@ -52,7 +55,7 @@ sequenceDiagram
 
 ```yaml
 pseudocode: |
-  {the currently designed solution for this operation, linked to the specific IC/ED calls it makes — see Design Directory And HLD §4.5}
+  {the currently designed solution for this operation, in the Pseudocode Style, linked to the specific IC/ED calls it makes — see Design Directory And HLD §4.5}
 used_by_steps:
   - "UC-{NNN} step {M}"
 used_by_behaviors:
@@ -118,6 +121,15 @@ on the function, and not on a specific behavior's call tree — see [Specific Be
 `IC-000` functions carry `pseudocode:`, `used_by_steps:`, and `used_by_behaviors:` — no other component's
 functions do — because only `IC-000`'s functions are operations (Design Directory And HLD §4.4): reached
 directly from outside the system, and therefore the only functions several different use cases might rely on
-independently of each other, each with their own expectations of it. An internal, non-entry-point function is
-only ever reached through a call tree that already starts at `IC-000`, which is traceability enough on its own
-— see [Design Directory And HLD §4.5](../workflows/feature-workflow/design-directory-and-hld.md).
+independently of each other, each with their own expectations of it. An internal, non-entry-point function's
+usage is still findable through `called_from:` (below) walked back to whichever `IC-000` function it terminates
+at — see [Design Directory And HLD §4.5](../workflows/feature-workflow/design-directory-and-hld.md).
+
+`called_from:` is `calls:` read backwards, maintained the same way this repo's Context sections already keep a
+bidirectional link current — added at the target the same moment it's added at the source, never authored
+independently later. Without it, finding what depends on a non-entry-point function that's about to change means
+searching every `IC-000` function's own call tree for a path that happens to reach it — correct in principle, but
+a full scan every time a mid-graph function changes, not something a design in progress can afford to redo on
+every edit. Walking `called_from:` backward instead turns that search into a direct, repeatable path: from the
+changed function to whichever `IC-000` function(s) it terminates at, and from there straight to their own usage
+lists.

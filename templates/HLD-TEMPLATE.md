@@ -44,11 +44,11 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 ## 5 Internal Components
 
-* {name} — {link to its IC-NNN document, new or extended by this design} — {one line: what this design decided for it} {`IC-000` is always the system's own entry point — no separate marker needed, the number says it}
+* {name} — {link to its IC-NNN document} — **{as-is | extended | new}** — {one line: what this design needs from it, or decided for it if extended/new} {`IC-000` is always the system's own entry point — no separate marker needed, the number says it}
 
 ## 6 External Dependencies
 
-* {name} — {link to its ED-NNN document, or "new — defined in this design" if none exists yet} — {one line: what this design uses it for}
+* {name} — {link to its ED-NNN document, or "new — defined in this design" if none exists yet} — **{as-is | extended | new}** — {one line: what this design uses it for}
 
 ## 7 Specific Behaviors
 
@@ -60,7 +60,7 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 # Rationale
 
-{options considered and discarded for the Key Decisions in §3 — only needed where a decision isn't self-justifying}
+{every candidate considered for each Key Decision in §3 and why it was discarded, not just the winner — see [Design Feature Instructions §4.1](../workflows/feature-workflow/design-feature-instructions.md)}
 ```
 
 # Rationale
@@ -71,6 +71,12 @@ of," because they answer different reviewer questions: Solution Overview is the 
 around the map, Internal Components is what the design built and owns, External Dependencies is what it depends
 on outside itself. Collapsing them would make the HLD harder to skim for the one thing a reviewer is actually
 checking (e.g. "did this design account for every open question" versus "what does this design depend on").
+
+Each entry in §5 and §6 is classified as-is, extended, or new — not just "new or extended" — because "as-is"
+is a real, distinct state: an existing function this design relies on but doesn't change at all, as opposed to
+one gaining a new call it doesn't currently make ("extended"). Collapsing the two would lose exactly the
+distinction [Design Feature Instructions](../workflows/feature-workflow/design-feature-instructions.md)'s Gap
+Analysis phase exists to draw — an as-is item needs no further design decision, an extended one does.
 
 Solution Overview is deliberately a map, not a restatement of the specific behaviors — an agent reading it needs
 "what talks to what," which a list of black-box Given/When/Then scenarios can't provide, by [Specific

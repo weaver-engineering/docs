@@ -50,6 +50,8 @@ The design process considers various permutations and combinations of technical 
 It documents the specific details of the behaviors, `data types`, `interfaces`, `resources`, `external dependencies`, `technology stack` etc. of the design.
 The design **must** provide a comprehensive and consistent vision of the solution which provides the required behaviors. 
 
+The process for carrying out this step — including how to resume it partway through, from a fresh session with no memory of prior ones — is defined in [Design Feature Instructions](design-feature-instructions.md).
+
 The output of the design process is the [design directory and hld](design-directory-and-hld.md) within the projects docs repo which includes a `{design-slug}-hld.md` high level design document for the Feature. Other supporting documentation and sub folders may exist in the design folder but all files in the design folder and any sub folders must be navigable from the HLD.
 The design documentation will be read by the agents so they should be clear, to the point and separated into appropriate sub documents as necessary to avoid overloading agents with context that is not relevant to their goal. The design identifies the [specific behaviors](specific-behaviors.md) `Given/When/Then` system level behaviors that must be implemented to complete the feature.
 ### 3 Chunk The Design

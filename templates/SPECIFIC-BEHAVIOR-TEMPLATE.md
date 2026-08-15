@@ -3,6 +3,7 @@
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered sections, Rationale/Appendix) this template follows
 * [Specific Behaviors](../workflows/feature-workflow/specific-behaviors.md) - what a specific behavior is, the `SB-NNN` convention, and the Given/When/Then/Call Tree format each section below follows
+* [Design Feature Instructions §7](../workflows/feature-workflow/design-feature-instructions.md) - the process that produces and checks the `reconciliation:` block below
 
 Template for a specific-behaviors document, one file per (use case, operation) pair — one file per use case's use
 of one operation (see Specific Behaviors §3), filed under `docs/design/{feature-slug}/specific-behaviors/` in
@@ -20,6 +21,15 @@ own right.
 * Specific Behaviors (@docs/workflows/feature-workflow/specific-behaviors.md) - the convention this document follows
 
 **Realizes:** {UC-{NNN} step(s) {M}[-{M+1}], the base steps every specific behavior below is a variation of}
+
+```yaml
+reconciliation:
+  checked_at: null  # set once Design Feature Instructions §7.1 first passes
+  uc_technical_interpretation_checksum: null
+  function_checksums: {}  # "IC-000 §{M}": "{checksum}", one per function/prose the call trees below reach
+  reviewed_by: null  # set once §7.2 human review completes
+  reviewed_at: null
+```
 
 ## 1 {Happy Path, Or Named Entry-State Variation}
 
@@ -84,6 +94,12 @@ is — not the full step list again, which would just repeat the document-level 
 different valid entry states can exercise different use-case Extensions, and every one of those has its own
 unhappy alternatives. All of them share the same base steps and, usually, the same When; only the Given and Then
 actually vary between them. See [Specific Behaviors §2.5](../workflows/feature-workflow/specific-behaviors.md).
+
+**Why `reconciliation:` is checksums, not a checkbox.** A checkbox only ever records that a check passed once;
+it can't tell anyone whether it's still true. Recording the checksums a passing check depended on instead makes
+the record falsifiable — recomputing and comparing them later is enough to know whether anything the check
+actually relied on has changed since, without re-reading or re-reasoning about content that hasn't moved. See
+[Design Feature Instructions §7.1](../workflows/feature-workflow/design-feature-instructions.md).
 
 **Call Tree, not Call Chain.** A real invocation is a tree, not a list: a function calls children, each of
 which returns control to its caller before that caller (maybe) calls a sibling. A flat list can't represent
