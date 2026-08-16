@@ -125,7 +125,25 @@ purchase order" to the same queue, say, that should just be one function). Where
 a single Key Decision and a single Internal Component or External Dependency function, and update every affected
 `SB-NNN` stub's expected call tree to match.
 
-Exit: no two Key Decisions from this Feature describe functions that should have been the same one.
+Once every gap's Key Decision is settled and consolidated, every Internal Component or External Dependency named
+in the HLD's §5/§6 needs its own standing document — that document is the actual design artifact defining its
+functions, not just the HLD's own summary of it, and it will always be needed once something is listed there at
+all. For each one not yet created: create it — [Internal Component
+Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) or [External Dependency
+Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) — assigned the next free `IC-NNN`/`ED-NNN` in the
+project's own sequence, with one numbered `§M`/`§M.N` section per function or operation this Feature currently
+needs (a later Feature may add more to the same document rather than creating a competing one, per Design
+Directory And HLD §3.2's ownership rule). Link it from the HLD's §5/§6 entry, replacing the bare name Gap
+Analysis (§3) recorded there.
+
+`IC-000` is the one component every project needs from its first Feature onward (Design Directory And HLD §4.4).
+If this is that first Feature, `IC-000`'s own document doesn't exist yet either — creating it, with this
+Feature's own operations as its first numbered functions, is part of this same step, not a special case to defer
+or skip.
+
+Exit: no two Key Decisions from this Feature describe functions that should have been the same one, and every
+component or dependency named in the HLD's §5/§6 has its own standing document — numbered, linked from the HLD,
+with a placeholder section per function or operation this Feature needs.
 
 ### 4.3 Recording The Bound Pseudocode
 
@@ -286,6 +304,16 @@ its own has no visibility into any other gap's resolution — two independently-
 questions can still turn out to want the same underlying function, and there's no way to notice that until both
 answers already exist to compare. Running it as its own whole-Feature pass, after every individual gap is
 resolved, is what makes that comparison possible at all.
+
+**Why standing document creation is folded into §4.2 rather than left implicit.** The first real design pass
+(dogfooding this process against WVR-95) closed out every gap in §4.1, decided every component's interface, and
+only then noticed nothing in the process actually said when those components' own `IC-NNN`/`ED-NNN` documents
+get created and numbered — including `IC-000` itself, which had never been created at all, since this was the
+project's first Feature. §4.1 alone can't be where this happens: a gap considered in isolation can't yet know
+whether the merge pass is about to fold it into another one, and numbering a document only to immediately
+discover it duplicates another wastes the one thing a project-level number is supposed to be — stable once
+assigned. §4.2, once the deduplicated set of components is finally known, is the first point where creating and
+numbering them doesn't risk exactly that.
 
 **Why §5's per-behavior check and §7.2's review are different events, not one.** §5 happens the moment a
 behavior is first derived, informally, to catch an obviously wrong result before moving on to the next one —
