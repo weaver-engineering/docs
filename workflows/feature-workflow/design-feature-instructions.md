@@ -10,11 +10,17 @@
 
 These are the steps an agent follows to carry out the `Design The Feature` step of the [Feature
 Workflow](feature-workflow.md) and produce a complete design directory. The architect's judgement is required at
-specific, named points (§4.1 ideation, §5 elicitation and sanity-checks, §7.2 final review) — everywhere else the
-process is mechanical. It is also iterative, not a strict waterfall — see §8 — and deliberately broken into
-small, independently-resumable units of work: §1 defines how to tell, from the current state of a design
-directory alone, exactly which unit comes next, so that a session with no memory of any previous one can pick up
-immediately.
+specific, named points (§4.1 ideation, §5 elicitation and sanity-checks, §7.1's side-effect resolution, §7.2
+final review) — everywhere else the process is mechanical. It is also iterative, not a strict waterfall — see
+§8 — and deliberately broken into small, independently-resumable units of work: §1 defines how to tell, from the
+current state of a design directory alone, exactly which unit comes next, so that a session with no memory of
+any previous one can pick up immediately.
+
+Every point where this process "presents" something to the architect — a Key Decision's candidates, a freshly
+derived behavior, a flagged side effect, a batch ready for final review — assumes the content is already
+committed and pushed to the design directory's own pull request. The architect reviews against that PR, not a
+description of working-tree state; presenting something not yet pushed isn't presenting it at all, it's just
+narrating uncommitted work.
 
 ## 1 Determining The Next Unit Of Work
 
