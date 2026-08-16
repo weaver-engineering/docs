@@ -44,11 +44,24 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 ## 5 Internal Components
 
-* {name} — {link to its IC-NNN document} — **{as-is | extended | new}** — {one line: what this design needs from it, or decided for it if extended/new} {`IC-000` is always the system's own entry point — no separate marker needed, the number says it}
+{one top-level bullet per component — never grouped or nested under whichever use case(s) introduced it. An
+Internal Component document can expose more than one function/operation (the same `§M.N` shape an External
+Dependency's own shim uses); nest each one this design actually touches as a sub-bullet beneath its component,
+not as a peer entry in a flat list of functions.}
+
+* {Component Name} — {link to its IC-NNN document, or "new — defined in this design" if none exists yet}
+  * {function/operation name} — **{as-is | extended | new}** — {one line: what this design needs from it, or decided for it if extended/new}
+  * {another function/operation this design touches on the same component, if any}
+
+{`IC-000` is always the system's own entry point — no separate marker needed, the number says it.}
 
 ## 6 External Dependencies
 
-* {name} — {link to its ED-NNN document, or "new — defined in this design" if none exists yet} — **{as-is | extended | new}** — {one line: what this design uses it for}
+{same shape as §5 — one top-level bullet per dependency, its own operations nested beneath it, never grouped by
+use case}
+
+* {Dependency Name} — {link to its ED-NNN document, or "new — defined in this design" if none exists yet}
+  * {operation name, `§M.N`} — **{as-is | extended | new}** — {one line: what this design uses it for}
 
 ## 7 Specific Behaviors
 
@@ -87,3 +100,15 @@ Section 7, Specific Behaviors, is deliberately just a list of links rather than 
 HLD identifies which specific behaviors exist; their content lives in the `SB-NNN` files, per [Specific
 Behaviors](../workflows/feature-workflow/specific-behaviors.md). Keeping them out of the HLD body avoids
 bloating the one document every reviewer and agent starts from with content that already has its own home.
+
+**Why §5 and §6 nest functions/operations under their component, not under whichever use case introduced them.**
+An earlier version of this template used one flat bullet per function. In practice, a first real design pass
+(dogfooding this process against WVR-95) grouped those bullets by whichever use case had introduced each
+candidate, since that's the order Gap Analysis naturally discovers them in — producing a list organized by
+requirement rather than by the components §5/§6 are actually meant to inventory. The real structure was already
+sitting one level up: an Internal Component (or External Dependency) document can expose more than one
+function/operation, the same way an ED document's own shim is a set of numbered `§M.N` interactions, not one
+undifferentiated capability. Nesting each touched function under its owning component makes that structure the
+organizing principle instead of the use case that happened to surface it first — a component two use cases both
+rely on appears once, with both functions listed beneath it, rather than being torn across two separate,
+use-case-grouped bullets.
