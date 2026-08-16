@@ -25,7 +25,7 @@ the Appendix below, since it's reference material to copy from, not indexed cont
 
 ## 1 {Operation Or Interaction Name}
 
-{concrete request shape, response shape, and error modes — specific enough for a specific behavior's Given/Then to cite this section directly. This is the shim's own interface, not a restatement of the dependency's full API. Each named error mode is an exception class a caller's `ON FAILURE` clause can reference (Pseudocode Style §3) — name them precisely enough to be used that way, not just described in passing.}
+{concrete request shape, response shape, and error modes — specific enough for a specific behavior's Given/Then to cite this section directly. This is the shim's own interface, not a restatement of the dependency's full API. Each named error mode is an exception class a caller's `ON FAILURE` clause can reference (Pseudocode Style §3) — name them precisely enough to be used that way, not just described in passing. A request or response field that isn't a primitive cites its Data Types name (HLD Template §4) exactly, in PascalCase, the same rule the Internal Component Template's own signatures follow — never an informal lowercase alias.}
 
 {no `calls:` declaration here — an External Dependency's own operation is always a leaf in the call graph; what a third-party system does internally isn't something this project observes or declares. See Design Directory And HLD §3 and Specific Behaviors §2.6.}
 

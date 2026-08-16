@@ -31,7 +31,7 @@ its own right.
 
 ## 1 {Function Or Interaction Name}
 
-{at minimum, a one-line purpose statement and its own concrete signature for this function — that's the required floor, even before the rest is filled in. Beyond that: request/response shape and error modes, specific enough for another component's or Feature's design to build against directly. Each function defines its own signature; it does not need to conform to some overall shape shared with the component's other functions.}
+{at minimum, a one-line purpose statement and its own concrete signature for this function — that's the required floor, even before the rest is filled in. Beyond that: request/response shape and error modes, specific enough for another component's or Feature's design to build against directly. Each function defines its own signature; it does not need to conform to some overall shape shared with the component's other functions. A parameter or return value that isn't a primitive cites its Data Types name (HLD Template §4) exactly, in PascalCase — never an informal lowercase alias invented for this one signature, even where the real type feels obvious from context.}
 
 {every function needs at least one of the two below — a function that neither calls anything nor carries a diagram has nothing establishing its expected behaviour beyond the one-line purpose statement:}
 
@@ -95,6 +95,11 @@ own regardless of which shape the component actually has.
 A function's one-line purpose blurb and its own signature are a required floor, not the target — a purpose with
 no signature can't be built against, and a signature with no stated purpose is exactly as unreviewable as a full
 contract nobody bothered to explain.
+
+A signature citing an informal lowercase alias instead of the actual PascalCase Data Types name it means (`report`
+instead of `NumberingReport`, say) reads as fine locally but breaks the moment a reader tries to find that type's
+own shape — there's nothing to search for, because the name in the signature was never the name it was defined
+under. See [HLD Template](HLD-TEMPLATE.md)'s own Rationale for the dogfooded finding this closes.
 
 `calls:` is declared once, on the function that does the calling, rather than assembled into a separate global
 graph document. This is the same shape this repo already uses for `.index/` (documentation-standards.md §4):

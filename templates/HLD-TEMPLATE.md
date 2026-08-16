@@ -10,7 +10,7 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 # Appendix
 
-```
+````
 # {Feature Slug} — High-Level Design
 
 ## Context
@@ -40,7 +40,33 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 ## 4 Data Types
 
-{the shapes of data this Feature persists (data at rest, e.g. what an External Dependency stores) and exchanges (data in flight, e.g. request/response payloads) — concrete enough for specific behaviors to instantiate}
+{the shapes of data this Feature persists (data at rest, e.g. what an External Dependency stores) and exchanges
+(data in flight, e.g. request/response payloads) — concrete enough for specific behaviors to instantiate. One
+subsection per type, `### 4.M {TypeName}`, `TypeName` in PascalCase. Every function signature elsewhere in this
+design (Internal Component Template, External Dependency Template) that takes or returns a non-primitive value
+cites this exact name — never an informal, lowercase alias invented at the call site. A structured value nested
+inside another type's own field is never inlined anonymously; it gets its own named entry here instead,
+referenced by name. Primitives (`path`, `string`, `bool`, `int`, `float`, `void`, a literal string-enum like
+`"list" | "details"`) are the only things that stay unnamed.}
+
+### 4.1 {TypeName}
+
+{one line: what produces this value, and which function(s) consume it}
+
+```
+{TypeName} = {
+  {field}: {Type},
+  {field}: {Type}
+}
+```
+
+{always one field per line, even for a single-field type — never collapsed onto one line just because it fits.
+An array of a named type is `[{TypeName}]`; an array of a primitive is `[{primitive}]`. A field whose own value
+is itself structured cites another `### 4.N` entry by name, never an inline anonymous object.}
+
+### 4.2 {Next Type Name}
+
+{...}
 
 ## 5 Internal Components
 
@@ -74,7 +100,7 @@ use case}
 # Rationale
 
 {every candidate considered for each Key Decision in §3 and why it was discarded, not just the winner — see [Design Feature Instructions §4.1](../workflows/feature-workflow/design-feature-instructions.md)}
-```
+````
 
 # Rationale
 
@@ -112,3 +138,14 @@ undifferentiated capability. Nesting each touched function under its owning comp
 organizing principle instead of the use case that happened to surface it first — a component two use cases both
 rely on appears once, with both functions listed beneath it, rather than being torn across two separate,
 use-case-grouped bullets.
+
+**Why §4 mandates one field per line and named nested types, rather than leaving formatting to whoever's
+writing.** The same dogfooding pass found this section's own worked types inconsistently formatted — some
+fields one per line, others crammed onto a single long line wherever a nested object was inlined anonymously —
+and, separately, most function signatures elsewhere in the design citing an informal lowercase placeholder
+(`report`, `words`, `scope`) instead of the PascalCase type actually defined here for that exact value
+(`NumberingReport`, `Words`, `Scope`). Both problems share one cause: nothing said a structured value always
+gets its own named entry, so it was easy to inline a shape once and never name it, and easy for a signature
+elsewhere to reference that unnamed shape informally rather than by a real type name. Requiring every structured
+value to be named, and named consistently in every signature that uses it, removes the anonymous middle ground
+both problems were hiding in.
