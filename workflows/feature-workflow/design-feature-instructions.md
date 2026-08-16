@@ -103,6 +103,11 @@ analysis of its qualities, a logical argument that rules it out, or a proof-of-c
 ruled out by a proof-of-concept records the PoC's finding in that same Rationale entry; the PoC itself doesn't
 need its own permanent artifact.
 
+Choosing an interface means choosing what data it takes and returns, not just its name and signature. Where that
+data isn't already captured, record its shape in the HLD's own Data Types (Design Directory And HLD §2, item 4)
+as part of the same Key Decision — concrete enough for Deriving Specific Behaviors (§5) to instantiate with
+literal example values, not left described only in prose inside the Key Decision itself.
+
 Where the gap is closed by extending an existing function (§3), find every other use case now relying on
 pseudocode that's about to change before making the change. An `IC-000` function or an External Dependency
 operation names them directly (Design Directory And HLD §4.5, §3.4). A non-entry-point Internal Component
@@ -114,7 +119,8 @@ re-verification, which §1's own check picks up mechanically the next time it ru
 checksum that no longer matches.
 
 Exit, per gap: a resolved Key Decision with a Rationale entry naming every considered alternative and why it
-was discounted.
+was discounted, and, where the interface introduces a data shape not already captured, an entry for it in the
+HLD's Data Types section.
 
 ### 4.2 The Merge Pass
 
@@ -133,13 +139,23 @@ Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) or [External Dependenc
 Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) — assigned the next free `IC-NNN`/`ED-NNN` in the
 project's own sequence, with one numbered `§M`/`§M.N` section per function or operation this Feature currently
 needs (a later Feature may add more to the same document rather than creating a competing one, per Design
-Directory And HLD §3.2's ownership rule). Link it from the HLD's §5/§6 entry, replacing the bare name Gap
-Analysis (§3) recorded there.
+Directory And HLD §3.2's ownership rule). Each section's own purpose statement and concrete signature — the
+template's required floor — is transcribed from the interface already decided in that function's own Key
+Decision (§4.1), not left as a placeholder to fill in later. Link the document from the HLD's §5/§6 entry,
+replacing the bare name Gap Analysis (§3) recorded there.
 
 `IC-000` is the one component every project needs from its first Feature onward (Design Directory And HLD §4.4).
 If this is that first Feature, `IC-000`'s own document doesn't exist yet either — creating it, with this
 Feature's own operations as its first numbered functions, is part of this same step, not a special case to defer
 or skip.
+
+This closes Solution Shape — every component this Feature needs is now decided, documented, and addressable,
+including the shape of the data each interface takes and returns (§4.1). Commit and push, then stop: this is a
+natural point to pause and let the architect look over the diff before §4.3 builds bound pseudocode on top of
+these interfaces, the same way every other unit of work in this process ends by handing back rather than
+continuing unprompted into the next one. No separate record of the review is needed — the session simply doesn't
+resume §4.3 until the architect responds, and any response that continues the session at all (not just an
+explicit "go ahead") counts as having looked.
 
 Exit: no two Key Decisions from this Feature describe functions that should have been the same one, and every
 component or dependency named in the HLD's §5/§6 has its own standing document — numbered, linked from the HLD,
@@ -314,6 +330,23 @@ whether the merge pass is about to fold it into another one, and numbering a doc
 discover it duplicates another wastes the one thing a project-level number is supposed to be — stable once
 assigned. §4.2, once the deduplicated set of components is finally known, is the first point where creating and
 numbering them doesn't risk exactly that.
+
+**Why Data Types is populated in §4.1, not its own separate step.** The same dogfooding pass that found the
+missing document-creation step also found this document ([Design Directory And HLD](design-directory-and-hld.md)
+§2) requires an HLD's Data Types section without this process ever saying when it gets filled in. Unlike
+document creation (§4.2, which has to wait for the merge pass to avoid numbering something that turns out
+duplicate), a data shape doesn't have that problem — choosing an interface and choosing the shape of what it
+takes and returns are the same decision, not two that could later turn out to be redundant with each other.
+Deferring it to its own pass would just mean re-opening a Key Decision that was already, correctly, closed in
+§4.1 to add the one thing it was actually missing.
+
+**Why §4.2's checkpoint has no recorded review marker, unlike §7.1/§7.2's `reconciliation:`.** The reconciliation
+block exists because §7.1/§7.2 have to survive a genuinely cold session, possibly long after the work it covers
+was done, with nothing but document state to derive from. §4.2's checkpoint doesn't have that problem — it's the
+same session, at the same sitting, handing back at the natural end of one unit of work the same way every other
+unit of work in this process already does, not a fact that needs to outlive the session it was made in. Adding a
+YAML marker here would be recording a fact for a scenario — a cold session needing to know whether this
+particular checkpoint was looked at — that this checkpoint doesn't actually create.
 
 **Why §5's per-behavior check and §7.2's review are different events, not one.** §5 happens the moment a
 behavior is first derived, informally, to catch an obviously wrong result before moving on to the next one —
