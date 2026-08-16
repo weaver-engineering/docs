@@ -22,11 +22,18 @@ own right.
 
 **Realizes:** {UC-{NNN} step(s) {M}[-{M+1}], the base steps every specific behavior below is a variation of}
 
+**Bound Pseudocode (UC-{NNN}):** {repeat this block per relying use case named above — each use case's own Technical Interpretation slice, substituted per Design Feature Instructions §4.3}
+
+```
+{the use case's Technical Interpretation for step(s) {M}[-{M+1}], with each call, branch, or whole body replaced
+by the function decided to satisfy it, in the bound form of Pseudocode Style §2 — `[{address}: {name} - {args}]`}
+```
+
 ```yaml
 reconciliation:
   checked_at: null  # set once Design Feature Instructions §7.1 first passes
-  uc_technical_interpretation_checksum: null
-  function_checksums: {}  # "IC-000 §{M}": "{checksum}", one per function/prose the call trees below reach
+  uc_technical_interpretation_checksums: {}  # "UC-{NNN}": "{checksum}", one per relying use case named above
+  function_checksums: {}  # "IC-000 §{M}": "{checksum}", one per function/prose the bound pseudocode and call trees below reach
   reviewed_by: null  # set once §7.2 human review completes
   reviewed_at: null
 ```
@@ -52,6 +59,19 @@ call_tree:
         - address: "ED-{NNN} §{M.N}"
 ```
 
+## 1.1 {Permutation Of §1 — name the one condition that changed}
+
+**Realizes:** {same variation as §1, unless this permutation itself crosses into a named Extension}
+
+**Given** — as §1, but {only the condition(s) that actually differ}
+
+**When** — as §1 {, but {the delta}, if the trigger itself differs — otherwise omit this line entirely}
+
+**Then** — as §1, but {only what actually differs in the outcome}
+
+**Call Tree** — as §1 {, or the delta, if the shape of the tree itself changed — see Specific Behaviors §4.1 for
+when a permutation stays nested versus when it needs a fresh top-level number instead}
+
 ## 2 {Named Unhappy Path}
 
 **Realizes:** {"unhappy path — {what fails}" — see Specific Behaviors §2.5 for the three points at which an unhappy path becomes identifiable}
@@ -73,6 +93,9 @@ call_tree:
 
 ## 3 {Next Behavior Title}
 
+{a fresh top-level number for a genuinely different branch, or {N}.{M} nested under an existing one for a
+further permutation of it — see Specific Behaviors §4.1}
+
 {...}
 ````
 
@@ -84,11 +107,28 @@ generator can rely on the shape being identical every time rather than parsing p
 clause. See [Specific Behaviors §1](../workflows/feature-workflow/specific-behaviors.md) for why literal example
 values are required rather than abstract descriptions.
 
-**Two levels of Realizes.** The document-level Realizes, stated once, names the base use-case step(s) every
-behavior in this file is a variation of. Each individual behavior's own Realizes only records which variation it
-is — not the full step list again, which would just repeat the document-level statement under every heading. See
+**Two levels of Realizes, and what the document level actually carries.** The document-level Realizes, stated
+once, names the base use-case step(s) every behavior in this file is a variation of, and — one block per relying
+use case — the bound pseudocode substituted for those steps (Design Feature Instructions §4.3). Each individual
+behavior's own Realizes only records which variation it is — not the full step list again, which would just
+repeat the document-level statement under every heading. See
 [Specific Behaviors §3](../workflows/feature-workflow/specific-behaviors.md) and
 [§4](../workflows/feature-workflow/specific-behaviors.md).
+
+**Why `uc_technical_interpretation_checksums` is a map, not a single value.** A document-level Realizes can name
+more than one relying use case (§3); each one has its own, independently-maintained Technical Interpretation and
+its own bound-pseudocode block. A single checksum field would either only ever validate one of them or silently
+conflate several use cases' content into one hash, either of which would let a change to any use case but the
+first go unnoticed by reconciliation. Keying it the same way `function_checksums` already is keeps every relying
+use case independently falsifiable.
+
+**Nested numbering (§1.1) and the "as §N, but..." convention.** A behavior that shares every Given condition but
+one with its nearest relative is still, correctly, its own specific behavior — but writing it out in full hides
+the one thing worth knowing about it: which condition was actually varied. Numbering it as a child of the
+behavior it permutes, and stating only the delta, keeps that relationship visible instead of asking a reader to
+diff two fully-restated behaviors by eye. See [Specific Behaviors
+§4.1](../workflows/feature-workflow/specific-behaviors.md) for the full rule, including when a permutation is
+substantial enough to need a fresh top-level number instead of a nested one.
 
 **Why one document holds several behaviors, not just one.** An operation is rarely exercised only one way —
 different valid entry states can exercise different use-case Extensions, and every one of those has its own

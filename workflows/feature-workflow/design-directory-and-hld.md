@@ -205,6 +205,15 @@ also carries:
   differs, which is most of the time — versus when it's added to an existing one instead, on the rare occasion
   two use cases coincide on the exact same entry state).
 
+This pseudocode and a relying `SB-NNN`'s own bound pseudocode ([Specific Behaviors §3,
+§4](specific-behaviors.md); [Design Feature Instructions §4.3](design-feature-instructions.md)) are related the
+same way `calls:` is related to a call tree ([Specific Behaviors §2.6](specific-behaviors.md)): this pseudocode
+is the general, all-callers designed solution — what the function does for any entry state that reaches it —
+while each relying `SB-NNN`'s bound pseudocode is the substituted trace for what one particular use case's
+Technical Interpretation specifically needs from it. Gap Analysis ([Design Feature Instructions
+§3](design-feature-instructions.md)) reads this pseudocode as the candidate being judged; §4.3 is what produces
+each relying use case's own instance of it.
+
 Both lists exist for the same reason §3.4 requires one on every ED operation, applied here instead to what the
 system itself is expected to do: a top-level function may be relied on by several different use cases, each
 possibly demanding something slightly different of it, and its own pseudocode has to actually satisfy all of
@@ -320,3 +329,12 @@ to go looking for — that conflated two different jobs: writing the list (desig
 as it's introduced or extended) and auditing that no list anywhere is missing an entry (a mechanical, repeatable
 check better run by tooling every time the design changes, not something a human reviewer re-derives by hand at
 each review).
+
+**Why a top-level function's own pseudocode and a relying `SB-NNN`'s bound pseudocode are two artifacts, not
+one.** It would be simpler on paper to have design review compare a use case's Technical Interpretation directly
+against `IC-000`'s own pseudocode and stop there. That breaks down the same way `calls:` alone would if there
+were no call tree to check it against: `IC-000`'s own pseudocode has to serve every use case that relies on it
+at once, so it's necessarily a superset of what any single one needs — exactly what "could happen" versus
+"actually happens" already means for `calls:`/call tree (§4.1). Recording each relying use case's own bound
+instance separately, on its `SB-NNN`, is what lets reconciliation check one use case's actual requirement
+without the superset's own breadth getting in the way of a clean pass/fail.

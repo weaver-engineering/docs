@@ -67,10 +67,12 @@ in a `# Rationale` section per the documentation standard, if one is needed}
 
 {pseudocode for the steps and Extensions above, in the [Pseudocode Style](../workflows/feature-workflow/pseudocode-style.md), but independent of any solution — no
 Internal Component or External Dependency named, no call trees. This is the design's own crystallization of
-what this use case actually requires, grown and maintained during the Design step (not Analysis), and it does
-not change just because the chosen solution around it does. Design review compares it, pseudocode to pseudocode,
-against the current pseudocode of whichever top-level system functions realize it — see Specific Behaviors §2.1
-and §2.8.
+what this use case actually requires, grown and maintained during the Design step (not Analysis). It is
+immutable once written, in the sense that matters here: it is never edited to reflect whatever solution gets
+chosen around it, and it does not change just because that solution does. An edit to this section is an edit to
+the use case's own requirement, not ordinary design work — see Design Feature Instructions §4.3. Design review
+compares it, pseudocode to pseudocode, against the bound pseudocode recorded on the `SB-NNN` document(s) it links
+to below (Design Feature Instructions §4.3) — see Specific Behaviors §2.1 and §2.8.
 
 Once each operation this use case performs is identified (Specific Behaviors §2.4), link each one to the
 `SB-NNN` document it causes to exist — a use case may perform several operations, so this is usually more than
@@ -96,3 +98,11 @@ directory instead would mean flipping between two files to do the one thing this
 unindexed and un-numbered because, like the rest of `# Appendix`, it's supplementary to the use case's own
 actor-level narrative, not part of it — an agent reading the use case for its "wh...s" (per the Feature
 Workflow's Analyse step) doesn't need it, only Design and design review do.
+
+Immutability is stated directly, not left implicit in "grown and maintained during the Design step." An earlier
+draft only said Technical Interpretation "does not change just because the chosen solution around it does,"
+which reads as a description of what tends to happen rather than a rule — leaving open whether a designer,
+mid-substitution (Design Feature Instructions §4.3), might reasonably tidy the Technical Interpretation to match
+whatever it just got bound to. Stating outright that any edit to it is an edit to the use case closes that gap:
+the design's own record of "what was substituted for what" belongs on the `SB-NNN` it produced, never folded
+back into the requirement it was checked against.

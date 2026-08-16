@@ -72,9 +72,11 @@ tree — the design's own crystallization of what the use case actually requires
 being delivered. This lives in the use case's own `# Appendix`, as `## Technical Interpretation` (see the [Use
 Case Template](../../templates/USE-CASE-TEMPLATE.md)), not in the design directory — it needs to sit next to the
 narrative it reflects, and it's expected to stay valid across design iterations even as the chosen solution
-around it changes (§2.8). Once Operations (§2.4) identifies which `SB-NNN` document(s) each of a use case's
-operations causes to exist, the Technical Interpretation links out to them — the reverse of each `SB-NNN`
-document's own Realizes (§3, §4), which links back to the use case.
+around it changes (§2.8) — it is never edited to reflect whatever solution gets chosen; doing that would be
+editing the use case's own requirement, not a normal part of Design (see Design Feature Instructions §4.3). Once
+Operations (§2.4) identifies which `SB-NNN` document(s) each of a use case's operations causes to exist, the
+Technical Interpretation links out to them — the reverse of each `SB-NNN` document's own Realizes (§3, §4), which
+links back to the use case.
 
 ### 2.2 Gap Analysis
 
@@ -84,7 +86,10 @@ and which External Dependency interfaces are required — expressed in the Featu
 (design-directory-and-hld.md §3), not the dependency's native surface. Some of a Feature's External Dependency
 needs are indirect, inherited from reusing an existing Internal Component that itself already depends on one.
 This step's output is the shape of the existing system and exactly what it's missing — not yet a solution, an
-inventory: which External Dependency operations are reused unchanged, and which are new.
+inventory: which External Dependency operations are reused unchanged, and which are new. Once every gap this
+inventory surfaces is closed (§2.3), each piece this step matched — a call, a branch, or occasionally a whole
+Technical Interpretation — is substituted into the operation's own bound pseudocode (Design Feature Instructions
+§4.3), recorded on its `SB-NNN` document.
 
 ### 2.3 Solution Shape
 
@@ -129,6 +134,11 @@ at three different points, as three different things become knowable:
 
 Every one of these, once identified, gets its own specific behavior defining what graceful behavior actually
 means in that circumstance.
+
+These permutations are not flat. Where several specific behaviors share every Given condition but one — the same
+account lookup with a different user, the same failure with one more dependency also down — that relationship is
+itself worth recording, not just the fact that each is individually valid. §4.1 sets out the nested numbering
+and inheritance convention that captures it.
 
 ### 2.6 The Call Graph Is Data; A Call Tree Is A Walk Through It
 
@@ -205,13 +215,15 @@ catch and resolve, by updating whichever view turns out to be wrong.
 
 Design review checks the design against what it's actually meant to satisfy by comparing pseudocode to
 pseudocode, the same shape of check §3.4 of [Design Directory And HLD](design-directory-and-hld.md) runs for
-External Dependency shims: a use case's Technical Interpretation (§2.1) against the current pseudocode of every
-top-level function ([Design Directory And HLD §4.5](design-directory-and-hld.md)) that use case's steps rely on.
-The two are maintained independently — Technical Interpretation stays fixed as the use case's own requirement,
-the function's pseudocode is whatever the current design iteration says — so this comparison is what actually
-confirms the design still does what the use case needs, rather than assuming it because the two haven't been
-looked at side by side recently. Where a `SB-NNN` document's Realizes (§3) names more than one use case, this
-comparison runs against every one of them, not just whichever use case happened to create the document first.
+External Dependency shims: a use case's Technical Interpretation (§2.1) against the `SB-NNN`'s own bound
+pseudocode (Design Feature Instructions §4.3) for that use case — the record of exactly which function was
+substituted for each call, branch, or whole body the Technical Interpretation named. The two are maintained
+independently — Technical Interpretation stays fixed as the use case's own requirement, the bound pseudocode is
+re-derived whenever something it depends on changes (Design Feature Instructions §7.1) — so this comparison is
+what actually confirms the design still does what the use case needs, rather than assuming it because the two
+haven't been looked at side by side recently. Where a `SB-NNN` document's Realizes (§3) names more than one use
+case, this comparison runs against every one of them, not just whichever use case happened to create the
+document first.
 
 ### 2.9 Human Review Of The Specific Behaviors Themselves
 
@@ -242,14 +254,14 @@ produced from the [Specific Behavior Template](../../templates/SPECIFIC-BEHAVIOR
 
 Where two different use cases drive the same operation with the exact same entry state — genuinely identical
 Given, not merely similar — they share one `SB-NNN` document rather than each getting their own: the document's
-Realizes (§4) is extended to name both use cases' relevant steps, not duplicated into a second document. This is
-what lets design review's pseudocode-to-pseudocode comparison (§2.8) check the operation's current pseudocode
-against every relying use case's own Technical Interpretation, not just the one that happened to create the
-document first. Short of that exact coincidence, reuse of an operation is not a reason to skip deriving a new
-specific behavior: a function correctly saving a big widget doesn't establish that it correctly saves a small
-one, even if today it's the exact same code path — different entry states are different business requirements
-that only happen to share an implementation, and only a specific behavior for each keeps that regression-resilient
-once they might not.
+Realizes (§4) is extended to name both use cases' relevant steps, each with its own bound pseudocode (Design
+Feature Instructions §4.3), not duplicated into a second document. This is what lets design review's
+pseudocode-to-pseudocode comparison (§2.8) check every relying use case's own Technical Interpretation against
+its own bound pseudocode, not just the one that happened to create the document first. Short of that exact
+coincidence, reuse of an operation is not a reason to skip deriving a new specific behavior: a function correctly
+saving a big widget doesn't establish that it correctly saves a small one, even if today it's the exact same code
+path — different entry states are different business requirements that only happen to share an implementation,
+and only a specific behavior for each keeps that regression-resilient once they might not.
 
 Each use case's Technical Interpretation links out to the `SB-NNN` document(s) each of its operations causes to
 exist (§2.1) — the reverse of the `SB-NNN` document's own Realizes, which links back to the use case(s) it
@@ -258,8 +270,9 @@ realizes.
 ## 4 The Given/When/Then Format
 
 An `SB-NNN` document opens with a document-level **Realizes**: the base use-case step(s) this operation covers,
-for every use case that shares it (§3) — stated once, before any individual specific behavior. Each numbered
-section that follows is then one specific behavior:
+for every use case that shares it (§3), each paired with that use case's own bound pseudocode for the operation
+(Design Feature Instructions §4.3) — stated once, before any individual specific behavior. Each numbered section
+that follows is then one specific behavior:
 
 * **Realizes** — which variation of the document-level Realizes this behavior is: the happy path, or a named
   unhappy path (§2.5), of either the base steps or a named Extension. Not a restatement of the full step list —
@@ -275,6 +288,22 @@ section that follows is then one specific behavior:
 * **Call Tree** — the traced call tree (§2.6) that derived this behavior, required, embedded directly beneath
   the Then.
 
+### 4.1 Nested Numbering For Input-Condition Permutations
+
+The permutations §2.5 describes aren't flat. A behavior numbered `{N}.{M}` is a permutation of its immediate
+parent `{N}`: it changes one input condition (occasionally more) and inherits everything else. Its Given, When,
+Then, and Call Tree may each be stated as "As §{N}, but {the actual delta}" instead of restated in full — a
+reader assembles the complete picture by reading the parent first, the same way a numbered use-case Extension
+(`2a`, `4c`) is only ever read together with the step it branches from. Nesting can go deeper than one level
+(`{N}.{M}.{L}`) wherever a further permutation changes just one more condition again, each level inheriting
+everything its own parent didn't override.
+
+A fresh top-level number, not a nested one, is for a genuinely different branch — a different named Extension, a
+different unhappy-path source (§2.5), or a change substantial enough that "as §N, but..." would end up restating
+almost everything anyway. The test is whether the relationship is actually "the same scenario, with one thing
+different" or merely "these two behaviors happen to share some values" — nesting exists to record the former,
+not to force an artificial parent onto the latter.
+
 See the [Specific Behavior Template](../../templates/SPECIFIC-BEHAVIOR-TEMPLATE.md) for the literal shape, and
 the Appendix below for a worked example.
 
@@ -288,13 +317,26 @@ scanning its own references.
 
 # Appendix
 
-Worked example — `SB-014`, one operation (`GET /user/account`) realizing steps 2-3 of `UC-101`, with one happy
-and one unhappy specific behavior:
+Worked example — `SB-014`, one operation (`GET /user/account`) realizing steps 2-3 of `UC-101`, with a happy
+path, a nested permutation of it, and one unhappy specific behavior:
 
 ````
 # SB-014 — View Own Account
 
 **Realizes:** UC-101 steps 2-3
+
+**Bound Pseudocode (UC-101):**
+
+```
+FUNCTION IC-000 §1:
+  identity <-- [ED-001 §1: resolve_session - bearer_token]
+    ON FAILURE (unavailable): RETURN 503, no body
+  IF identity IS NOT authenticated:
+    RETURN 401
+  account <-- [ED-002 §1: find_account - identity.user_id]
+    ON FAILURE (unavailable): RETURN 503, no body
+  RETURN 200, account
+```
 
 ## 1 Happy Path
 
@@ -322,6 +364,20 @@ call_tree:
         - address: "ED-002 §1"  # accounts mongo: find(john) -> johnAccountDoc
 ```
 
+## 1.1 A Different Account Holder
+
+**Realizes:** happy path
+
+**Given** — as §1, but a user `jane` holding JWT `wxyz`, and `ED-002 §1` holding a document `janeAccountDoc`
+keyed by `jane`
+
+**When** — as §1, but `jane` sends the request with header `Authorization: Bearer wxyz`
+
+**Then** — as §1, but `ED-001 §1` returns `authenticated` for `jane`; `ED-002 §1` returns `janeAccountDoc`; the
+API responds `200` with body `janeAccountDoc`
+
+**Call Tree** — as §1 (identical shape; only the leaf values differ)
+
 ## 2 Accounts Store Unavailable
 
 **Realizes:** unhappy path — `ED-002` (Accounts Mongo) unavailable
@@ -348,12 +404,18 @@ call_tree:
 ```
 ````
 
-Both specific behaviors share `SB-014`'s document-level Realizes (steps 2-3 of `UC-101`) and the same When — the
-same operation, `GET /user/account` — and even the same shape of call tree; only the Given and Then differ,
-because §2 is unreachable in the second. Authentication appears in both purely as a precondition inside
-Given/Then, never as a specific behavior of its own: the same `ED-001 §1` interaction would appear again, with
-different concrete values, in every other specific behavior anywhere in the design that requires an
-authenticated caller.
+The document-level bound pseudocode is `IC-000 §1`'s own logic with `UC-101`'s abstract calls already substituted
+— `resolve_session` bound to `ED-001 §1`, `find_account` bound to `ED-002 §1` — recorded once, per Design Feature
+Instructions §4.3, rather than re-derived by every behavior below it. `§1.1` is a permutation of `§1`, not a
+sibling: same call tree shape, same failure-free path through the bound pseudocode, only the concrete account
+holder differs, so its Given/When/Then say only what's different and its Call Tree isn't restated at all. `§2` is
+a fresh top-level number because it isn't a permutation of `§1`'s input at all — it's a different path through
+the same bound pseudocode (the `ED-002` call's `ON FAILURE` branch instead of its success path), which is exactly
+the kind of change too substantial for "as §1, but..." to say cleanly. All three specific behaviors share
+`SB-014`'s document-level Realizes (steps 2-3 of `UC-101`) and the same When — the same operation,
+`GET /user/account`. Authentication appears in every one of them purely as a precondition inside Given/Then,
+never as a specific behavior of its own: the same `ED-001 §1` interaction would appear again, with different
+concrete values, in every other specific behavior anywhere in the design that requires an authenticated caller.
 
 # Rationale
 
@@ -379,6 +441,23 @@ shaped by the actual requirement. Pure, dependency-free pseudocode first is what
 (§2.2) an honest comparison against a fixed target, and what makes design review's pseudocode-to-pseudocode
 check (§2.8) meaningful — comparing a solution against a requirement that was itself derived from the solution
 would not catch anything.
+
+**Why the document-level Realizes carries bound pseudocode, not just the step-range pointer.** "`UC-101` steps
+2-3" says which requirement an operation covers; it says nothing about how the design actually satisfies it. Without
+recording the substitution itself — which function stood in for which call, branch, or whole body — every later
+step would have to re-derive it: deriving a Then (§5) would need to re-walk the Technical Interpretation against
+the current design from scratch, and design review (§2.8) would have nothing concrete to checksum. Recording the
+bound pseudocode once, alongside the pointer it was derived from, is what lets both of those be a lookup instead
+of a fresh derivation.
+
+**Why nested numbering, not a flat list of every permutation.** A specific behavior that differs from another
+only in which user is logged in is still, correctly, its own specific behavior (§3) — reuse of a call tree
+doesn't collapse two different business requirements into one. But writing each one out in full, every time, as
+if it shared nothing with its nearest relative buries the one fact that actually matters for a reader trying to
+understand the shape of an operation's behavior: which conditions were varied deliberately, and which just came
+along for the ride because they happened to be part of the same Given. Nesting numbers and inheriting everything
+a child doesn't explicitly override keeps that relationship visible instead of forcing a reader to diff two full
+behaviors by eye to discover it.
 
 **Why unhappy paths are identified at three different points instead of all at once.** "Behave gracefully at
 all times" sounds like a single requirement, but what it takes to satisfy it isn't knowable all at once: a
