@@ -31,16 +31,18 @@ next unit of work; everything before it is already done.
    there a resolved Key Decision with a Rationale entry naming every alternative considered? Any unresolved need
    §4.1, one gap at a time. Once every individual gap is resolved, has the merge pass (§4.2) run since the last
    one was added? If not, that's next.
-5. For every `SB-NNN` stub created in §2: does it have at least one fully-derived behavior, rather than only its
+5. For every `SB-NNN` stub clean per step 4: does it carry a bound-pseudocode block (§4.3) for each use case
+   that relies on it? Any that don't need §4.3, one `SB-NNN` at a time.
+6. For every `SB-NNN` stub created in §2: does it have at least one fully-derived behavior, rather than only its
    `//TODO`? Any that don't need §5, one `SB-NNN` at a time.
-6. For every derived behavior: does its call tree's every node appear in its parent's declared `calls:`? Any
+7. For every derived behavior: does its call tree's every node appear in its parent's declared `calls:`? Any
    mismatch needs §6, one reconciliation issue at a time.
-7. For every `SB-NNN` clean per §6: does its `reconciliation:` block (§7.1) have checksums that still match the
-   design's current content? If the block is empty, or a checksum no longer matches, §7.1 is next.
-8. For every `SB-NNN` clean per §7.1: does its `reconciliation:` block have `reviewed_by` set? If not, §7.2 is
+8. For every `SB-NNN` clean per §6 (step 7): does its `reconciliation:` block (§7.1) have checksums that still
+   match the design's current content? If the block is empty, or a checksum no longer matches, §7.1 is next.
+9. For every `SB-NNN` clean per §7.1: does its `reconciliation:` block have `reviewed_by` set? If not, §7.2 is
    next.
 
-Once every `SB-NNN` in scope reaches step 8, the design is complete — ready for `Chunk The Design`
+Once every `SB-NNN` in scope reaches step 9, the design is complete — ready for `Chunk The Design`
 ([Feature Workflow](feature-workflow.md) §3). This check can be scoped to one use case, one operation, or the
 whole Feature: told to "work on `UC-105`," an agent runs the same sequence restricted to that use case's own
 artifacts.
@@ -66,19 +68,21 @@ Exit: every use case in scope has a Technical Interpretation, and every operatio
 ## 3 Phase 2: Gap Analysis
 
 Whole-Feature, not per use case: read every in-scope use case's Technical Interpretation together, as one body
-of pseudocode, and classify every Internal Component or External Dependency function it touches — existing or
-newly needed — as one of:
+of pseudocode, and walk it piece by piece — a single call (`<--[...]`), an entire branch, or, on occasion, a
+whole Technical Interpretation in one go — asking, of each candidate Internal Component or External Dependency
+function: could this function's own pseudocode or prose stand in for this piece without changing what it
+describes? The answer is always one of:
 
-* **As-is** — an existing function already produces what's needed without gaining any call it doesn't currently
-  make. Its `calls:`/pseudocode doesn't change; its usage lists (Design Directory And HLD §3.4, §4.5) still grow
-  to record the new use case relying on it.
-* **Extended** — an existing function needs to gain a call it doesn't currently make.
-* **New** — no existing function serves this need at all.
+* **As-is** — yes, and the candidate needs no call it doesn't already make. Its `calls:`/pseudocode doesn't
+  change; its usage lists (Design Directory And HLD §3.4, §4.5) still grow to record the new use case relying on
+  it.
+* **Extended** — yes, but only once the candidate gains a call it doesn't currently make.
+* **New** — no existing function stands in for this piece at all.
 
-This is judgement, not a literal diff: compare what the pseudocode needs against each candidate's existing
-`calls:` and Purpose, and ask whether invoking it as currently specified already closes the loop. Only relevant
-functions get classified — the rest of the project's existing catalog is never enumerated just to mark it
-irrelevant.
+This is judgement, not a literal diff: compare what the piece needs against each candidate's existing `calls:`
+and Purpose, not against its exact wording. Only relevant functions get classified — the rest of the project's
+existing catalog is never enumerated just to mark it irrelevant. The same question, asked again later against
+the design's current state rather than a candidate's, is what §7.1's reconciliation re-checks.
 
 Exit: the HLD's Internal Components and External Dependencies sections list every relevant function, each
 classified as-is, extended, or new (see the [HLD Template](../../templates/HLD-TEMPLATE.md)).
@@ -86,7 +90,7 @@ classified as-is, extended, or new (see the [HLD Template](../../templates/HLD-T
 ## 4 Phase 3: Ideation And Solution Shape
 
 Every item classified extended or new in §3, and every Open Design Question carried by a use case in scope, is
-a gap needing a decision. This phase runs in two passes.
+a gap needing a decision. This phase runs in three passes.
 
 ### 4.1 Per-Gap Ideation
 
@@ -123,6 +127,28 @@ a single Key Decision and a single Internal Component or External Dependency fun
 
 Exit: no two Key Decisions from this Feature describe functions that should have been the same one.
 
+### 4.3 Recording The Bound Pseudocode
+
+Once every gap in scope is closed (§4.1, §4.2), each `SB-NNN` stub's operation has, for every piece of Technical
+Interpretation it covers, either an as-is/extended function already classified in §3 or a newly-decided one from
+§4.1/§4.2. For each use case relying on that operation (Specific Behaviors §3), walk that use case's own
+Technical Interpretation slice one more time and substitute each call, branch, or whole body with the function
+now decided to satisfy it — binding each abstract target (`[name - args]`) to its real address
+(`[address: name - args]`, Pseudocode Style §2). Record the result as this `SB-NNN`'s own bound pseudocode,
+alongside its existing step-range Realizes (Specific Behaviors §3, §4) — one bound-pseudocode block per relying
+use case, since each use case's own Technical Interpretation is a separate, immutable source, even where two
+happen to bind to the exact same functions.
+
+The Technical Interpretation itself is never edited by this step. Substituting into it produces a new, derived
+artifact recorded on the `SB-NNN` document — a change to the use case's own Technical Interpretation is a change
+to the use case (Specific Behaviors §2.1), not something this step, or any step of Design, is permitted to make.
+This bound pseudocode is what §5 traces to derive each behavior's Then, and what §7.1 checksums against —
+rather than either re-deriving the substitution from scratch each time, or comparing the Technical Interpretation
+directly against a function's own pseudocode with nothing on record showing how the two were ever actually bound
+together.
+
+Exit: every `SB-NNN` stub in scope carries a bound-pseudocode block for each use case that relies on it.
+
 ## 5 Phase 4: Deriving Specific Behaviors
 
 Per `SB-NNN` stub created in §2 (chunkable one at a time), regardless of whether §3/§4 did anything with the
@@ -131,9 +157,9 @@ operation it covers:
 1. Establish every valid entry state (Given) this operation needs a behavior for. The use case's own
    Preconditions and Extensions are the first source; where they don't fully specify one, elicit the missing
    detail directly from the architect rather than inventing it.
-2. For each entry state, systematically trace it through the operation's pseudocode — the top-level function's
-   own, and every nested Internal Component or External Dependency's pseudocode or prose it calls — to derive
-   the concrete Then, rather than authoring it freehand.
+2. For each entry state, systematically trace it through this `SB-NNN`'s own bound pseudocode (§4.3) — following
+   each bound call into the Internal Component or External Dependency's own pseudocode or prose it names — to
+   derive the concrete Then, rather than authoring it freehand.
 3. Present the resulting behavior to the architect immediately, one at a time, for a quick sanity check — not a
    formal approval, just "is this really what the use case demands." Revise and re-check if not.
 
@@ -156,44 +182,46 @@ Exit: every behavior's call tree is fully backed by its nodes' declared `calls:`
 
 ### 7.1 Mechanical Reconciliation
 
-The assertion this check makes is a subset relationship, not textual equality: under some valid entry state,
-could the combined pseudocode and function prose reachable from the operation's entry point produce every
-behavior the relying use case's Technical Interpretation requires? The Technical Interpretation is the
-specification — what the use case demands. The entry point's own pseudocode, plus everything it calls, is what's
-actually been designed. "Compare" means walking the designed pseudocode's own `<--` calls, `IF`/`ELSE` branches,
-and `ON FAILURE` handling to find a corresponding path for each step the Technical Interpretation requires, not
-checking whether the two read the same — they can't, one is solution-independent and the other names real
-addresses (Pseudocode Style §2). The designed pseudocode may legitimately do more than any one use case asks of
-it, since the same operation can serve several use cases at once (§3, each covered by its own accounted-for
-requirement) — it must never do less. A Technical Interpretation step with no corresponding path through the
-designed pseudocode is exactly the gap this check exists to catch.
+The subset relationship this check protects — under some valid entry state, does the operation's bound
+pseudocode (§4.3) produce every behavior the relying use case's Technical Interpretation requires? — was already
+established once, piece by piece, when that bound pseudocode was substituted into existence. Re-establishing it
+here isn't a fresh semantic walk by default: it's confirming nothing it depended on has since changed. Recompute
+the checksum of each relying use case's Technical Interpretation slice and of every function's pseudocode or
+prose the bound pseudocode names, and compare against what's recorded in the `SB-NNN`'s own `reconciliation:`
+block. A match means the substitution is still valid, cheaply. A mismatch — the Technical Interpretation changed
+(a use-case-level edit, invalidating the requirement itself), or some function's pseudocode changed (an
+extension elsewhere, found via §4.1's own `called_from:` walk) — means §4.3's substitution has to run again for
+this operation: the same judgement as the first time, not a shortcut around it.
 
-The check also runs the other way: walking the designed pseudocode under this behavior's own entry state, does
-it produce any External Dependency interaction that neither the Technical Interpretation nor the behavior's own
-Then anticipates? That's an unexpected external side effect, and "the required behaviors are all present too"
-doesn't excuse it — it gets flagged regardless. Resolving it is never mechanical: either the pseudocode or prose
-is wrong and needs to conditionally exclude the effect for this entry state, or the use case's own understanding
-was incomplete and the use case itself needs correcting to expect it. Which way to go is always a human
-judgement call (§8) — this is the one point in the whole process where a finding can send the design back past
-its own scope, into Analysis.
+The check also runs the other way, and this half can't be shortcut by a checksum: walking the bound pseudocode
+under this behavior's own entry state, does it produce any External Dependency interaction that neither the
+Technical Interpretation nor the behavior's own Then anticipates? That's an unexpected external side effect, and
+"the required behaviors are all present too" doesn't excuse it — it gets flagged regardless. Resolving it is
+never mechanical: either the pseudocode or prose is wrong and needs to conditionally exclude the effect for this
+entry state, or the use case's own understanding was incomplete and the use case itself needs correcting to
+expect it. Which way to go is always a human judgement call (§8) — this is the one point in the whole process
+where a finding can send the design back past its own scope, into Analysis.
 
-Run this for every `SB-NNN` clean per §6, against its operation — plus, for every External Dependency operation
-involved, the same subset check against its `used_by:` list (Design Directory And HLD §3.4): is every relying
-use case's actual usage still something the shim's declared interface is capable of, or has one quietly started
-needing more than a thin shim can honestly give it?
+Run this for every `SB-NNN` clean per §6, against its bound pseudocode — plus, for every External Dependency
+operation involved, the same subset check against its `used_by:` list (Design Directory And HLD §3.4): is every
+relying use case's actual usage still something the shim's declared interface is capable of, or has one quietly
+started needing more than a thin shim can honestly give it? Unlike the operation-level check above, this one
+isn't the same substitution judgement run again — it's comparing several already-settled usages against each
+other and against the shim's own declared interface for uniformity, not asking whether one thing can stand in
+for another.
 
-Also walk every function's pseudocode for exceptions that are both unhandled and undeclared: every `RAISE` and
-every uncaught propagation from a call, checked against whether it's either caught locally or added to that
-function's own declared contract for whatever calls it (see [Pseudocode Style §4](pseudocode-style.md)). Anything
-neither caught nor declared is a reconciliation failure — a failure mode nobody has designed a response for —
-not something to wave through because the rest of reconciliation is otherwise clean.
+Also walk the bound pseudocode for exceptions that are both unhandled and undeclared: every `RAISE` and every
+uncaught propagation from a call, checked against whether it's either caught locally or added to that function's
+own declared contract for whatever calls it (see [Pseudocode Style §4](pseudocode-style.md)). Anything neither
+caught nor declared is a reconciliation failure — a failure mode nobody has designed a response for — not
+something to wave through because the rest of reconciliation is otherwise clean.
 
 Record a passing result in the `SB-NNN` document's own `reconciliation:` block (see the [Specific Behavior
-Template](../../templates/SPECIFIC-BEHAVIOR-TEMPLATE.md)): a checksum of the relevant slice of the use case's
-Technical Interpretation, and a checksum of every involved function's pseudocode or prose, as of the moment
-reconciliation passed. This makes the record falsifiable — recomputing the same checksums later and finding a
-mismatch means something the reconciliation depended on has since changed and it needs to be re-run, without
-re-reading or re-reasoning about content that hasn't actually moved.
+Template](../../templates/SPECIFIC-BEHAVIOR-TEMPLATE.md)): a checksum of each relying use case's own Technical
+Interpretation slice, and a checksum of every function's pseudocode or prose the bound pseudocode names, as of
+the moment reconciliation passed. This makes the record falsifiable — recomputing the same checksums later and
+finding a mismatch means something the reconciliation depended on has since changed and it needs to be re-run,
+without re-reading or re-reasoning about content that hasn't actually moved.
 
 Exit: the `SB-NNN`'s `reconciliation:` block has checksums matching the design's current content.
 
@@ -282,6 +310,23 @@ Dependency interaction the Technical Interpretation never mentioned. Only a huma
 actually is, in context, can tell which. That's also why it's the one finding in this whole process allowed to
 send work back into Analysis rather than staying inside Design (§8) — the design didn't necessarily do anything
 wrong, so the fix isn't necessarily the design's to make.
+
+**Why the bound pseudocode is recorded on the `SB-NNN`, not left implicit in §3's classification.** Classifying
+a function as-is, extended, or new records *that* something satisfies a piece of the Technical Interpretation;
+it doesn't record *which* piece, or how the substitution actually reads once made. Without recording the bound
+pseudocode itself, every later step — deriving a Then (§5), reconciling it (§7.1) — would have to re-derive the
+same substitution from the classification and the Technical Interpretation each time, silently repeating
+judgement work that only ever needed doing once. Recording it once, on the `SB-NNN` it belongs to, is also what
+makes reconciliation a cheap checksum comparison (§7.1) instead of a semantic walk run from scratch on every
+check.
+
+**Why substitution isn't fixed at single-call granularity.** An earlier framing of gap analysis considered only
+one call (`<--[...]`) at a time. That's too narrow: a single existing function is often broad enough to satisfy
+an entire branch of a Technical Interpretation's pseudocode, or, occasionally, the whole thing — and forcing the
+judgement down to one call at a time in those cases would produce a bound pseudocode that's technically
+substituted but reads as a needlessly fragmented restatement of what one function already does in full. Letting
+the unit of substitution be whatever piece — a call, a branch, or the whole body — a candidate's own pseudocode
+or prose genuinely stands in for keeps the bound pseudocode as simple as the actual design allows.
 
 **Why `reconciliation:` is checksums, not a checkbox.** A checkbox only ever records that a check passed once;
 it can't say whether it's still true. Checksums make the record falsifiable: recompute them later, and a
