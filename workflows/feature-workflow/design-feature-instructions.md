@@ -90,6 +90,14 @@ and Purpose, not against its exact wording. Only relevant functions get classifi
 existing catalog is never enumerated just to mark it irrelevant. The same question, asked again later against
 the design's current state rather than a candidate's, is what §7.1's reconciliation re-checks.
 
+This classification is scoped to this Feature's own HLD — a snapshot of this Feature's own relationship to each
+candidate, not a permanent status recorded against the function itself. The candidate's own `IC-NNN`/`ED-NNN`
+document carries no as-is/extended/new field of its own (its usage lists, Design Directory And HLD §3.4/§4.5,
+record *who* relies on it, not what any one Feature classified it as). The next Feature's own Gap Analysis
+re-classifies every candidate fresh, against its own needs, never inheriting what an earlier, unrelated
+Feature's HLD once said about it — a function this Feature classifies new is, by the time the next Feature
+starts, simply part of the existing catalog like any other.
+
 Exit: the HLD's Internal Components and External Dependencies sections list every relevant function, each
 classified as-is, extended, or new (see the [HLD Template](../../templates/HLD-TEMPLATE.md)).
 
@@ -135,7 +143,10 @@ look for gaps that turned out, once visible side by side, to want the same thing
 functions that are really one (a Key Decision for "post a large purchase order" and another for "post a
 purchase order" to the same queue, say, that should just be one function). Where they are, consolidate them into
 a single Key Decision and a single Internal Component or External Dependency function, and update every affected
-`SB-NNN` stub's expected call tree to match.
+`SB-NNN` stub's expected call tree to match. Consolidating means removing the superseded candidates' own entries
+from the HLD's §5/§6 (§3's own Gap Analysis pass, which ran before the merge, has no way to have known they'd
+turn out to be the same thing) — the HLD lists only the single, consolidated function afterward, never both the
+surviving name and the one it replaced (§8's own rule on revising in place applies here too).
 
 Once every gap's Key Decision is settled and consolidated, every Internal Component or External Dependency named
 in the HLD's §5/§6 needs its own standing document — that document is the actual design artifact defining its
@@ -280,11 +291,16 @@ Exit: the `SB-NNN`'s `reconciliation:` block has `reviewed_by` and `reviewed_at`
 Design is iterative, not a strict pass through §2–§7. A problem found during §7.2 review, or later during
 `Chunk The Design` ([Feature Workflow](feature-workflow.md) §3), sends the design back to whichever phase
 actually owns the broken decision — usually §4.1 (a Key Decision needs revisiting) or §5 (a behavior was wrong)
-— which gets revised there. Everything downstream is then re-validated by re-running §1's own check from that
-point forward, rather than assumed still correct: a stale `reconciliation:` block (§7.1) is exactly the
-mechanism that catches this without anyone needing to remember to check by hand. The same mechanism is what
-catches the cascading case in §4.1: extending a function that other use cases already rely on invalidates their
-`SB-NNN`s' own reconciliation, not just the gap that prompted the change.
+— which gets revised there. "Revised" means updated in place: the HLD, and every other design document, always
+reflects the design's current, actual state — removing or correcting whatever's now wrong, not leaving a
+superseded classification, Key Decision, or candidate name standing alongside its replacement as if both were
+still true. A reader (or a mechanical script) has no way to tell a deliberately-retained historical note from an
+accidentally-orphaned one; the design directory is never its own changelog. Everything downstream is then
+re-validated by re-running §1's own check from that point forward, rather than assumed still correct: a stale
+`reconciliation:` block (§7.1) is exactly the mechanism that catches this without anyone needing to remember to
+check by hand. The same mechanism is what catches the cascading case in §4.1: extending a function that other
+use cases already rely on invalidates their `SB-NNN`s' own reconciliation, not just the gap that prompted the
+change.
 
 Most findings loop back within Design. One doesn't: an unexpected external side effect (§7.1) can be resolved
 by correcting the use case itself rather than the pseudocode, which sends the design back past its own scope
@@ -315,6 +331,15 @@ decision, the second needs one in §4. Two states would either force as-is items
 then need a Key Decision they don't actually require), or leave them unclassified (and then be indistinguishable
 from something nobody checked at all).
 
+**Why classification doesn't need an explicit reset between Features.** Once a project has more than one
+Feature, a natural worry is what stops a "new" classification from one Feature's HLD reading as still current
+once the next Feature's own Gap Analysis starts. It never needed resetting because it was never global state to
+begin with — each Feature's classification lives only in that Feature's own HLD, a document that isn't touched
+again once the Feature ships. The candidate's own `IC-NNN`/`ED-NNN` document, the one artifact every Feature
+actually reads, never carried a classification field at all. The fix here isn't a new mechanism, only saying
+outright what was already true: scoping was correct by construction, it just wasn't written down, which is
+exactly the kind of assumption a mechanical implementation (rather than a careful human reader) can get wrong.
+
 **Why ideation (§4.1) requires recording discarded alternatives, not just the winner.** A Key Decision that only
 states what was chosen looks identical whether one option was ever seriously considered or five were. Recording
 every discarded candidate and why is what makes "how might we" a real question asked with initially equal
@@ -326,6 +351,16 @@ its own has no visibility into any other gap's resolution — two independently-
 questions can still turn out to want the same underlying function, and there's no way to notice that until both
 answers already exist to compare. Running it as its own whole-Feature pass, after every individual gap is
 resolved, is what makes that comparison possible at all.
+
+**Why the HLD has to lose the superseded candidates, not just gain the consolidated one.** Classification is
+scoped to this Feature's own HLD (§3's own Rationale) precisely because that document is meant to be read as
+the design's current, actual state — not a log of every candidate anyone ever considered. A merge that only
+adds the winning, consolidated function without removing the two (or more) it replaced would leave the HLD
+claiming three functions exist where the design actually decided on one — indistinguishable, to a later reader
+or a mechanical script, from a real gap nobody noticed. This is the same principle §8 states generally for any
+revision; it's called out again here specifically because the merge pass is where it's most likely to be
+missed — consolidation reads as *adding* the merged decision, and it's easy to stop there without also
+retracting what it replaced.
 
 **Why standing document creation is folded into §4.2 rather than left implicit.** The first real design pass
 (dogfooding this process against WVR-95) closed out every gap in §4.1, decided every component's interface, and
