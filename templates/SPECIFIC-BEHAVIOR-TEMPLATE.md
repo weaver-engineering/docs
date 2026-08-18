@@ -59,7 +59,10 @@ call_tree:
         - address: "ED-{NNN} §{M.N}"
 ```
 
-## 1.1 {Permutation Of §1 — name the one condition that changed}
+### 1.1 {Permutation Of §1 — name the one condition that changed}
+
+{heading depth tracks nesting depth, one `#` deeper per `.`-separated segment beyond the first — see Specific
+Behaviors §4.1}
 
 **Realizes:** {same variation as §1, unless this permutation itself crosses into a named Extension}
 
@@ -126,9 +129,11 @@ use case independently falsifiable.
 one with its nearest relative is still, correctly, its own specific behavior — but writing it out in full hides
 the one thing worth knowing about it: which condition was actually varied. Numbering it as a child of the
 behavior it permutes, and stating only the delta, keeps that relationship visible instead of asking a reader to
-diff two fully-restated behaviors by eye. See [Specific Behaviors
-§4.1](../workflows/feature-workflow/specific-behaviors.md) for the full rule, including when a permutation is
-substantial enough to need a fresh top-level number instead of a nested one.
+diff two fully-restated behaviors by eye. Its heading is one level deeper than its parent's (`###`, not `##`) —
+depth tracks nesting, not just the number — so the relationship is visible in document structure, not only in
+the id itself. See [Specific Behaviors §4.1](../workflows/feature-workflow/specific-behaviors.md) for the full
+rule, including when a permutation is substantial enough to need a fresh top-level number instead of a nested
+one.
 
 **Why one document holds several behaviors, not just one.** An operation is rarely exercised only one way —
 different valid entry states can exercise different use-case Extensions, and every one of those has its own

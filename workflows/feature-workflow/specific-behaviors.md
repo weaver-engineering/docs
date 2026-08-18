@@ -298,6 +298,11 @@ reader assembles the complete picture by reading the parent first, the same way 
 (`{N}.{M}.{L}`) wherever a further permutation changes just one more condition again, each level inheriting
 everything its own parent didn't override.
 
+The nesting is a heading depth, not just a number: `{N}` is `##`, `{N}.{M}` is `###`, `{N}.{M}.{L}` is `####`,
+and so on — one level deeper per `.`-separated segment beyond the first. A fresh top-level id always resets back
+to `##`. This is what lets a reader (or a mechanical script) tell a permutation from a sibling by structure
+alone, without parsing the number itself.
+
 A fresh top-level number, not a nested one, is for a genuinely different branch — a different named Extension, a
 different unhappy-path source (§2.5), or a change substantial enough that "as §N, but..." would end up restating
 almost everything anyway. The test is whether the relationship is actually "the same scenario, with one thing
@@ -364,7 +369,7 @@ call_tree:
         - address: "ED-002 §1"  # accounts mongo: find(john) -> johnAccountDoc
 ```
 
-## 1.1 A Different Account Holder
+### 1.1 A Different Account Holder
 
 **Realizes:** happy path
 
@@ -407,8 +412,10 @@ call_tree:
 The document-level bound pseudocode is `IC-000 §1`'s own logic with `UC-101`'s abstract calls already substituted
 — `resolve_session` bound to `ED-001 §1`, `find_account` bound to `ED-002 §1` — recorded once, per Design Feature
 Instructions §4.3, rather than re-derived by every behavior below it. `§1.1` is a permutation of `§1`, not a
-sibling: same call tree shape, same failure-free path through the bound pseudocode, only the concrete account
-holder differs, so its Given/When/Then say only what's different and its Call Tree isn't restated at all. `§2` is
+sibling — its own heading is one level deeper (`###`, not `##`) precisely because it's nested under `§1` rather
+than beside it: same call tree shape, same failure-free path through the bound pseudocode, only the concrete
+account holder differs, so its Given/When/Then say only what's different and its Call Tree isn't restated at
+all. `§2` is
 a fresh top-level number because it isn't a permutation of `§1`'s input at all — it's a different path through
 the same bound pseudocode (the `ED-002` call's `ON FAILURE` branch instead of its success path), which is exactly
 the kind of change too substantial for "as §1, but..." to say cleanly. All three specific behaviors share
@@ -458,6 +465,14 @@ understand the shape of an operation's behavior: which conditions were varied de
 along for the ride because they happened to be part of the same Given. Nesting numbers and inheriting everything
 a child doesn't explicitly override keeps that relationship visible instead of forcing a reader to diff two full
 behaviors by eye to discover it.
+
+**Why nesting is a heading depth, not just a number.** An earlier version of this convention numbered a
+permutation (`§1.1`) without changing its heading level — still `##`, same as its parent `§1`. That leaves the
+nesting relationship expressed only in the number itself, recoverable by a human reading carefully but not by
+anything that parses document structure rather than text — including the very tools this whole process exists
+to make possible (see Design Feature Instructions §5.1, which writes these headings as placeholders a mechanical
+script later has to read back). Making depth track nesting means the structure is visible two ways at once,
+redundantly rather than relying on one fragile source of truth.
 
 **Why unhappy paths are identified at three different points instead of all at once.** "Behave gracefully at
 all times" sounds like a single requirement, but what it takes to satisfy it isn't knowable all at once: a
