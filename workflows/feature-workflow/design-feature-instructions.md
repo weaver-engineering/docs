@@ -39,8 +39,11 @@ next unit of work; everything before it is already done.
    one was added? If not, that's next.
 5. For every `SB-NNN` stub clean per step 4: does it carry a bound-pseudocode block (§4.3) for each use case
    that relies on it? Any that don't need §4.3, one `SB-NNN` at a time.
-6. For every `SB-NNN` stub created in §2: does it have at least one fully-derived behavior, rather than only its
-   `//TODO`? Any that don't need §5, one `SB-NNN` at a time.
+6. For every `SB-NNN` stub created in §2: has its outline of entry conditions been proposed and approved, with a
+   numbered section for each — parents holding their real Given, leaves holding a placeholder `//TODO` (§5.1)?
+   Any that don't need §5.1, one `SB-NNN` at a time. Once every section exists: does each leaf hold real derived
+   content rather than still just its `//TODO` (§5.2)? First one that doesn't needs §5.2, for that specific
+   behavior.
 7. For every derived behavior: does its call tree's every node appear in its parent's declared `calls:`? Any
    mismatch needs §6, one reconciliation issue at a time.
 8. For every `SB-NNN` clean per §6 (step 7): does its `reconciliation:` block (§7.1) have checksums that still
@@ -203,19 +206,49 @@ Exit: every `SB-NNN` stub in scope carries a bound-pseudocode block for each use
 ## 5 Phase 4: Deriving Specific Behaviors
 
 Per `SB-NNN` stub created in §2 (chunkable one at a time), regardless of whether §3/§4 did anything with the
-operation it covers:
+operation it covers. Two passes: agree the shape, then fill it in.
 
-1. Establish every valid entry state (Given) this operation needs a behavior for. The use case's own
-   Preconditions and Extensions are the first source; where they don't fully specify one, elicit the missing
-   detail directly from the architect rather than inventing it.
-2. For each entry state, systematically trace it through this `SB-NNN`'s own bound pseudocode (§4.3) — following
-   each bound call into the Internal Component or External Dependency's own pseudocode or prose it names — to
-   derive the concrete Then, rather than authoring it freehand.
-3. Present the resulting behavior to the architect immediately, one at a time, for a quick sanity check — not a
-   formal approval, just "is this really what the use case demands." Revise and re-check if not.
+### 5.1 Agreeing The Shape
+
+Establish every valid entry state (Given) this operation needs a behavior for. The use case's own Preconditions
+and Extensions are the first source; where they don't fully specify one, elicit the missing detail directly from
+the architect rather than inventing it. Organize them the way Specific Behaviors §4.1 describes: a base
+condition as a top-level number, each permutation of it nested beneath.
+
+Propose this as an outline, not individual behaviors yet — the use case's own goal in a sentence or two,
+followed by the nested, numbered list of entry conditions being considered — and present it (committed and
+pushed, per this document's own opening rule). This may take more than one round: revise and re-propose against
+the architect's feedback until they approve the shape, the same as any other design revision (§8) — a mini-cycle
+of its own, not a single take-it-or-leave-it presentation.
+
+Once approved, write the `SB-NNN` document's own numbered sections to match — one heading per entry condition,
+replacing the single stub-level `//TODO` §2 created. Not every section gets the same placeholder treatment: a
+node is a leaf if the outline gives it no further nested condition beneath it (Specific Behaviors §4.1) — its
+own outcome isn't determined yet, so it gets only a `//TODO` in place of its actual Given/When/Then/Call Tree.
+A node with children below it is a parent, not a leaf, and its own Given is already known — it's exactly what
+the approved outline stated for that entry condition — so write it directly rather than placeholding it; it has
+no When/Then/Call Tree section to placehold in the first place. This is what makes the approved shape itself
+resumable: a fresh session can read the `SB-NNN` document directly and see exactly which entry conditions were
+agreed on, without the approval conversation itself needing to be remembered.
+
+Exit: every entry condition the architect approved has its own numbered section in the `SB-NNN` document — each
+leaf holding its placeholder `//TODO`, each parent holding its real Given.
+
+### 5.2 Deriving Each Behavior
+
+For each leaf's placeholder section, in order: systematically trace its entry state — its own Given plus every
+parent's Given it inherits from (Specific Behaviors §4.1) — through this `SB-NNN`'s own bound pseudocode (§4.3)
+— following each bound call into the Internal Component or External Dependency's own pseudocode or prose it
+names — to derive the concrete Then, rather than authoring it freehand. Parent nodes were already settled in
+§5.1 and need no further derivation here.
+
+Present the result for a quick sanity check — not a formal approval, just "is this really what the use case
+demands" — as: the section's own number, the condition itself restated as bullet points, and the expected result
+the design produces. Revise and re-present if the architect disagrees; move to the next placeholder section only
+once this one is confirmed.
 
 Exit: every `SB-NNN` has its happy path and every identified unhappy path (Specific Behaviors §2.5) recorded as
-a fully-derived behavior, each already sanity-checked as it was written.
+a fully-derived behavior in place of its placeholder `//TODO`, each already sanity-checked as it was written.
 
 ## 6 Phase 5: Call Tree Reconciliation
 
@@ -395,6 +428,28 @@ speed matters more than rigor there. §7.2 happens only once §7.1's mechanical 
 with full provenance for every condition, because what's approved there is what a later Chunk's failing tests
 are built from — rigor matters more than speed there. Merging them would either slow down §5's fast iteration
 loop or under-scrutinize the review that actually matters.
+
+**Why §5 splits into agreeing the shape (§5.1) before deriving anything (§5.2).** Dogfooding WVR-95 surfaced two
+compounding problems at once. First, §1's own resumability check only ever required "at least one" fully-derived
+behavior per `SB-NNN` before treating it as done — weaker than §5's own Exit criterion, which requires every
+happy path and every identified unhappy path. Left uncorrected, the process would walk every operation's own
+happy path and move on, never coming back for the unhappy paths, since nothing forced it to. Second, entry
+conditions were being discovered one at a time, as a side effect of deriving and presenting each behavior, so
+the architect only ever saw the shape of an operation's coverage piecemeal, after the fact, never as a set they
+could actually review before content got written against it. §5.1 fixes both by treating the outline itself as
+a distinct, resumable artifact — proposed, revised, and approved before any Given/Then exists — written into the
+`SB-NNN` document as numbered placeholder sections the moment it's agreed, so §1's own check can tell, from
+document state alone, whether the shape is settled and, separately, whether every placeholder in it has actually
+been filled in.
+
+**Why only leaves get a `//TODO` placeholder, not every node in the outline.** A parent node's Given is already
+fully known the moment the outline is approved — it's exactly what the architect just agreed to — so placeholding
+it and then "deriving" it again in §5.2 would be re-deciding something already settled, with nothing left to
+derive. Only a leaf's Then genuinely depends on tracing the bound pseudocode (§5.2's actual work); a parent has
+no Then to trace, because its own condition doesn't yet determine one (Specific Behaviors §4.1). Placeholding
+every node uniformly would also break §1's own resumability check: a parent's `//TODO` could never be resolved
+by §5.2's derivation loop, so a document with parents left as placeholders would look permanently incomplete no
+matter how much real derivation happened.
 
 **Why §7.1 is a subset check, not an equality check.** A use case's Technical Interpretation and an entry point's
 own designed pseudocode are written for different purposes and can never read the same — one is deliberately
