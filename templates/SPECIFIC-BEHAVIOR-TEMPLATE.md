@@ -11,6 +11,15 @@ the project's own docs repo. `SB-NNN` is its own independent numbering sequence,
 template itself is in the Appendix below, since it's reference material to copy from, not indexed content in its
 own right.
 
+A document built from this template passes through a real intermediate state, not just empty-stub and
+fully-derived: once its outline of entry conditions is agreed (Design Feature Instructions §5.1), every numbered
+section below exists with a real heading. A leaf section — one with no further nested condition beneath it
+(Specific Behaviors §4.1) — holds a bare `//TODO` in place of its Given/When/Then/Call Tree, filled in one at a
+time (§5.2). A parent section — one with children nested beneath it — holds its real Given directly instead,
+written as part of §5.1 itself, since that condition is already known and it has no When/Then/Call Tree to
+placehold in the first place. That mixed state is what makes the agreed outline itself resumable from the
+document alone, without needing the approval conversation remembered.
+
 # Appendix
 
 ````
@@ -38,13 +47,31 @@ reconciliation:
   reviewed_at: null
 ```
 
-## 1 {Happy Path, Or Named Entry-State Variation}
+## 1 {Shared Entry Condition — Happy Path, Or Named Entry-State Variation}
 
 **Realizes:** {which variation this is — "happy path", or "happy path (extension {M}{letter})" if this entry state exercises a UC Extension instead of the base steps}
 
 **Given** {the concrete, pre-interaction state of every external dependency involved for this variation — literal example values, citing `ED-NNN §M.N`}
 
-**When** {the concrete interaction at the system's boundary that starts this operation — a specific call or request, with concrete parameters; the same When recurs for every behavior in this document}
+{If nothing further permutes this condition, §1 is a leaf: it's a complete behavior on its own, so continue
+directly with its own **When**, **Then**, and **Call Tree** here, in the same shape §1.1 uses below. If, as
+shown in this template, further permutations exist beneath it (§1.1, §1.2, ...), §1 is a parent instead — the
+Given above is everything it states. It has no When, Then, or Call Tree of its own: its outcome isn't
+determined until a child narrows it. See Specific Behaviors §4.1.}
+
+### 1.1 {First Permutation Of §1 — name the one condition that decides the outcome}
+
+{heading depth tracks nesting depth, one `#` deeper per `.`-separated segment beyond the first — see Specific
+Behaviors §4.1}
+
+**Realizes:** {which variation this is — the happy path, or a named unhappy path (§2.5), of either the base
+steps or a named Extension}
+
+**Given** — as §1, but {only the condition(s) that actually differ}
+
+**When** {the concrete interaction at the system's boundary that starts this operation — a specific call or
+request, with concrete parameters; the same When recurs for every behavior in this document. Written in full
+here since §1 itself has none to abbreviate against — see §1.2 below for the case where a sibling does}
 
 **Then** {the concrete external-dependency interactions and/or final state that result for this variation}
 
@@ -59,18 +86,19 @@ call_tree:
         - address: "ED-{NNN} §{M.N}"
 ```
 
-## 1.1 {Permutation Of §1 — name the one condition that changed}
+### 1.2 {Second Permutation Of §1 — the alternative condition}
 
-**Realizes:** {same variation as §1, unless this permutation itself crosses into a named Extension}
+**Realizes:** {which variation this is, same shape as §1.1}
 
-**Given** — as §1, but {only the condition(s) that actually differ}
+**Given** — as §1, but {the other condition(s) that differ}
 
-**When** — as §1 {, but {the delta}, if the trigger itself differs — otherwise omit this line entirely}
+**When** — as §1.1 {, but {the delta}, if the trigger itself differs — otherwise omit this line entirely; a
+leaf abbreviates against a sibling that already has the field, never against a Given-only parent}
 
-**Then** — as §1, but {only what actually differs in the outcome}
+**Then** — as §1.1, but {only what actually differs in the outcome}
 
-**Call Tree** — as §1 {, or the delta, if the shape of the tree itself changed — see Specific Behaviors §4.1 for
-when a permutation stays nested versus when it needs a fresh top-level number instead}
+**Call Tree** — as §1.1 {, or the delta, if the shape of the tree itself changed — see Specific Behaviors §4.1
+for when a permutation stays nested versus when it needs a fresh top-level number instead}
 
 ## 2 {Named Unhappy Path}
 
@@ -126,9 +154,25 @@ use case independently falsifiable.
 one with its nearest relative is still, correctly, its own specific behavior — but writing it out in full hides
 the one thing worth knowing about it: which condition was actually varied. Numbering it as a child of the
 behavior it permutes, and stating only the delta, keeps that relationship visible instead of asking a reader to
-diff two fully-restated behaviors by eye. See [Specific Behaviors
-§4.1](../workflows/feature-workflow/specific-behaviors.md) for the full rule, including when a permutation is
-substantial enough to need a fresh top-level number instead of a nested one.
+diff two fully-restated behaviors by eye. Its heading is one level deeper than its parent's (`###`, not `##`) —
+depth tracks nesting, not just the number — so the relationship is visible in document structure, not only in
+the id itself. See [Specific Behaviors §4.1](../workflows/feature-workflow/specific-behaviors.md) for the full
+rule, including when a permutation is substantial enough to need a fresh top-level number instead of a nested
+one.
+
+**Why "as §N, but..." only ever abbreviates a field the cited section actually has.** Given always inherits
+from the direct parent, since every node — leaf or parent — states one. When, Then, and Call Tree don't exist
+on a parent (see below), so a leaf directly under one has nothing there to abbreviate against and states them
+in full, the same as any top-level behavior would; a later sibling leaf may still abbreviate against that
+first leaf instead, once one full statement exists to point to. §1.1/§1.2 in this Appendix show both: §1.1
+writes When/Then/Call Tree in full because §1 is Given-only, and §1.2 then abbreviates against §1.1.
+
+**Why a parent section holds only a Given, written during §5.1 rather than placeholded for §5.2.** A parent
+node's own outcome isn't determined yet — it's what its children each resolve differently — so it has no
+Then or Call Tree to derive in the first place, and its Given is already exactly what the architect just
+approved when the outline itself was agreed. Placeholding it would invite re-deciding something already
+settled; see [Specific Behaviors §4.1](../workflows/feature-workflow/specific-behaviors.md) for the worked
+login/token example this follows.
 
 **Why one document holds several behaviors, not just one.** An operation is rarely exercised only one way —
 different valid entry states can exercise different use-case Extensions, and every one of those has its own
