@@ -40,10 +40,14 @@ repo still complies with §3 through §5.
 * Body sections, numbered `## N Title` / `### N.M Title` / code blocks `N.M.a`. The first section (or
   subsection) after Context may be left unnumbered in the visible heading; it still gets the implicit id `0`
   for indexing.
-* Optional `# Appendix` — supplementary reference material. Not indexed.
+* Optional `# Appendix` — supplementary reference material. Excluded from word-indexing (§4), along with
+  everything nested beneath it — but still locatable and extractable via `.sections.yaml` (§4), not dropped
+  from the index entirely.
 * Optional `# Rationale` — the justification for the document's content: why it says what it says, options
-  considered and discarded. Not indexed. Kept separate so the indexed body stays concise and an agent doesn't
-  have to read justification to get the facts, while it's still available for edge-case analysis.
+  considered and discarded. Excluded from word-indexing (§4), along with everything nested beneath it — but
+  still locatable and extractable via `.sections.yaml` (§4), not dropped from the index entirely. Kept separate
+  so the indexed body stays concise and an agent doesn't have to read justification to get the facts, while
+  it's still available for edge-case analysis.
 
 Factual/normative content belongs in the numbered body. Justification belongs in `# Rationale`. This standard
 polices that separation — it does not apply to itself by exception (see this document's own Rationale, below).
@@ -53,14 +57,13 @@ polices that separation — it does not apply to itself by exception (see this d
 Every directory under `docs/` (in this repo: every directory holding documents subject to this standard) gets a
 `.index/` subdirectory. For each `<slug>.md` in that directory:
 
-* `.index/<slug>.sections.yaml` — one entry per section/code-block, **keyed by its title** (markdown doesn't
-  enforce heading numbers, so a title is the only thing guaranteed to exist): a `number` attribute, present
-  only if the heading/figure is actually numbered (including the implicit `0` case from §3), `type` (`section` |
-  `code-block`), `start_line`, `end_line`.
-* `.index/<slug>.words.yaml` — significant words per section, keyed by title the same way, so a section's
+* `.index/<slug>.sections.yaml` — one entry per section/code-block, **keyed by its id** (`number` from §3,
+  including the implicit `0` case — every section has one, and, unlike a title, it's guaranteed unique): `title`,
+  `type` (`section` | `code-block`), `start_line`, `end_line`.
+* `.index/<slug>.words.yaml` — significant words per section, keyed by id the same way, so a section's
   structural entry and its word counts share the same key. The document itself is a node too, keyed by its own
-  `# Title` — its word counts are whatever text appears before `## Context` (there is no more special
-  `preamble` key; the document is just the root of the same title-keyed scheme every section uses).
+  implicit id `0` — its word counts are whatever text appears before `## Context` (there is no separate
+  `preamble` key; the document is just the root of the same id-keyed scheme every section uses).
 
   Word extraction rules:
   * Case-insensitive.
@@ -77,6 +80,10 @@ Every directory under `docs/` (in this repo: every directory holding documents s
     refined over time via retrospective analysis of index bloat, not fixed permanently at authoring time.
   * No minimum word length, no minimum occurrence count.
   * Section numbers, non-numbered code blocks, and `## Context` content are never indexed.
+  * `# Appendix` and `# Rationale` (§3) open a word-indexing exclusion **zone**: every heading nested beneath
+    one, by depth, is excluded too, until a heading returns to that depth or shallower. The zone only suppresses
+    word-indexing — every heading inside it still gets its own `.sections.yaml` entry, same as any other
+    section, so it stays locatable and extractable by reference even though it's excluded from search.
   * A word's count is scoped only to the node (document or section) where it textually appears — never rolled
     up into ancestor sections. Aggregation across a tree of documents is the search tool's job at query time
     (reading every `.words.yaml` under a scope and walking it), not the indexer's job at index time.
@@ -147,28 +154,28 @@ the sections index (`this-is-a-title.sections.yaml`) is:
 
 ```yaml
 sections:
-  "Unnumbered First Section":
-    number: 0
+  "0":
+    title: "Unnumbered First Section"
     type: section
     start_line: 9
     end_line: 11
-  "The First Numbered Section":
-    number: "1"
+  "1":
+    title: "The First Numbered Section"
     type: section
     start_line: 12
     end_line: 25
-  "Another Unnumbered First Section":
-    number: "1.0"
+  "1.0":
+    title: "Another Unnumbered First Section"
     type: section
     start_line: 17
     end_line: 19
-  "The First Numbered Section Of The Subsection":
-    number: "1.1"
+  "1.1":
+    title: "The First Numbered Section Of The Subsection"
     type: section
     start_line: 20
     end_line: 25
-  "Figure Title":
-    number: "1.1.a"
+  "1.1.a":
+    title: "Figure Title"
     type: code-block
     start_line: 23
     end_line: 25
@@ -177,28 +184,30 @@ sections:
 the word index (`this-is-a-title.words.yaml`) is:
 
 ```yaml
-"This Is A Title":
+"0":
   initial: 1
   blurb: 1
 sections:
-  "Unnumbered First Section":
+  "0":
     blurb: 1
-  "The First Numbered Section":
+  "1":
     architect: 2
     manage: 1
     blurb: 1
-  "Another Unnumbered First Section":
+  "1.0":
     blurb: 1
-  "The First Numbered Section Of The Subsection":
+  "1.1":
     blurb: 1
-  "Figure Title":
+  "1.1.a":
     code: 1
     block: 1
     content: 1
 ```
 
 `some` and `own` don't appear — both are on the stopword list. `architects` and `architect's` both reduce to
-the root `architect`, so `The First Numbered Section` shows `architect: 2`, not two separate entries.
+the root `architect`, so section `1` shows `architect: 2`, not two separate entries. The document root uses the
+same implicit `0` id as any other unnumbered section — `sections.yaml` and `words.yaml` share one id scheme
+throughout, root included.
 
 and the TODO index (`this-is-a-title.todo.yaml`) is:
 
@@ -253,13 +262,33 @@ resolves in one of those two contexts. The `@{repo-slug}/{path}` form sidesteps 
 explicitly rather than encoding a filesystem-relative or GitHub-relative path, leaving resolution (local
 checkout vs. GitHub URL) to whatever's reading the reference rather than baking one choice into the link itself.
 
-§4's `.index/` entries key by title rather than number — an earlier draft of this section keyed by number, which
-baked in the assumption that a heading is always numbered. Markdown doesn't enforce that, and this standard
-itself allows a section to stay deliberately unnumbered (§3's implicit `0`); a title is the only thing every
-section is guaranteed to have, so it's the only safe key. `number` moved to being an optional attribute on the
-entry instead. Existing hand-written `.index/` files predating this correction are left as they are rather than
-retrofitted — they'll get corrected the next time their subject document is edited, or once the indexing tool
-itself exists and does a real pass; this reference description, however, has to be right now.
+§4's `.index/` entries key by id, not title — an earlier version of this section keyed by title instead,
+reasoning that markdown doesn't enforce heading numbers and a title is the only thing every section is
+guaranteed to have. That's true, but it isn't the property that actually matters for a map key: a title is
+guaranteed to *exist*, but nothing guarantees it's *unique*, and two headings can legitimately share one —
+including, once the Appendix/Rationale word-indexing zone existed (below), two ordinary sections that happen to
+carry the same title at different points in a document. Requiring document-wide unique titles just to keep a
+safe key would be a real authoring restriction for no good reason. A section's own `id` (its `number`, including
+the implicit `0` case) doesn't have this problem: it's guaranteed to exist for exactly the same reason title
+is, and it's guaranteed unique by construction — only the very first section may go unnumbered, and every later
+sibling always gets a real, distinct number (§3). `title` moved to being an ordinary field on the entry instead,
+still present, still useful for display, just no longer depended on for correctness. Existing hand-written
+`.index/` files predating this correction are left as they are rather than retrofitted, for the same reason the
+original title-keying correction did: they'll get corrected the next time their subject document is edited, or
+once the indexing tool itself exists and does a real pass.
+
+§4's Appendix/Rationale word-indexing exclusion is a **zone**, covering everything nested beneath the heading
+rather than just the heading itself — found while designing AgentPlugins' UC-006 (Extract Document Content): a
+real subsection genuinely nested under `# Appendix` is still supplementary material, not part of the indexed
+body, and treating only the literal `# Appendix`/`# Rationale` heading as excluded would leave its own children
+searchable, defeating the point. The zone only suppresses word-indexing (search), not `.sections.yaml`
+(location/extraction) — a heading inside the zone stays fully addressable by reference, so an agent that finds
+"the distilled truth" via search can still deliberately follow a link into the supporting justification behind
+it; only the noise of that justification is kept out of ordinary search results. A related idea — a *local*
+`# Rationale` or `# Appendix` scattered under an arbitrary numbered section, rather than the one canonical
+instance §3 describes — was considered and explicitly dropped rather than adopted: nothing in this standard
+supports more than one Appendix or one Rationale per document, and the zone mechanism happening to be
+position-agnostic as an implementation detail isn't a claim otherwise.
 
 §4's word-indexing rules (stemming, stopwords, link-by-URL-only, `todo.yaml`) were elicited while writing
 AgentPlugins' UC-003 (Index A Path) — the section-structure schema was settled first, but the actual word-index

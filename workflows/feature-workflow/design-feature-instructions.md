@@ -42,8 +42,8 @@ next unit of work; everything before it is already done.
 6. For every `SB-NNN` stub created in §2: has its outline of entry conditions been proposed and approved, with a
    numbered section for each — parents holding their real Given, leaves holding a placeholder `//TODO` (§5.1)?
    Any that don't need §5.1, one `SB-NNN` at a time. Once every section exists: does each leaf hold real derived
-   content rather than still just its `//TODO` (§5.2)? First one that doesn't needs §5.2, for that specific
-   behavior.
+   content, confirmed and with no `//TODO` or `//PENDING-SANITY-CHECK` line remaining (§5.2)? First one that's
+   still a `//TODO` or still flagged `//PENDING-SANITY-CHECK` needs §5.2, for that specific behavior.
 7. For every derived behavior: does its call tree's every node appear in its parent's declared `calls:`? Any
    mismatch needs §6, one reconciliation issue at a time.
 8. For every `SB-NNN` clean per §6 (step 7): does its `reconciliation:` block (§7.1) have checksums that still
@@ -217,9 +217,14 @@ condition as a top-level number, each permutation of it nested beneath.
 
 Propose this as an outline, not individual behaviors yet — the use case's own goal in a sentence or two,
 followed by the nested, numbered list of entry conditions being considered — and present it (committed and
-pushed, per this document's own opening rule). This may take more than one round: revise and re-propose against
-the architect's feedback until they approve the shape, the same as any other design revision (§8) — a mini-cycle
-of its own, not a single take-it-or-leave-it presentation.
+pushed, per this document's own opening rule). Number each entry condition with the literal dotted-decimal id
+it will carry as a heading (`1`, `1.1`, `1.2`, `1.2.1`, ...), written out in full as the list item's own text —
+not markdown's native nested-list numbering, which restarts at `1.` under every parent and only implies nesting
+through indentation. The proposal has to be presented in exactly the id scheme the `SB-NNN` document's headings
+will carry, or there's a translation step between what's approved and what gets written where the hierarchy can
+silently drift. This may take more than one round: revise and re-propose against the architect's feedback until
+they approve the shape, the same as any other design revision (§8) — a mini-cycle of its own, not a single
+take-it-or-leave-it presentation.
 
 Once approved, write the `SB-NNN` document's own numbered sections to match — one heading per entry condition,
 replacing the single stub-level `//TODO` §2 created. Not every section gets the same placeholder treatment: a
@@ -249,13 +254,20 @@ here instead of during reconciliation: don't invent a convention to paper over i
 §4.1 to make the missing decision, the same as any other Key Decision found incomplete downstream of where it
 was made.
 
-Present the result for a quick sanity check — not a formal approval, just "is this really what the use case
-demands" — as: the section's own number, the condition itself restated as bullet points, and the expected result
-the design produces. Revise and re-present if the architect disagrees; move to the next placeholder section only
-once this one is confirmed.
+Write the derived content in place of the leaf's `//TODO`, but flag it as unconfirmed until the architect
+actually agrees: prefix the section's body with its own `//PENDING-SANITY-CHECK` line, the same convention a
+placeholder's `//TODO` already uses, so a resumed session can tell "derived, not yet confirmed" from "confirmed"
+from document state alone, without needing the conversation that confirmed it. Commit and push this (per this
+document's own opening rule), then present it for a quick sanity check — not a formal approval, just "is this
+really what the use case demands" — as: the section's own number, the condition itself restated as bullet
+points, and the expected result the design produces.
+
+Revise and re-present, still flagged, if the architect disagrees. Once confirmed, remove the
+`//PENDING-SANITY-CHECK` line in a follow-up commit before moving to the next placeholder section.
 
 Exit: every `SB-NNN` has its happy path and every identified unhappy path (Specific Behaviors §2.5) recorded as
-a fully-derived behavior in place of its placeholder `//TODO`, each already sanity-checked as it was written.
+a fully-derived behavior in place of its placeholder `//TODO`, each confirmed and with no `//PENDING-SANITY-CHECK`
+line remaining.
 
 ## 6 Phase 5: Call Tree Reconciliation
 
@@ -450,6 +462,16 @@ a distinct, resumable artifact — proposed, revised, and approved before any Gi
 document state alone, whether the shape is settled and, separately, whether every placeholder in it has actually
 been filled in.
 
+**Why §5.1's outline must use the literal dotted-decimal id, not markdown's own nested-list numbering.**
+Dogfooding WVR-95 caught this directly: an outline for `SB-004` was proposed with ordinary nested markdown list
+items — `1.`, `2.` restarting under each parent, nesting shown only by indentation — and by the time it reached
+several levels deep, the hierarchy the architect actually intended had drifted from what the indentation
+implied. "A nested, numbered list" doesn't, by itself, require the numbers themselves to be the id a heading
+will later carry; markdown's own auto-numbering satisfies that description just as well while throwing away the
+one thing that actually matters — which parent a condition permutes. Writing `1.4.3.1` out as literal text
+instead of relying on indentation removes the translation step entirely: what's approved in the proposal is
+character-for-character what becomes the heading, nothing has to be inferred from nesting depth after the fact.
+
 **Why only leaves get a `//TODO` placeholder, not every node in the outline.** A parent node's Given is already
 fully known the moment the outline is approved — it's exactly what the architect just agreed to — so placeholding
 it and then "deriving" it again in §5.2 would be re-deciding something already settled, with nothing left to
@@ -472,6 +494,19 @@ say the same thing. The test for a real gap, versus a value that's a valid infer
 already states: does the Key Decision say nothing about this case, or does it follow from an invariant it
 already states? A non-nullable field with no stated value for a case that can legitimately arise is squarely the
 former.
+
+**Why a derived leaf needs its own `//PENDING-SANITY-CHECK` marker, unlike §4.2's checkpoint.** The same test
+this document already applies to §4.2 ("Why §4.2's checkpoint has no recorded review marker," above) gives the
+opposite answer here: does this fact need to survive a genuinely cold session, with nothing but document state
+to derive from? §4.2's checkpoint doesn't, because the session simply stops and waits there — nothing proceeds
+until a human resumes it, so there's no way for "was this looked at" to matter to anything downstream. §5.2's
+loop is different: it moves on to the next placeholder itself, in the same sitting, once a behavior is
+confirmed. A session that dies between writing a leaf and presenting it leaves document state that's
+indistinguishable from one that died after confirmation — and §1's own mechanical check, run cold by a fresh
+session or `next-unit-of-work-detector`, would read "not `//TODO`" as "done" either way, silently skipping the
+one check §5.2 exists to perform. The marker costs one line, removed once confirmed, in exchange for closing
+that gap — cheap enough not to fight §5.2's own "speed over rigor" character (see "Why §5's per-behavior check
+and §7.2's review are different events," above), unlike a full `reconciliation:`-style block.
 
 **Why §7.1 is a subset check, not an equality check.** A use case's Technical Interpretation and an entry point's
 own designed pseudocode are written for different purposes and can never read the same — one is deliberately
