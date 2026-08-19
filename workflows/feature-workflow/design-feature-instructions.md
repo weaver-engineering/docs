@@ -217,9 +217,14 @@ condition as a top-level number, each permutation of it nested beneath.
 
 Propose this as an outline, not individual behaviors yet — the use case's own goal in a sentence or two,
 followed by the nested, numbered list of entry conditions being considered — and present it (committed and
-pushed, per this document's own opening rule). This may take more than one round: revise and re-propose against
-the architect's feedback until they approve the shape, the same as any other design revision (§8) — a mini-cycle
-of its own, not a single take-it-or-leave-it presentation.
+pushed, per this document's own opening rule). Number each entry condition with the literal dotted-decimal id
+it will carry as a heading (`1`, `1.1`, `1.2`, `1.2.1`, ...), written out in full as the list item's own text —
+not markdown's native nested-list numbering, which restarts at `1.` under every parent and only implies nesting
+through indentation. The proposal has to be presented in exactly the id scheme the `SB-NNN` document's headings
+will carry, or there's a translation step between what's approved and what gets written where the hierarchy can
+silently drift. This may take more than one round: revise and re-propose against the architect's feedback until
+they approve the shape, the same as any other design revision (§8) — a mini-cycle of its own, not a single
+take-it-or-leave-it presentation.
 
 Once approved, write the `SB-NNN` document's own numbered sections to match — one heading per entry condition,
 replacing the single stub-level `//TODO` §2 created. Not every section gets the same placeholder treatment: a
@@ -449,6 +454,16 @@ a distinct, resumable artifact — proposed, revised, and approved before any Gi
 `SB-NNN` document as numbered placeholder sections the moment it's agreed, so §1's own check can tell, from
 document state alone, whether the shape is settled and, separately, whether every placeholder in it has actually
 been filled in.
+
+**Why §5.1's outline must use the literal dotted-decimal id, not markdown's own nested-list numbering.**
+Dogfooding WVR-95 caught this directly: an outline for `SB-004` was proposed with ordinary nested markdown list
+items — `1.`, `2.` restarting under each parent, nesting shown only by indentation — and by the time it reached
+several levels deep, the hierarchy the architect actually intended had drifted from what the indentation
+implied. "A nested, numbered list" doesn't, by itself, require the numbers themselves to be the id a heading
+will later carry; markdown's own auto-numbering satisfies that description just as well while throwing away the
+one thing that actually matters — which parent a condition permutes. Writing `1.4.3.1` out as literal text
+instead of relying on indentation removes the translation step entirely: what's approved in the proposal is
+character-for-character what becomes the heading, nothing has to be inferred from nesting depth after the fact.
 
 **Why only leaves get a `//TODO` placeholder, not every node in the outline.** A parent node's Given is already
 fully known the moment the outline is approved — it's exactly what the architect just agreed to — so placeholding
