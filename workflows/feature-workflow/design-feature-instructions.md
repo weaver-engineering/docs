@@ -242,6 +242,13 @@ parent's Given it inherits from (Specific Behaviors §4.1) — through this `SB-
 names — to derive the concrete Then, rather than authoring it freehand. Parent nodes were already settled in
 §5.1 and need no further derivation here.
 
+Tracing occasionally surfaces a Data Type whose Key Decision (§4.1) never actually specified a value or
+behavior for the case at hand — not something validly inferable from what the Key Decision does state, but a
+real absence in it. That's the same genuine-design-gap situation §6 handles for an undecided call, just found
+here instead of during reconciliation: don't invent a convention to paper over it. Name the gap and return to
+§4.1 to make the missing decision, the same as any other Key Decision found incomplete downstream of where it
+was made.
+
 Present the result for a quick sanity check — not a formal approval, just "is this really what the use case
 demands" — as: the section's own number, the condition itself restated as bullet points, and the expected result
 the design produces. Revise and re-present if the architect disagrees; move to the next placeholder section only
@@ -256,7 +263,8 @@ Chunkable per individual reconciliation issue, and idempotent — re-running it 
 re-confirms there's nothing to do. For every derived behavior, check that every node in its call tree appears in
 the `calls:` declared by its parent (Specific Behaviors §2.7). Where it doesn't:
 
-* If it's a genuine design gap — the call was never actually decided — return to §4.1 to make that decision.
+* If it's a genuine design gap — the call was never actually decided — return to §4.1 to make that decision
+  (the same move §5.2 makes when tracing surfaces an incomplete Data Type instead).
 * If it's a simple documentation error — the `calls:` list is stale or mistyped — correct it directly; no new
   decision is needed.
 
@@ -450,6 +458,20 @@ no Then to trace, because its own condition doesn't yet determine one (Specific 
 every node uniformly would also break §1's own resumability check: a parent's `//TODO` could never be resolved
 by §5.2's derivation loop, so a document with parents left as placeholders would look permanently incomplete no
 matter how much real derivation happened.
+
+**Why a Data Type gap found while tracing (§5.2) gets the same "return to §4.1" treatment as an undecided call
+(§6).** Dogfooding WVR-95 surfaced a Key Decision that named an interface's Data Type but never specified what
+one of its non-nullable fields should hold for a case that only became concrete once real pseudocode was traced
+against it. §6 already has the right instinct for this — a gap found downstream of where it should have been
+decided goes back to where Key Decisions are made, not papered over on the spot — but its wording only covers
+`calls:` mismatches, discovered mechanically during reconciliation. A Data Type gap is discovered differently
+(by judgment, while tracing, not by a mechanical list comparison) but it's the same situation underneath: the
+Key Decision that owns this interface is incomplete. Generalizing the existing rule keeps "found downstream of
+§4.1 → goes back to §4.1" as one rule with two triggers, rather than inventing a second one that just happens to
+say the same thing. The test for a real gap, versus a value that's a valid inference from what the Key Decision
+already states: does the Key Decision say nothing about this case, or does it follow from an invariant it
+already states? A non-nullable field with no stated value for a case that can legitimately arise is squarely the
+former.
 
 **Why §7.1 is a subset check, not an equality check.** A use case's Technical Interpretation and an entry point's
 own designed pseudocode are written for different purposes and can never read the same — one is deliberately
