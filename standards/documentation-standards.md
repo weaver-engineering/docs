@@ -38,8 +38,8 @@ repo still complies with §3 through §5.
 * `## Context` — links, each with a one-line summary, to documents that provide context for this one. Not
   indexed.
 * Body sections, numbered `## N Title` / `### N.M Title` / code blocks `N.M.a`. The first section (or
-  subsection) after Context may be left unnumbered in the visible heading; it still gets the implicit id `0`
-  for indexing.
+  subsection) after Context may be left unnumbered in the visible heading; it still gets the implicit number
+  `0` for indexing.
 * Optional `# Appendix` — supplementary reference material. Excluded from word-indexing (§4), along with
   everything nested beneath it — but still locatable and extractable via `.sections.yaml` (§4), not dropped
   from the index entirely.
@@ -57,13 +57,15 @@ polices that separation — it does not apply to itself by exception (see this d
 Every directory under `docs/` (in this repo: every directory holding documents subject to this standard) gets a
 `.index/` subdirectory. For each `<slug>.md` in that directory:
 
-* `.index/<slug>.sections.yaml` — one entry per section/code-block, **keyed by its id** (`number` from §3,
-  including the implicit `0` case — every section has one, and, unlike a title, it's guaranteed unique): `title`,
-  `type` (`section` | `code-block`), `start_line`, `end_line`.
+* `.index/<slug>.sections.yaml` — one entry per section/code-block, **keyed by its id** — `string(start_line)`,
+  guaranteed both to exist and to be unique, since no two headings or code blocks can start on the same line:
+  `title`, a `number` attribute (present only if the heading/figure is actually numbered, including the implicit
+  `0` case from §3), `type` (`section` | `code-block`), `start_line`, `end_line`.
 * `.index/<slug>.words.yaml` — significant words per section, keyed by id the same way, so a section's
-  structural entry and its word counts share the same key. The document itself is a node too, keyed by its own
-  implicit id `0` — its word counts are whatever text appears before `## Context` (there is no separate
-  `preamble` key; the document is just the root of the same id-keyed scheme every section uses).
+  structural entry and its word counts share the same key. The document itself is a node too — its own `id` is
+  the line its `# Title` heading starts on, the same generic rule every other heading uses, no special case —
+  and its word counts are whatever text appears before `## Context` (there is no separate `preamble` key; the
+  document is just the root of the same id-keyed scheme every section uses).
 
   Word extraction rules:
   * Case-insensitive.
@@ -154,28 +156,33 @@ the sections index (`this-is-a-title.sections.yaml`) is:
 
 ```yaml
 sections:
-  "0":
+  "9":
     title: "Unnumbered First Section"
+    number: 0
     type: section
     start_line: 9
     end_line: 11
-  "1":
+  "12":
     title: "The First Numbered Section"
+    number: "1"
     type: section
     start_line: 12
     end_line: 25
-  "1.0":
+  "17":
     title: "Another Unnumbered First Section"
+    number: "1.0"
     type: section
     start_line: 17
     end_line: 19
-  "1.1":
+  "20":
     title: "The First Numbered Section Of The Subsection"
+    number: "1.1"
     type: section
     start_line: 20
     end_line: 25
-  "1.1.a":
+  "23":
     title: "Figure Title"
+    number: "1.1.a"
     type: code-block
     start_line: 23
     end_line: 25
@@ -184,30 +191,30 @@ sections:
 the word index (`this-is-a-title.words.yaml`) is:
 
 ```yaml
-"0":
+"1":
   initial: 1
   blurb: 1
 sections:
-  "0":
+  "9":
     blurb: 1
-  "1":
+  "12":
     architect: 2
     manage: 1
     blurb: 1
-  "1.0":
+  "17":
     blurb: 1
-  "1.1":
+  "20":
     blurb: 1
-  "1.1.a":
+  "23":
     code: 1
     block: 1
     content: 1
 ```
 
 `some` and `own` don't appear — both are on the stopword list. `architects` and `architect's` both reduce to
-the root `architect`, so section `1` shows `architect: 2`, not two separate entries. The document root uses the
-same implicit `0` id as any other unnumbered section — `sections.yaml` and `words.yaml` share one id scheme
-throughout, root included.
+the root `architect`, so section `12` (`The First Numbered Section`) shows `architect: 2`, not two separate
+entries. The document root's own id, `1`, is the line its `# This Is A Title` heading starts on — the same
+generic rule every other heading uses, no special case for the root either.
 
 and the TODO index (`this-is-a-title.todo.yaml`) is:
 
@@ -268,14 +275,25 @@ guaranteed to have. That's true, but it isn't the property that actually matters
 guaranteed to *exist*, but nothing guarantees it's *unique*, and two headings can legitimately share one —
 including, once the Appendix/Rationale word-indexing zone existed (below), two ordinary sections that happen to
 carry the same title at different points in a document. Requiring document-wide unique titles just to keep a
-safe key would be a real authoring restriction for no good reason. A section's own `id` (its `number`, including
-the implicit `0` case) doesn't have this problem: it's guaranteed to exist for exactly the same reason title
-is, and it's guaranteed unique by construction — only the very first section may go unnumbered, and every later
-sibling always gets a real, distinct number (§3). `title` moved to being an ordinary field on the entry instead,
-still present, still useful for display, just no longer depended on for correctness. Existing hand-written
-`.index/` files predating this correction are left as they are rather than retrofitted, for the same reason the
-original title-keying correction did: they'll get corrected the next time their subject document is edited, or
-once the indexing tool itself exists and does a real pass.
+safe key would be a real authoring restriction for no good reason.
+
+What `id` actually *is* took one more round to settle. The first draft of this correction defined it as the
+section's own `number` (§3, including the implicit `0` case), on the reasoning that numbering already
+guarantees uniqueness — every later sibling always gets a real, distinct number. That held for sections, but
+raised a question this standard had never actually answered: what `id` does `# Appendix`/`# Rationale` itself
+get, given they sit outside the `## N`/`### N.M` body-numbering sequence entirely? Chasing that question back to
+AgentPlugins' own `Heading` data type (being designed against this exact retrofit) found the same gap one level
+deeper: `Heading.id` had only ever been described abstractly ("document position + depth"), never as a
+computable format — not an Appendix/Rationale-specific problem, a pre-existing one this retrofit's need for a
+real, external, implementable answer simply surfaced first. Settled as `id = string(start_line)` instead:
+a heading's own start line is already unique within one document (two headings can't share a line) and already
+known from parsing, so it needs no numbering-derived scheme at all — `# Appendix`, `# Rationale`, and the
+document root itself all get an `id` the exact same generic way any other heading does, no special-casing
+required for any of them. `title` and `number` both moved to being ordinary fields on the entry instead, still
+present, still useful, just no longer depended on for correctness. Existing hand-written `.index/` files
+predating this correction are left as they are rather than retrofitted, for the same reason the original
+title-keying correction did: they'll get corrected the next time their subject document is edited, or once the
+indexing tool itself exists and does a real pass.
 
 §4's Appendix/Rationale word-indexing exclusion is a **zone**, covering everything nested beneath the heading
 rather than just the heading itself — found while designing AgentPlugins' UC-006 (Extract Document Content): a
