@@ -7,6 +7,7 @@
 * [Use Cases](use-cases.md) - the analysis-step artifact a design translates into concrete decisions
 * [Required Behaviors](required-behaviors.md) - the broader analysis output a design must satisfy
 * [Specific Behaviors](specific-behaviors.md) - the Given/When/Then behaviors a design identifies; this document defines where they come from, that one defines their format
+* [Chunk Scope](chunk-scope.md) - the artefact a design task's own §1 Scope entry links to once its work is complete
 * [HLD Template](../../templates/HLD-TEMPLATE.md) - the fill-in-the-blank shape of the HLD itself
 * [External Dependency Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) - the fill-in-the-blank shape of an ED document
 * [Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) - the fill-in-the-blank shape of an IC document
@@ -29,8 +30,14 @@ The HLD is a single Markdown document following the [Documentation Standards](..
 shape (frontmatter, `## Context`, numbered body, optional `# Appendix`/`# Rationale`), produced from the
 [HLD Template](../../templates/HLD-TEMPLATE.md). Its numbered body **must** cover:
 
-1. **Scope** — what this design covers, linking to every [use case](use-cases.md) it realizes, and what it
-   explicitly excludes.
+1. **Scope** — a nested structure, not a flat link list, since a Feature's use cases are rarely all designed
+   together: a `Feature {slug}` bullet, linking the initial feature document, holding one `Design Task: {ref}`
+   bullet per design ticket that has worked on this Feature — each linking its own [chunk scope](chunk-scope.md)
+   once it exists (nothing before then; there is no placeholder to link to) — and each holding the [use
+   cases](use-cases.md) that specific design task covers. A use case appears under exactly one Design Task,
+   ever; reopening an already-designed one happens only through Design Feature Instructions §7.2's
+   `//REDESIGN_REQUIRED`, never by adding it under a second Design Task. What this design explicitly excludes is
+   stated separately, once, at the Feature level.
 2. **Solution Overview** — a concrete map, not prose: which components this design introduces or modifies, one
    line on each one's responsibility, and what each talks to (other components, external dependencies). A
    reader orients here before going anywhere else in the document — see §4 for why this can't just be the
@@ -47,7 +54,7 @@ shape (frontmatter, `## Context`, numbered body, optional `# Appendix`/`# Ration
 
 ### 2.1 Key Decisions Must Resolve Open Design Questions
 
-Every use case in scope (§1's link list) may carry its own `## 7 Open Design Questions` — things it deliberately
+Every use case in scope (§1's nested Scope structure) may carry its own `## 7 Open Design Questions` — things it deliberately
 left undecided. The HLD's Key Decisions section **must** address every one of them, either:
 
 * resolved, stated normatively, with the justification in `# Rationale` per the documentation standard's own

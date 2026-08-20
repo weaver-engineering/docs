@@ -20,7 +20,14 @@ below, since it's reference material to copy from, not indexed content in its ow
 
 ## 1 Scope
 
-{what this design covers, linking to every use case it realizes; what it explicitly excludes}
+* [Feature {slug}]({link to the initial feature document}) — {one-line summary of what this Feature explicitly excludes, stated once here, not per Design Task}
+  - Design Task: {ANALYSIS-NNN or ticket ref} — {delivers [{design-task-ref}-chunk-scope.yaml](./{design-task-ref}-chunk-scope.yaml) once it exists; omit this link entirely while the task is still in progress}
+    + [UC-{NNN}]({relative link})
+    + [UC-{NNN}]({relative link})
+
+{repeat the "Design Task" bullet, nested under the same Feature bullet, once per separate design ticket that has
+worked on this Feature — see Design Directory And HLD §2 and Chunk Scope for the full convention. A use case
+appears under exactly one Design Task, ever.}
 
 ## 2 Solution Overview
 
