@@ -19,26 +19,33 @@ Chunk Scope plays no role in design itself. Nothing in [Design Feature Instructi
 reads it, and it records no fact the design directory doesn't already carry elsewhere — it is a pure consequence
 of a design task reaching completion, never an input to reaching that completion.
 
-## 2 When It's Created
+## 2 How It's Built
 
-Only once Design Feature Instructions §7.2 reaches project-wide, fixed-point completion covering every use case
-a design task named — not just that task's own use cases individually settled, since a function change during
-§7.2 can still be rippling through other, unrelated behaviors elsewhere in the project. Once that scan finds
-nothing left needing §7.2 anywhere, the design is, by definition, static and fully verified. That's the only
-point a design task's own Chunk Scope can honestly be written: any earlier and it would be recording a scope the
-design itself hasn't finished settling yet.
+Not a single, end-of-task computation — each entry is recorded the moment its status is actually decided, which
+already happens at three specific points in the process, never retroactively diffed or reconstructed afterward:
 
-## 3 Location And Naming
+* Design Feature Instructions §5.2 derives a leaf for the first time → append `{address, status: new}`.
+* §7.2's `//REDESIGN_REQUIRED` resolves as **accept** → append `{address, status: mutated}`.
+* §7.2's `//REDESIGN_REQUIRED` resolves as **remove** → append `{address, status: deleted}`.
+
+The file starts existing from the first `new` entry a design task produces, and keeps growing throughout the
+task's own lifetime — the same incremental, resumable shape as everything else in this process (a `//TODO`
+placeholder becoming `//REVIEW` becoming approved, one behavior at a time, never computed in one pass at the
+end). It stops growing once the design task itself is complete: Design Feature Instructions §7.2 reaching
+project-wide, fixed-point completion covering every use case the design task named.
+
+## 3 Location, Naming, And The Completion Signal
 
 `{design-task-ref}-chunk-scope.yaml`, filed at the root of the Feature's own design directory
 (`docs/design/{feature-slug}/`, Design Directory And HLD §1) — alongside the HLD, not nested under
 `specific-behaviors/`, since it's a summary artefact over that directory's content, not one more piece of it.
 
-Its existence, linked from the HLD's own §1 Scope (Design Directory And HLD §2) against the Design Task bullet
-that produced it, is the durable signal that this specific design task is complete. A Design Task bullet with no
-chunk-scope link is still in progress, or was interrupted, regardless of how much of its own §7.2 work already
-happened — mechanically checkable the same way every other completion state in this process is (Design Feature
-Instructions §1).
+The file's own existence only means a design task has produced at least one behavior so far — it does not mean
+the task is complete. Completion is a separate, later signal: the HLD's own §1 Scope (Design Directory And HLD
+§2) links to a Design Task's chunk scope only once §7.2 has reached full, project-wide completion for it. A
+Design Task bullet with no such link is still in progress, or was interrupted, regardless of how many entries
+its own chunk-scope.yaml already holds — mechanically checkable the same way every other completion state in
+this process is (Design Feature Instructions §1).
 
 ## 4 Required Shape
 
@@ -123,6 +130,15 @@ listed behaviors relate to each other — that discovery is `Chunk The Design`'s
 the specific call trees already sitting in the design directory it has full access to. Precomputing it into
 Chunk Scope would mean maintaining a second, derived copy of information the call trees already state directly,
 with no guarantee the two stay in sync.
+
+**Why entries are appended as each status is decided, not computed by diffing at the end.** An earlier version
+of this document treated Chunk Scope as something computed once, in full, only after a design task's §7.2 work
+finished — which would mean reconstructing, after the fact, which behaviors were new versus mutated versus
+deleted by comparing against the Feature's prior chunk scopes. That information is never actually missing at any
+point during the work: §5.2 already knows a behavior is new the moment it derives one for the first time, and
+§7.2 already knows whether a `//REDESIGN_REQUIRED` resolution was accept or remove the moment the architect
+decides it. Recording the fact when it's already known, rather than reconstructing it later from a diff, is
+both simpler and removes an entire class of bug (the reconstruction disagreeing with what actually happened).
 
 **Why `delivers` and `modifies` are optional, not required.** Chunk Scope's one job is to bound *what* a design
 task requires, which the `behaviors` list alone already does completely — `Chunk The Design` can build every
