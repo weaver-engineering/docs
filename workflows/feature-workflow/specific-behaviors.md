@@ -189,8 +189,15 @@ Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md)), not on a specific be
 records what *actually* happened for one concrete scenario instead. The two aren't different renderings of the
 same thing.
 
-A call tree lives with the specific behavior it derived, embedded directly beneath that behavior's Given/When/Then
-(§4) in its `SB-NNN` file.
+A call tree lives with the specific behavior it derived — but not inline in the prose beneath its Given/When/Then
+(§4). It's structured, mechanical data, the same kind of fact as a checksum or a review timestamp, not narrative;
+it lives in the `SB-NNN` document's own YAML frontmatter instead, keyed by that behavior's own id alongside its
+review status (Design Feature Instructions §7). A behavior's prose section states what happens and why (Given,
+When, Then); its frontmatter entry states the mechanical trace that produced it and whether that's been
+confirmed. Consolidating every behavior's own call tree and review state into one frontmatter block, rather than
+scattering call trees through the body and review state elsewhere, is what makes both kinds of check — "is the
+call tree backed by declared `calls:`" (§2.7) and "is this behavior still approved" (Design Feature Instructions
+§7.2) — a read of one place instead of a walk through the whole document.
 
 ### 2.7 Two Independent Views, Reconciled By Review
 
@@ -285,26 +292,33 @@ that follows is then one specific behavior:
   every specific behavior in the document — what varies between them is the Given and, downstream, the Then.
 * **Then** — the concrete external-dependency interactions and/or final state that result for this variation:
   what got called, with what, returning what, and what the system itself returns or emits.
-* **Call Tree** — the traced call tree (§2.6) that derived this behavior, required, embedded directly beneath
-  the Then.
+
+A fourth fact, the traced call tree (§2.6) that derived this behavior, is required for every behavior too — but
+it isn't written here, in the prose section. It lives in the document's own YAML frontmatter instead, keyed by
+this behavior's own id, alongside its review status (Design Feature Instructions §7): mechanical data, not
+narrative, so it's recorded where the rest of a behavior's mechanical facts already live rather than inline
+between the prose and the next heading.
 
 ### 4.1 Nested Numbering For Input-Condition Permutations
 
 The permutations §2.5 describes aren't flat. A behavior numbered `{N}.{M}` is a permutation of its immediate
 parent `{N}`: it changes one input condition (occasionally more) and inherits everything else. Its Given, When,
-Then, and Call Tree may each be stated as "As §{N}, but {the actual delta}" instead of restated in full — a
-reader assembles the complete picture by reading the parent first, the same way a numbered use-case Extension
-(`2a`, `4c`) is only ever read together with the step it branches from. Nesting can go deeper than one level
-(`{N}.{M}.{L}`) wherever a further permutation changes just one more condition again, each level inheriting
-everything its own parent didn't override.
+and Then may each be stated as "As §{N}, but {the actual delta}" instead of restated in full — a reader assembles
+the complete picture by reading the parent first, the same way a numbered use-case Extension (`2a`, `4c`) is only
+ever read together with the step it branches from. Its call tree, by contrast, is never abbreviated this way —
+it lives in frontmatter as literal, structured data per behavior (§4), not prose, so there's nothing to restate
+and nothing gained by pointing at a sibling's entry instead of just having its own. Nesting can go deeper than
+one level (`{N}.{M}.{L}`) wherever a further permutation changes just one more condition again, each level
+inheriting everything its own parent didn't override.
 
 Not every numbered node is itself a complete, resolvable behavior. The test is whether that node's own Given is
 concrete enough to actually derive a When/Then from *right now* — if a further, still-unstated condition is what
-the outcome actually depends on, the node states only the shared Given it does know, with no When, Then, or Call
-Tree of its own: it's the premise its own children complete, not a behavior in its own right. A node earns full
-Given/When/Then/Call Tree the moment its own Given resolves to an outcome — whether that's a top-level number
-with no children at all, a leaf several levels deep, or (as in `SB-014`'s own `§1` in the Appendix, which has
-both a complete Then and a further permutation beneath it) a node that happens to be both at once. For example:
+the outcome actually depends on, the node states only the shared Given it does know, with no When or Then of its
+own, and no call tree entry in frontmatter either: it's the premise its own children complete, not a behavior in
+its own right. A node earns a full Given/When/Then, and a call tree entry, the moment its own Given resolves to
+an outcome — whether that's a top-level number with no children at all, a leaf several levels deep, or (as in
+`SB-014`'s own `§1` in the Appendix, which has both a complete Then and a further permutation beneath it) a node
+that happens to be both at once. For example:
 
 ```
 ## 1 A user logs in
@@ -366,6 +380,52 @@ Worked example — `SB-014`, one operation (`GET /user/account`) realizing steps
 path, a nested permutation of it, and one unhappy specific behavior:
 
 ````
+---
+reconciliation:
+  checked_at: "2026-08-14T00:00:00Z"
+  uc_technical_interpretation_checksums:
+    UC-101: "…"
+  function_checksums:
+    "IC-000 §1": "…"
+    "IC-004 §1": "…"
+    "IC-004 §2": "…"
+    "ED-001 §1": "…"
+    "ED-002 §1": "…"
+  behaviors:
+    "1":
+      call_tree:
+        address: "IC-000 §1"  # GET /user/account
+        children:
+          - address: "IC-004 §1"  # session: resolve(abcd)
+            children:
+              - address: "ED-001 §1"  # auth service: verify(abcd) -> authenticated(john)
+          - address: "IC-004 §2"  # session: find(john)
+            children:
+              - address: "ED-002 §1"  # accounts mongo: find(john) -> johnAccountDoc
+      reviewed: {reviewed_by: "architect", reviewed_at: "2026-08-14T00:00:00Z"}
+    "1.1":
+      call_tree:
+        address: "IC-000 §1"  # GET /user/account
+        children:
+          - address: "IC-004 §1"  # session: resolve(wxyz)
+            children:
+              - address: "ED-001 §1"  # auth service: verify(wxyz) -> authenticated(jane)
+          - address: "IC-004 §2"  # session: find(jane)
+            children:
+              - address: "ED-002 §1"  # accounts mongo: find(jane) -> janeAccountDoc
+      reviewed: {reviewed_by: "architect", reviewed_at: "2026-08-14T00:00:00Z"}
+    "2":
+      call_tree:
+        address: "IC-000 §1"  # GET /user/account
+        children:
+          - address: "IC-004 §1"  # session: resolve(abcd)
+            children:
+              - address: "ED-001 §1"  # auth service: verify(abcd) -> authenticated(john)
+          - address: "IC-004 §2"  # session: find(john)
+            children:
+              - address: "ED-002 §1"  # accounts mongo: find(john) -> connection error
+      reviewed: {reviewed_by: "architect", reviewed_at: "2026-08-14T00:00:00Z"}
+---
 # SB-014 — View Own Account
 
 **Realizes:** UC-101 steps 2-3
@@ -395,20 +455,6 @@ keyed by `john`
 **Then** `ED-001 §1` (Auth Service) is called with `abcd` and returns `authenticated` for `john`; `ED-002 §1` is
 queried for `john` and returns `johnAccountDoc`; the API responds `200` with body `johnAccountDoc`
 
-**Call Tree**
-
-```yaml
-call_tree:
-  address: "IC-000 §1"  # GET /user/account
-  children:
-    - address: "IC-004 §1"  # session: resolve(abcd)
-      children:
-        - address: "ED-001 §1"  # auth service: verify(abcd) -> authenticated(john)
-    - address: "IC-004 §2"  # session: find(john)
-      children:
-        - address: "ED-002 §1"  # accounts mongo: find(john) -> johnAccountDoc
-```
-
 ### 1.1 A Different Account Holder
 
 **Realizes:** happy path
@@ -421,8 +467,6 @@ keyed by `jane`
 **Then** — as §1, but `ED-001 §1` returns `authenticated` for `jane`; `ED-002 §1` returns `janeAccountDoc`; the
 API responds `200` with body `janeAccountDoc`
 
-**Call Tree** — as §1 (identical shape; only the leaf values differ)
-
 ## 2 Accounts Store Unavailable
 
 **Realizes:** unhappy path — `ED-002` (Accounts Mongo) unavailable
@@ -433,20 +477,6 @@ API responds `200` with body `janeAccountDoc`
 
 **Then** `ED-001 §1` (Auth Service) is called with `abcd` and returns `authenticated` for `john`; `ED-002 §1` is
 queried for `john` and raises a connection error; the API responds `503` with no body
-
-**Call Tree**
-
-```yaml
-call_tree:
-  address: "IC-000 §1"  # GET /user/account
-  children:
-    - address: "IC-004 §1"  # session: resolve(abcd)
-      children:
-        - address: "ED-001 §1"  # auth service: verify(abcd) -> authenticated(john)
-    - address: "IC-004 §2"  # session: find(john)
-      children:
-        - address: "ED-002 §1"  # accounts mongo: find(john) -> connection error
-```
 ````
 
 The document-level bound pseudocode is `IC-000 §1`'s own logic with `UC-101`'s abstract calls already substituted
@@ -454,15 +484,16 @@ The document-level bound pseudocode is `IC-000 §1`'s own logic with `UC-101`'s 
 Instructions §4.3, rather than re-derived by every behavior below it. `§1.1` is a permutation of `§1`, not a
 sibling — its own heading is one level deeper (`###`, not `##`) precisely because it's nested under `§1` rather
 than beside it: same call tree shape, same failure-free path through the bound pseudocode, only the concrete
-account holder differs, so its Given/When/Then say only what's different and its Call Tree isn't restated at
-all. `§2` is
-a fresh top-level number because it isn't a permutation of `§1`'s input at all — it's a different path through
-the same bound pseudocode (the `ED-002` call's `ON FAILURE` branch instead of its success path), which is exactly
-the kind of change too substantial for "as §1, but..." to say cleanly. All three specific behaviors share
-`SB-014`'s document-level Realizes (steps 2-3 of `UC-101`) and the same When — the same operation,
-`GET /user/account`. Authentication appears in every one of them purely as a precondition inside Given/Then,
-never as a specific behavior of its own: the same `ED-001 §1` interaction would appear again, with different
-concrete values, in every other specific behavior anywhere in the design that requires an authenticated caller.
+account holder differs, so its Given/When/Then say only what's different. `§1.1`'s own frontmatter entry still
+carries a full, literal call tree, same as `§1`'s — the shape happens to be identical, but frontmatter never
+abbreviates, so it's written out rather than pointed at. `§2` is a fresh top-level number because it isn't a
+permutation of `§1`'s input at all — it's a different path through the same bound pseudocode (the `ED-002` call's
+`ON FAILURE` branch instead of its success path), which is exactly the kind of change too substantial for "as
+§1, but..." to say cleanly. All three specific behaviors share `SB-014`'s document-level Realizes (steps 2-3 of
+`UC-101`) and the same When — the same operation, `GET /user/account`. Authentication appears in every one of
+them purely as a precondition inside Given/Then, never as a specific behavior of its own: the same `ED-001 §1`
+interaction would appear again, with different concrete values, in every other specific behavior anywhere in the
+design that requires an authenticated caller.
 
 # Rationale
 
@@ -566,6 +597,16 @@ to check them against each other with. A mismatch is real information either way
 document is missing something, or the tree claims a call the function's design was never actually asked to
 support — and systematic design review is what decides which, not an automated pass/fail gate standing in for a
 judgment call the design stage genuinely can't make on its own.
+
+**Why a call tree lives in frontmatter, not inline beneath its behavior's Then.** Working through Design Feature
+Instructions §7.2 in practice surfaced that a call tree, a checksum, and a review timestamp are all the same kind
+of fact — structured, mechanical, produced and consumed by tooling — while Given/When/Then are narrative, written
+for a human to read and reason about. Mixing the two in one prose section meant reconciliation data (Design
+Feature Instructions §7) had to live split across two places at once: some of it (checksums, review state) in a
+document-level block, the rest (each behavior's own call tree) scattered inline through the body. Consolidating
+every behavior's mechanical facts — call tree and review state together, keyed by the same id — into one
+frontmatter block puts anything a script needs in one place, and leaves each behavior's own prose section reading
+as pure narrative: what happens and why, nothing else.
 
 **Why "coverage" isn't this document's concern.** An earlier version of this document treated "every use case
 step has a realizing specific behavior" and "every internal component function is reached by some call tree" as
