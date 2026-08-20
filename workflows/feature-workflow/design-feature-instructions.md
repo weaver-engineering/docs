@@ -370,14 +370,23 @@ becomes the agent's to grant itself.
 * **Regenerated result doesn't match** — the design no longer produces the agreed behavior. Flag
   `//REDESIGN_REQUIRED` on the behavior (Specific Behavior Template), recording the actual disconnect found — what
   regenerated versus what's recorded, and why — not just the fact that one exists, so a cold session doesn't have
-  to re-derive it. Surface it to the architect; this is always their call, never resolved automatically:
+  to re-derive it. Surface it to the architect; this is always their call, never resolved automatically, and it's
+  three-way, not two:
   * **Accept the new behavior.** The design's evolution is correct, and the prior agreement is what's stale.
     Update the recorded content in place (§8) to the regenerated result, then present it fresh — `//REVIEW`, not
     straight back to approved, since what's now recorded was never itself confirmed.
   * **Reject it.** Push the design back (§8) to evolve the function further, until it satisfies whatever prompted
     the change *and* this behavior regenerates to match its original, already-agreed content again.
-  Either way, `//REDESIGN_REQUIRED` only ever resolves through a fresh `//REVIEW` — never directly back to
-  approved, because what gets confirmed next is, in both branches, not the thing that was invalidated.
+  * **Remove it.** Sometimes neither of the above is true: the evolved design doesn't produce a *different*
+    result, it doesn't produce this behavior under any entry state at all anymore. Delete the leaf section and
+    its `reconciliation.behaviors.{id}` entry entirely — mechanically trivial once decided, no re-derivation
+    needed — but the decision itself carries at least as much weight as accept or reject, arguably more, since
+    it's irreversible. It needs its own explicit bar, not a routine "does this look right" nod folded in with
+    everything else being presented: ask the architect an unambiguous yes/no question naming exactly what's being
+    removed, and require an unqualified affirmative in response before deleting anything.
+  Accept and reject both resolve through a fresh `//REVIEW` — never straight back to approved, because what gets
+  confirmed next is, in both branches, not the thing that was invalidated. Remove has no further `//REVIEW`: once
+  confirmed, the behavior is simply gone.
 
 For a behavior actually reaching a human (first-time review, or `//REDESIGN_REQUIRED` accepted and re-presented):
 present it individually, not batched, with the use case detail it realizes, the provenance of each Given
@@ -578,12 +587,23 @@ derivation, or a later re-derivation after an invalidation gets fixed.
 
 **Why `//REDESIGN_REQUIRED` always resolves through a fresh `//REVIEW`, never straight back to approved.**
 Dogfooding WVR-95's own §7.2 pass surfaced that an invalidated behavior isn't automatically safe again just
-because its disconnect got resolved — what's recorded after a fix is, in both possible resolutions (accept the
-new behavior, or evolve the design to preserve the old one), *not the thing that was originally invalidated*.
-Skipping straight back to approved would mean trusting an outcome nobody has actually looked at yet, defeating
-the entire purpose of the invalidation catching it in the first place. Routing back through `//REVIEW` costs
-nothing extra beyond what §5.2's own first derivation already costs, and guarantees the thing eventually marked
-approved is always the thing someone actually confirmed.
+because its disconnect got resolved — what's recorded after a fix is, in both the accept and reject resolutions
+(accept the new behavior, or evolve the design to preserve the old one), *not the thing that was originally
+invalidated*. Skipping straight back to approved would mean trusting an outcome nobody has actually looked at
+yet, defeating the entire purpose of the invalidation catching it in the first place. Routing back through
+`//REVIEW` costs nothing extra beyond what §5.2's own first derivation already costs, and guarantees the thing
+eventually marked approved is always the thing someone actually confirmed.
+
+**Why removal is a third resolution, not a special case of reject.** The same dogfooding pass surfaced a case
+neither accept nor reject actually covers: the evolved design doesn't produce a *different* result for this
+behavior, it doesn't produce this behavior under any entry state at all anymore — there's nothing left to accept
+or preserve. Treating that as "reject" would leave a behavior standing that the design can no longer actually
+exercise; treating it as "accept" would mean recording a Then that doesn't exist. Removing it outright is the
+only honest option, but it's the one resolution here that's irreversible in a way the other two aren't — accept
+and reject both leave a real, re-derivable behavior on record either way, removal leaves nothing. That's why it
+gets its own explicit bar (an unambiguous question, an unqualified affirmative) rather than inheriting whatever
+scrutiny the accept/reject choice already carries — the two aren't the same weight of decision even though both
+resolve `//REDESIGN_REQUIRED`.
 
 **Why a regeneration that matches the recorded result doesn't need fresh human review.** §7.2's whole
 invalidation mechanism exists to catch cases where the design genuinely no longer produces what was agreed — not
