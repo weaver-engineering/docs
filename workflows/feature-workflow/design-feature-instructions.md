@@ -27,8 +27,10 @@ narrating uncommitted work.
 Before doing anything, check the design directory's current state in this order. The first gap found is the
 next unit of work; everything before it is already done.
 
-1. Does the HLD exist with its Scope naming every use case in this Feature? If not, confirm scope before
-   anything else — nothing downstream can start.
+1. Does the HLD exist with its Scope naming the use case(s) this design task covers, under their own Design Task
+   entry (Design Directory And HLD §2)? Scope accumulates across however many separate design tasks a Feature
+   takes — this only requires *this task's own* use cases to be named, not every use case the Feature will ever
+   have. If not, confirm scope before anything else — nothing downstream can start.
 2. For each use case in scope: does it have a non-empty `## Technical Interpretation`? Any that don't need §2,
    one use case at a time.
 3. Does the HLD's Internal Components and External Dependencies list classify every function the Technical
