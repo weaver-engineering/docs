@@ -269,9 +269,12 @@ actually agrees: prefix the section's body with its own `//REVIEW` line, the sam
 state alone, without needing the conversation that confirmed it. Write its call tree into the document's own
 frontmatter at the same time, under `reconciliation.behaviors."{this leaf's id}".call_tree` (Specific Behavior
 Template) — `reviewed` stays absent until §7.2 confirms it, the frontmatter-side equivalent of the body's own
-`//REVIEW` flag. Commit and push this (per this document's own opening rule), then present it for a quick sanity
-check — not a formal approval, just "is this really what the use case demands" — as: the section's own number,
-the condition itself restated as bullet points, and the expected result the design produces.
+`//REVIEW` flag. A behavior derived here for the first time is new work this design task is introducing — record
+it as `new` in the design task's own chunk scope ([Chunk Scope](chunk-scope.md)) at the same time, not deferred
+to some later summarizing pass. Commit and push this (per this document's own opening rule), then present it for
+a quick sanity check — not a formal approval, just "is this really what the use case demands" — as: the
+section's own number, the condition itself restated as bullet points, and the expected result the design
+produces.
 
 Revise and re-present, still flagged, if the architect disagrees. Once confirmed, remove the `//REVIEW` line in
 a follow-up commit before moving to the next placeholder section.
