@@ -42,19 +42,23 @@ next unit of work; everything before it is already done.
 6. For every `SB-NNN` stub created in §2: has its outline of entry conditions been proposed and approved, with a
    numbered section for each — parents holding their real Given, leaves holding a placeholder `//TODO` (§5.1)?
    Any that don't need §5.1, one `SB-NNN` at a time. Once every section exists: does each leaf hold real derived
-   content, confirmed and with no `//TODO` or `//PENDING-SANITY-CHECK` line remaining (§5.2)? First one that's
-   still a `//TODO` or still flagged `//PENDING-SANITY-CHECK` needs §5.2, for that specific behavior.
+   content, confirmed and with no `//TODO` or `//REVIEW` line remaining (§5.2)? First one that's still a `//TODO`
+   or still flagged `//REVIEW` needs §5.2, for that specific behavior.
 7. For every derived behavior: does its call tree's every node appear in its parent's declared `calls:`? Any
    mismatch needs §6, one reconciliation issue at a time.
 8. For every `SB-NNN` clean per §6 (step 7): does its `reconciliation:` block (§7.1) have checksums that still
    match the design's current content? If the block is empty, or a checksum no longer matches, §7.1 is next.
-9. For every `SB-NNN` clean per §7.1: does its `reconciliation:` block have `reviewed_by` set? If not, §7.2 is
-   next.
+9. Project-wide, not scoped to this Feature — every `SB-NNN` in every Feature's own design directory: does every
+   leaf behavior have a `reviewed` entry (§7.2), with no `//REDESIGN_REQUIRED` flag standing against it? A leaf
+   with no entry (never reviewed, or a function change cleared it — §7.1), or one flagged `//REDESIGN_REQUIRED`,
+   needs §7.2 — regardless of which Feature or use case it belongs to.
 
-Once every `SB-NNN` in scope reaches step 9, the design is complete — ready for `Chunk The Design`
-([Feature Workflow](feature-workflow.md) §3). This check can be scoped to one use case, one operation, or the
-whole Feature: told to "work on `UC-105`," an agent runs the same sequence restricted to that use case's own
-artifacts.
+Steps 1–8 can be scoped to one use case, one operation, or the whole Feature: told to "work on `UC-105`," an
+agent runs the same sequence restricted to that use case's own artifacts. Step 9 can't be scoped that way — its
+whole purpose is catching invalidation that reaches outside the Feature currently being worked on (§7.2) — so it
+always runs project-wide. This Feature's own design is only complete, ready for `Chunk The Design` ([Feature
+Workflow](feature-workflow.md) §3), once its own `SB-NNN`s are clean through step 8 *and* a full project-wide
+step 9 scan finds nothing left needing §7.2 anywhere.
 
 ## 2 Phase 1: Technical Interpretation
 
@@ -229,12 +233,15 @@ take-it-or-leave-it presentation.
 Once approved, write the `SB-NNN` document's own numbered sections to match — one heading per entry condition,
 replacing the single stub-level `//TODO` §2 created. Not every section gets the same placeholder treatment: a
 node is a leaf if the outline gives it no further nested condition beneath it (Specific Behaviors §4.1) — its
-own outcome isn't determined yet, so it gets only a `//TODO` in place of its actual Given/When/Then/Call Tree.
-A node with children below it is a parent, not a leaf, and its own Given is already known — it's exactly what
-the approved outline stated for that entry condition — so write it directly rather than placeholding it; it has
-no When/Then/Call Tree section to placehold in the first place. This is what makes the approved shape itself
-resumable: a fresh session can read the `SB-NNN` document directly and see exactly which entry conditions were
-agreed on, without the approval conversation itself needing to be remembered.
+own Given resolves to an outcome, so a leaf is a complete behavior, just not yet a *derived* one, and gets only
+a `//TODO` in place of its actual Given/When/Then; its call tree doesn't exist yet either, so there's no
+frontmatter entry for it at all until §5.2. A node with children below it is a parent, not a leaf, and its own
+Given is already known — it's exactly what the approved outline stated for that entry condition — so write it
+directly rather than placeholding it; it has no When/Then to placehold, and no call tree or frontmatter entry to
+placehold either, since its own outcome genuinely isn't determined at all until a child resolves it. This is
+what makes the approved shape itself resumable: a fresh session can read the `SB-NNN` document directly and see
+exactly which entry conditions were agreed on, without the approval conversation itself needing to be
+remembered.
 
 Exit: every entry condition the architect approved has its own numbered section in the `SB-NNN` document — each
 leaf holding its placeholder `//TODO`, each parent holding its real Given.
@@ -244,8 +251,8 @@ leaf holding its placeholder `//TODO`, each parent holding its real Given.
 For each leaf's placeholder section, in order: systematically trace its entry state — its own Given plus every
 parent's Given it inherits from (Specific Behaviors §4.1) — through this `SB-NNN`'s own bound pseudocode (§4.3)
 — following each bound call into the Internal Component or External Dependency's own pseudocode or prose it
-names — to derive the concrete Then, rather than authoring it freehand. Parent nodes were already settled in
-§5.1 and need no further derivation here.
+names — to derive the concrete Then and the call tree that produced it (Specific Behaviors §2.6), rather than
+authoring either freehand. Parent nodes were already settled in §5.1 and need no further derivation here.
 
 Tracing occasionally surfaces a Data Type whose Key Decision (§4.1) never actually specified a value or
 behavior for the case at hand — not something validly inferable from what the Key Decision does state, but a
@@ -254,20 +261,22 @@ here instead of during reconciliation: don't invent a convention to paper over i
 §4.1 to make the missing decision, the same as any other Key Decision found incomplete downstream of where it
 was made.
 
-Write the derived content in place of the leaf's `//TODO`, but flag it as unconfirmed until the architect
-actually agrees: prefix the section's body with its own `//PENDING-SANITY-CHECK` line, the same convention a
-placeholder's `//TODO` already uses, so a resumed session can tell "derived, not yet confirmed" from "confirmed"
-from document state alone, without needing the conversation that confirmed it. Commit and push this (per this
-document's own opening rule), then present it for a quick sanity check — not a formal approval, just "is this
-really what the use case demands" — as: the section's own number, the condition itself restated as bullet
-points, and the expected result the design produces.
+Write the derived Given/When/Then in place of the leaf's `//TODO`, but flag it as unconfirmed until the architect
+actually agrees: prefix the section's body with its own `//REVIEW` line, the same convention a placeholder's
+`//TODO` already uses, so a resumed session can tell "derived, not yet confirmed" from "confirmed" from document
+state alone, without needing the conversation that confirmed it. Write its call tree into the document's own
+frontmatter at the same time, under `reconciliation.behaviors."{this leaf's id}".call_tree` (Specific Behavior
+Template) — `reviewed` stays absent until §7.2 confirms it, the frontmatter-side equivalent of the body's own
+`//REVIEW` flag. Commit and push this (per this document's own opening rule), then present it for a quick sanity
+check — not a formal approval, just "is this really what the use case demands" — as: the section's own number,
+the condition itself restated as bullet points, and the expected result the design produces.
 
-Revise and re-present, still flagged, if the architect disagrees. Once confirmed, remove the
-`//PENDING-SANITY-CHECK` line in a follow-up commit before moving to the next placeholder section.
+Revise and re-present, still flagged, if the architect disagrees. Once confirmed, remove the `//REVIEW` line in
+a follow-up commit before moving to the next placeholder section.
 
 Exit: every `SB-NNN` has its happy path and every identified unhappy path (Specific Behaviors §2.5) recorded as
-a fully-derived behavior in place of its placeholder `//TODO`, each confirmed and with no `//PENDING-SANITY-CHECK`
-line remaining.
+a fully-derived behavior in place of its placeholder `//TODO`, each confirmed and with no `//REVIEW` line
+remaining.
 
 ## 6 Phase 5: Call Tree Reconciliation
 
@@ -296,6 +305,15 @@ block. A match means the substitution is still valid, cheaply. A mismatch — th
 (a use-case-level edit, invalidating the requirement itself), or some function's pseudocode changed (an
 extension elsewhere, found via §4.1's own `called_from:` walk) — means §4.3's substitution has to run again for
 this operation: the same judgement as the first time, not a shortcut around it.
+
+A changed function's reach isn't confined to this one `SB-NNN`, or this Feature. Walk backward from the changed
+function, project-wide, to every behavior — in any `SB-NNN`, in any Feature's own design directory — whose own
+recorded `call_tree:` (the concrete walk that behavior actually traced, not just the abstract call graph a
+change was found in) contains that function's address. Clear the `reviewed` entry (Specific Behavior Template)
+for exactly those behaviors, and no others in the same document — a sibling behavior whose own call tree never
+reached the changed function stays approved untouched. This is what feeds §7.2's own project-wide scan (§1 step
+9): a behavior with no `reviewed` entry needs §7.2 whether it's never been reviewed at all, or was reviewed once
+and just lost that approval here.
 
 The check also runs the other way, and this half can't be shortcut by a checksum: walking the bound pseudocode
 under this behavior's own entry state, does it produce any External Dependency interaction that neither the
@@ -331,13 +349,46 @@ Exit: the `SB-NNN`'s `reconciliation:` block has checksums matching the design's
 
 ### 7.2 Human Review
 
-Only once §7.1 is clean for an `SB-NNN` does this start, agent-driven: present each of its behaviors
-individually, not batched, with the use case detail it realizes, the provenance of each Given condition (which
-document defined it, whether the architect supplied it directly, or it was inferred and on what basis), and its
-effects. Unlike §5's quick sanity check, this is the real review — what's approved here becomes the specific
-behaviors a Chunk's failing tests are built from (Specific Behaviors §2.9).
+Not "present what's recorded" — this is the pass that confirms the design still actually produces it. Earlier
+derivation (§5.2) happened while the design was still fluid, by definition: the first pass through is exactly
+about making the design support the use case, correcting it where it doesn't. By the time §7.2 runs the design
+is meant to be static, so this pass is verification, not (re-)authorship: for each behavior needing §7.2 (§1
+step 9 — never reviewed, or a function change cleared its approval per §7.1), regenerate its expected result by
+tracing its own entry state through the *current* design, the same walk §5.2 first did, using whatever functions
+are now checksummed as current. Regenerating is agent work; asserting the result is correct is not, and never
+becomes the agent's to grant itself.
 
-Exit: the `SB-NNN`'s `reconciliation:` block has `reviewed_by` and `reviewed_at` set.
+* **Regenerated result matches what's recorded** — the design is still sound for this behavior. Refresh the
+  checksums, leave its `reviewed` entry exactly as it was, done. No human touch: nothing about what was
+  previously approved has actually changed, only bookkeeping needed refreshing, and manufacturing a fresh review
+  for a provably-unchanged result would just be re-litigating a decision nobody's disagreed with.
+* **Regenerated result doesn't match** — the design no longer produces the agreed behavior. Flag
+  `//REDESIGN_REQUIRED` on the behavior (Specific Behavior Template), recording the actual disconnect found — what
+  regenerated versus what's recorded, and why — not just the fact that one exists, so a cold session doesn't have
+  to re-derive it. Surface it to the architect; this is always their call, never resolved automatically:
+  * **Accept the new behavior.** The design's evolution is correct, and the prior agreement is what's stale.
+    Update the recorded content in place (§8) to the regenerated result, then present it fresh — `//REVIEW`, not
+    straight back to approved, since what's now recorded was never itself confirmed.
+  * **Reject it.** Push the design back (§8) to evolve the function further, until it satisfies whatever prompted
+    the change *and* this behavior regenerates to match its original, already-agreed content again.
+  Either way, `//REDESIGN_REQUIRED` only ever resolves through a fresh `//REVIEW` — never directly back to
+  approved, because what gets confirmed next is, in both branches, not the thing that was invalidated.
+
+For a behavior actually reaching a human (first-time review, or `//REDESIGN_REQUIRED` accepted and re-presented):
+present it individually, not batched, with the use case detail it realizes, the provenance of each Given
+condition (which document defined it, whether the architect supplied it directly, or it was inferred and on what
+basis), and its effects. This is the real review — what's approved here becomes the specific behaviors a Chunk's
+failing tests are built from (Specific Behaviors §2.9).
+
+§7.2 runs project-wide (§1 step 9), not scoped to this Feature, and it's a fixed-point pass, not a single sweep:
+accepting a changed behavior, or evolving a function to reject one, can itself invalidate other, already-approved
+behaviors — in any `SB-NNN`, from any Feature, including ones already shipped through `Chunk The Design` — via
+§7.1's own invalidation walk. Those re-enter scope the same as anything else needing §7.2, regardless of which
+Feature or use case originally drove them. §7.2 for this Feature isn't complete when this Feature's own behaviors
+are all approved; it's complete once a full project-wide scan (§1 step 9) finds nothing left needing it anywhere.
+
+Exit: project-wide, every `SB-NNN`'s `reconciliation:` block has a `reviewed` entry for every one of its leaf
+behaviors, with no `//REDESIGN_REQUIRED` flag standing against any of them.
 
 ## 8 The Feedback Loop
 
@@ -352,8 +403,18 @@ accidentally-orphaned one; the design directory is never its own changelog. Ever
 re-validated by re-running §1's own check from that point forward, rather than assumed still correct: a stale
 `reconciliation:` block (§7.1) is exactly the mechanism that catches this without anyone needing to remember to
 check by hand. The same mechanism is what catches the cascading case in §4.1: extending a function that other
-use cases already rely on invalidates their `SB-NNN`s' own reconciliation, not just the gap that prompted the
-change.
+use cases already rely on invalidates their `SB-NNN`s' own reconciliation — surfaced as `//REDESIGN_REQUIRED`
+(§7.2) for exactly the behaviors whose own call tree actually reaches the changed function, not just the gap
+that prompted the change.
+
+That cascade isn't bounded by this Feature. §7.2 runs project-wide (§1 step 9) precisely because a function
+change can invalidate an already-approved behavior from an unrelated, earlier Feature — one that may already be
+built and shipped through `Chunk The Design`. This process resolves the *design* side of that fully: the prior
+behavior either gets accepted as genuinely changed or the design evolves to preserve it, either way ending in a
+fresh, correct approval. What it does not resolve is the deployed code a shipped Chunk already produced from the
+now-superseded behavior — that's downstream of Design The Feature entirely, and needs its own handling (most
+likely as chunk-scope's own "mutated behavior" case, Feature Workflow §3) rather than being silently left
+implied.
 
 Most findings loop back within Design. One doesn't: an unexpected external side effect (§7.1) can be resolved
 by correcting the use case itself rather than the pseudocode, which sends the design back past its own scope
@@ -495,18 +556,50 @@ already states: does the Key Decision say nothing about this case, or does it fo
 already states? A non-nullable field with no stated value for a case that can legitimately arise is squarely the
 former.
 
-**Why a derived leaf needs its own `//PENDING-SANITY-CHECK` marker, unlike §4.2's checkpoint.** The same test
-this document already applies to §4.2 ("Why §4.2's checkpoint has no recorded review marker," above) gives the
-opposite answer here: does this fact need to survive a genuinely cold session, with nothing but document state
-to derive from? §4.2's checkpoint doesn't, because the session simply stops and waits there — nothing proceeds
-until a human resumes it, so there's no way for "was this looked at" to matter to anything downstream. §5.2's
-loop is different: it moves on to the next placeholder itself, in the same sitting, once a behavior is
-confirmed. A session that dies between writing a leaf and presenting it leaves document state that's
-indistinguishable from one that died after confirmation — and §1's own mechanical check, run cold by a fresh
-session or `next-unit-of-work-detector`, would read "not `//TODO`" as "done" either way, silently skipping the
-one check §5.2 exists to perform. The marker costs one line, removed once confirmed, in exchange for closing
-that gap — cheap enough not to fight §5.2's own "speed over rigor" character (see "Why §5's per-behavior check
-and §7.2's review are different events," above), unlike a full `reconciliation:`-style block.
+**Why a derived leaf needs its own `//REVIEW` marker, unlike §4.2's checkpoint.** The same test this document
+already applies to §4.2 ("Why §4.2's checkpoint has no recorded review marker," above) gives the opposite answer
+here: does this fact need to survive a genuinely cold session, with nothing but document state to derive from?
+§4.2's checkpoint doesn't, because the session simply stops and waits there — nothing proceeds until a human
+resumes it, so there's no way for "was this looked at" to matter to anything downstream. §5.2's loop is
+different: it moves on to the next placeholder itself, in the same sitting, once a behavior is confirmed. A
+session that dies between writing a leaf and presenting it leaves document state that's indistinguishable from
+one that died after confirmation — and §1's own mechanical check, run cold by a fresh session or
+`next-unit-of-work-detector`, would read "not `//TODO`" as "done" either way, silently skipping the one check
+§5.2 exists to perform. The marker costs one line, removed once confirmed, in exchange for closing that gap —
+cheap enough not to fight §5.2's own "speed over rigor" character (see "Why §5's per-behavior check and §7.2's
+review are different events," above), unlike a full `reconciliation:`-style block. `//REVIEW` is also what
+§7.2's own `//REDESIGN_REQUIRED` resolves back to (below) — one marker, two roads in: a behavior's first
+derivation, or a later re-derivation after an invalidation gets fixed.
+
+**Why `//REDESIGN_REQUIRED` always resolves through a fresh `//REVIEW`, never straight back to approved.**
+Dogfooding WVR-95's own §7.2 pass surfaced that an invalidated behavior isn't automatically safe again just
+because its disconnect got resolved — what's recorded after a fix is, in both possible resolutions (accept the
+new behavior, or evolve the design to preserve the old one), *not the thing that was originally invalidated*.
+Skipping straight back to approved would mean trusting an outcome nobody has actually looked at yet, defeating
+the entire purpose of the invalidation catching it in the first place. Routing back through `//REVIEW` costs
+nothing extra beyond what §5.2's own first derivation already costs, and guarantees the thing eventually marked
+approved is always the thing someone actually confirmed.
+
+**Why a regeneration that matches the recorded result doesn't need fresh human review.** §7.2's whole
+invalidation mechanism exists to catch cases where the design genuinely no longer produces what was agreed — not
+to manufacture review work every time a dependency's checksum merely changes. If tracing a behavior's entry state
+through the current, checksummed design reproduces exactly what's already recorded, nothing about the actual,
+previously-approved outcome has changed — only bookkeeping needed refreshing. Regenerating and confirming the
+match is squarely mechanical work the agent can do itself; asking a human to re-bless a result that's provably
+identical to what they already blessed would be re-litigating a decision nobody has disagreed with, for the sake
+of a checksum that happened to move. `reconciliation-checksum-utility`'s own `write` mode already reflects this —
+it refreshes checksums without touching `reviewed` on a clean pass — this section just makes explicit what that
+implementation choice depends on: that a real regenerate-and-compare step ran first and found a match, not that
+checksums matching alone is sufficient.
+
+**Why §7.2 runs project-wide (§1 step 9), not scoped to the Feature being worked on.** §7.1's own invalidation
+walk (above) doesn't stop at this Feature's boundary — a changed function can reach any behavior whose call tree
+touches it, in any `SB-NNN`, from any Feature, including one already shipped. Scoping §7.2 to just the current
+Feature's own `SB-NNN`s would let those invalidations sit uncaught, silently leaving a previously-approved
+behavior stale while this Feature's own review proceeds around it. The same reasoning is why it's a fixed-point
+scan, not a single sweep: resolving one disconnect (accepting a change, or evolving a function to reject one) can
+itself invalidate a different, previously-clean behavior discovered mid-pass, which has to re-enter scope rather
+than being missed because the scan already passed it once.
 
 **Why §7.1 is a subset check, not an equality check.** A use case's Technical Interpretation and an entry point's
 own designed pseudocode are written for different purposes and can never read the same — one is deliberately
