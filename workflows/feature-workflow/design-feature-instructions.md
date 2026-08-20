@@ -374,16 +374,20 @@ becomes the agent's to grant itself.
   three-way, not two:
   * **Accept the new behavior.** The design's evolution is correct, and the prior agreement is what's stale.
     Update the recorded content in place (§8) to the regenerated result, then present it fresh — `//REVIEW`, not
-    straight back to approved, since what's now recorded was never itself confirmed.
+    straight back to approved, since what's now recorded was never itself confirmed. Record it as `mutated` in
+    the design task's own chunk scope ([Chunk Scope](chunk-scope.md)) at the same time — an existing, already-
+    shipped behavior's expected result just changed, which is exactly what that status means.
   * **Reject it.** Push the design back (§8) to evolve the function further, until it satisfies whatever prompted
-    the change *and* this behavior regenerates to match its original, already-agreed content again.
+    the change *and* this behavior regenerates to match its original, already-agreed content again. Nothing
+    about the recorded behavior itself has changed, so nothing gets recorded in chunk scope for this resolution.
   * **Remove it.** Sometimes neither of the above is true: the evolved design doesn't produce a *different*
     result, it doesn't produce this behavior under any entry state at all anymore. Delete the leaf section and
     its `reconciliation.behaviors.{id}` entry entirely — mechanically trivial once decided, no re-derivation
     needed — but the decision itself carries at least as much weight as accept or reject, arguably more, since
     it's irreversible. It needs its own explicit bar, not a routine "does this look right" nod folded in with
     everything else being presented: ask the architect an unambiguous yes/no question naming exactly what's being
-    removed, and require an unqualified affirmative in response before deleting anything.
+    removed, and require an unqualified affirmative in response before deleting anything. Record it as `deleted`
+    in the design task's own chunk scope before or alongside the deletion itself.
   Accept and reject both resolve through a fresh `//REVIEW` — never straight back to approved, because what gets
   confirmed next is, in both branches, not the thing that was invalidated. Remove has no further `//REVIEW`: once
   confirmed, the behavior is simply gone.
