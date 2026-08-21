@@ -7,6 +7,9 @@
 * [HLD Template](../../templates/HLD-TEMPLATE.md), [Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md), [External Dependency Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md), [Specific Behavior Template](../../templates/SPECIFIC-BEHAVIOR-TEMPLATE.md) - the fill-in-the-blank shapes this process fills in
 * [Use Case Template §Technical Interpretation](../../templates/USE-CASE-TEMPLATE.md) - what §2 below produces
 * [Pseudocode Style](pseudocode-style.md) - the notation §2, §4, and §7.1 write and compare
+* [Chunk Scope](chunk-scope.md) - the per-design-task record §5.2 and §7.2 write incrementally
+* @agent-plugins-docs/docs/sub-agents/design-assistant/design-assistant.md - the sub-agent that actually carries out this process; its own [Architect's Guide](@agent-plugins-docs/docs/sub-agents/design-assistant/architect-guide.md) covers how to install it (no automated cross-platform build exists yet, WVR-94) and work with it day to day
+* @agent-plugins-docs/docs/design-the-feature-process.md - the detailed, agent-facing version of this same process design-assistant's own per-phase instructions are authored from; this document is the architect-facing copy (its own rewrite for that audience is WVR-144, not yet done)
 
 These are the steps an agent follows to carry out the `Design The Feature` step of the [Feature
 Workflow](feature-workflow.md) and produce a complete design directory. The architect's judgement is required at
