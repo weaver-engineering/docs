@@ -25,8 +25,14 @@ Not a single, end-of-task computation — each entry is recorded the moment its 
 already happens at three specific points in the process, never retroactively diffed or reconstructed afterward:
 
 * Design Feature Instructions §5.2 derives a leaf for the first time → append `{address, status: new}`.
-* §7.2's `//REDESIGN_REQUIRED` resolves as **accept** → append `{address, status: mutated}`.
-* §7.2's `//REDESIGN_REQUIRED` resolves as **remove** → append `{address, status: deleted}`.
+* §7.2's `//REDESIGN_REQUIRED` resolves as **accept**, for an address belonging to a *different*, already-shipped
+  design task → append `{address, status: mutated}` in *this* task's own chunk scope. An address that only has a
+  `new` entry in this same, still-open task's own chunk scope needs nothing further — it stays `new`, since
+  `Chunk The Design` only ever sees this task's final delivered state regardless of how many times it was
+  revised internally before shipping.
+* §7.2's `//REDESIGN_REQUIRED` resolves as **remove**, for an address belonging to a different, already-shipped
+  design task → append `{address, status: deleted}`. For an address only ever `new` in this same, still-open
+  task, remove its `new` entry entirely instead — nothing was ever delivered for `Chunk The Design` to retire.
 
 The file starts existing from the first `new` entry a design task produces, and keeps growing throughout the
 task's own lifetime — the same incremental, resumable shape as everything else in this process (a `//TODO`
