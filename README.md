@@ -18,7 +18,18 @@ Weaver Engineering projects have both a code repository and a separate docs repo
 repository and `the-loom-docs` documentation repository are the code and documentation of the `Loom` project. 
 Projects are managed in linear at [linear.app/weaver-engineering](https://linear.app/weaver-engineering)
 
+Each project is one Product (or Platform) in the Platform→Product→Use Case→Product Offering→Service→System→SLO
+continuum every project's docs repo is structured around — see [Concepts](#concepts) below.
+
 For more details see [Weaver Engineering Projects](projects/weaver-projects.md).
+
+## Concepts
+Platform, Product, Use Case, Product Offering, Service, System, and SLO/SLI are the shared vocabulary every
+project's docs repo structure (`PRODUCT.md`, `docs/services/`, `docs/features/`, `docs/offerings/`, ...) is built
+around, and each new term used anywhere in this repo's docs has a matching entry in the glossary.
+
+For more details see [The Product/Service Model](standards/product-service-model.md) and
+[Glossary](glossary.md).
 
 ## Workflows
 To work effectively and efficiently with software development agents while still retaining ownership of the code 
@@ -35,9 +46,9 @@ For more details see [Weaver Engineering Workflows](workflows/weaver-workflows.m
 
 ## Documentation Standards
 Project documentation is written to be read by AI agents as much as by architects: a fixed minimum directory
-structure per project docs repo, a fixed document shape (Context, numbered sections, optional Rationale/Appendix),
-and a machine-maintained per-document index supporting full-text search — with compliance checked at PR time,
-not left aspirational.
+structure per project docs repo — including a place for each of the Concepts above — a fixed document shape
+(Context, numbered sections, optional Rationale/Appendix), and a machine-maintained per-document index supporting
+full-text search — with compliance checked at PR time, not left aspirational.
 
 For more details see [Documentation Standards](standards/documentation-standards.md).
 

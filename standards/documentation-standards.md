@@ -14,26 +14,77 @@ through §5.
 ## 2 Minimum Directory Structure
 
 Every project's `<project>-docs` repo has at least this structure. Additional directories are allowed (e.g. a
-`docs/features/` or `docs/templates/`), but these are the required minimum, each with a defined purpose so it's
-unambiguous where new content belongs:
+`docs/templates/`), but these are the required minimum, each with a defined purpose so it's unambiguous where new
+content belongs:
 
 ```
+PRODUCT.md
 docs/
 docs/analysis/
 docs/analysis/use-cases/
 docs/analysis/user-personas/
+docs/features/
 docs/design/
 docs/architecture/
+docs/services/
+docs/infrastructure/
+docs/glossary.md
 notes/
 ```
 
+* **`PRODUCT.md`** — repo root, sibling to `README.md`. The project's own front-matter-bearing record: what the
+  project is, whether it's a Platform or a Product (a Platform is simply a Product whose customers are other
+  projects' own SDEs, not end-users — no separate structural marker), and pointers into the rest of this
+  structure. Every `<project>-docs` repo *is* one Product (or Platform) — see [Weaver Engineering
+  Projects](../projects/weaver-projects.md) for why "project" resolves to Product rather than Service.
+* **`docs/features/`** — one directory per Feature (`{feature-slug}/FEATURE.md`): a collection of Use Cases to be
+  implemented or supported. A Feature exists before design, before any Service decomposition, and before route to
+  market — it's a planning-level grouping, not a technical or commercial one.
+* **`docs/services/`** — one directory per Service (`{slug}/SERVICE.md`): a Service's own interface, its Internal
+  Components and External Dependencies, and its SLOs/SLIs. A Service is the unit Design actually decomposes a
+  Feature's use cases into — see §2.1 and `docs/design/`'s own Rationale below for how a Service's contents get
+  there.
+* **`docs/architecture/`** — how this Product's Services connect to each other. Does **not** hold any one
+  Service's own components or external dependencies (those live under that Service's own `docs/services/{slug}/`)
+  — this directory is exclusively the cross-Service, Product-level integration picture.
+* **`docs/infrastructure/`** — how Services are actually deployed: compute, network, datastores. The System layer
+  of the Platform→Product→Use Case→Product Offering→Service→System→SLO continuum.
+* **`docs/glossary.md`** — one entry per concept term used across this repo's docs: the term, a one-line
+  definition, and a link to its full definition elsewhere. **Any new concept introduced into this repo's docs
+  gets a glossary entry in the same PR that introduces it** — not deferred to a later cleanup pass.
+
+`docs/offerings/` (`{slug}/OFFERING.md`) is **conditional**, not part of the unconditional minimum above: it
+appears once the product has at least one deployable, consumable Service. A Product Offering is the channel — UI,
+CLI, API — through which a Service's endpoint is actually consumed; a product with nothing deployable yet has
+nothing for an Offering to expose, so the directory has no reason to exist until then.
+
 This structure applies to each project's own `<project>-docs` repo. It does not apply to this repo
 (`weaver-engineering/docs`), which organizes by `workflows/`, `projects/`, and `standards/` instead — but this
-repo still complies with §3 through §5.
+repo still complies with §3 through §5, including the glossary rule above: see this repo's own
+[glossary.md](../glossary.md).
+
+### 2.1 The Directory-Per-Entity Pattern
+
+A concept that grows multiple satellite artifacts over its lifetime — rather than staying a single, self-contained
+document — gets its own directory, with an UPPERCASE `{CONCEPT}.md` manifest as that directory's entry point:
+`PRODUCT.md`, `docs/services/{slug}/SERVICE.md`, `docs/features/{slug}/FEATURE.md`, and, once a Use Case has grown
+behaviors of its own, `docs/analysis/use-cases/{slug}/USE-CASE.md`. The manifest may carry machine-authored
+frontmatter (§3) alongside its narrative body — a hybrid a plain `.md` document elsewhere in this repo doesn't
+otherwise carry.
+
+This is a test, not a fixed list: apply it to any future concept by asking whether it accumulates its own growing
+set of sub-documents (a Service's components and dependencies; a Feature's use cases; a Use Case's own behaviors)
+or stays a single fact worth stating once. Product Offering hasn't yet been confirmed either way — nothing so far
+has shown it accumulating satellite artifacts the way a Service or Feature does, but that's not a settled no,
+just not yet a demonstrated yes.
 
 ## 3 Document Shape
 
-* Optional YAML frontmatter, if present, comes first.
+* Optional YAML frontmatter, if present, comes first. Where frontmatter is machine-authored — a `SERVICE.md`'s
+  structural metadata, a design task's reconciliation record — its absence is a **flagged deficiency**, never a
+  compliance failure: a tool that depends on it reports the gap and offers to (re)generate it, the same tolerance
+  `.index/` files already get (§4's own Rationale), rather than erroring outright. This is what keeps a document
+  usable even when it arrived from outside this ecosystem, or before its own frontmatter-writing tool existed yet.
 * `# Title` in InitCaps, matching the file's slug.
 * `## Context` — links, each with a one-line summary, to documents that provide context for this one. Not
   indexed.
@@ -53,6 +104,17 @@ Factual/normative content belongs in the numbered body. Justification belongs in
 polices that separation — it does not apply to itself by exception (see this document's own Rationale, below).
 
 ## 4 Indexing
+
+`.index/` files are hand-written today only because the tooling to generate and maintain them automatically
+doesn't exist yet. That tooling is already being built, not merely anticipated: the "Doc Search & Retrieval"
+Feature (`@agent-plugins-docs/docs/design/doc-search-and-retrieval/doc-search-and-retrieval-feature.md`, Linear
+[WVR-95](https://linear.app/weaver-engineering/issue/WVR-95)) realizes indexing itself
+(`@agent-plugins-docs/docs/analysis/use-cases/UC-003-index-a-path.md`), searching an existing index
+(`@agent-plugins-docs/docs/analysis/use-cases/UC-005-search-documentation.md`), and extracting content located by
+either (`@agent-plugins-docs/docs/analysis/use-cases/UC-006-extract-document-content.md`). Once it ships, it does
+a full reindex of a repo from scratch — a hand-written `.index/` entry doesn't get preserved or merged with the
+tool's own output, it gets overwritten by it. Don't hand-write or hand-update `.index/` entries when creating or
+editing a doc: the effort isn't worth spending against a reindex that's already going to discard it.
 
 Every directory under `docs/` (in this repo: every directory holding documents subject to this standard) gets a
 `.index/` subdirectory. For each `<slug>.md` in that directory:
@@ -254,6 +316,32 @@ split (§2) apply only to each project's own `<project>-docs` repo, not to this 
 predates that structure, already has an established and populated organization (`workflows/`, `projects/`,
 `standards/`), and isn't documenting one project's own analysis/design/architecture — restructuring it to fit a
 shape designed for a single project's docs would cost real migration effort for no clarity gain here.
+
+**Why "project" resolves to Product, not Service (§2).** WVR-166 asked directly whether the existing
+one-code-repo-plus-one-docs-repo unit maps to Product or Service, once a Product can decompose into several
+Services. It maps to Product: every `<project>-docs` repo observed so far (the-loom, magpie-weaver,
+weaver-projects) reads as a whole commercial solution (or, for the-loom, a Platform — a Product whose customers
+are other projects' own SDEs) rather than one functional execution boundary within a larger one. Mapping "project"
+to Service instead would mean a Product that grows a second Service has to fragment into a second code-and-docs
+repo pair — a far bigger, unforced structural commitment with nothing today suggesting it's actually needed.
+Service, instead, becomes a subdivision *within* one project's own docs repo (`docs/services/`), which is exactly
+what §2 now reflects.
+
+**Why `docs/design/` stays its own top-level directory rather than folding under `docs/features/`.** Once Specific
+Behaviors move to being owned by their Use Case (Analysis's own territory — see the deferred Feature Workflow
+rewrite this document doesn't itself cover) and a design task's reconciliation record moves off the behavior it
+binds and onto the design task instead, `docs/design/{feature-slug}/{design-task-ref}/` ends up holding *only*
+Design's own output: the HLD, the chunk scope, and that reconciliation record. Nothing Analysis owns lives there,
+and nothing Design owns leaks into `docs/analysis/` or `docs/features/` — keeping it a separate directory makes
+that split literal rather than a convention someone has to remember.
+
+**Why `docs/services/` isn't populated directly by Design.** A design task's own directory *proposes* new or
+extended Services, and the components, external dependencies, and interfaces they need, as part of its solution
+shape — nothing there is a standing fact about the product yet, only a candidate. Those proposals become real
+entries under `docs/services/{slug}/...` only once the design is actually delivered. `docs/design/` never holds
+standing product facts for the same reason a pull request isn't the same thing as what's already merged: a
+Feature's design directory can genuinely propose two competing shapes for the same Service before either ships,
+and nothing under `docs/services/` should have to referee that until one of them actually does.
 
 §6's `@{repo-slug}/{path}[/§M.N]` syntax settles what AgentPlugins' UC-001 (Discuss A Project Concept And
 Document It) had flagged as an open design question: each project's docs exist both as a local repo in the
