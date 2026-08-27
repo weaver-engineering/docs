@@ -43,13 +43,17 @@ Three GitHub rulesets (Settings → Rules → Rulesets), all `target: branch`:
 
 ### 2.1 Workflow
 
-A single `.github/workflows/main-gate.yml` (note: `.yml`, not `.yaml` — an existing inconsistency between the two docs repos that set the precedent, not worth correcting retroactively, but new docs repos should just pick one and move on rather than deliberate over it). It does **not** depend on `gate-checks` or `pnpm` at all — it's a self-contained `actions/github-script` step that checks out the PR head, reads the latest commit message, and validates two things: the title matches `^[A-Z]+-[0-9]+` (a task ref), and there's a non-empty body. Reports a `MainGate` commit status either way.
+Same shape as §1.1's code-repo `main-gate.yaml`: a single `.github/workflows/main-gate.yml` (note: `.yml`, not `.yaml` — an existing inconsistency between the two docs repos that set the precedent, not worth correcting retroactively, but new docs repos should just pick one and move on rather than deliberate over it), a thin wrapper around `pnpm gate-check main-gate`. The validation logic lives in `@weaver-engineering/gate-checks`'s own docs-repo check profile: the commit title matches `^[A-Z]+-[0-9]+` (a task ref), there's a non-empty body, and the PR has exactly one commit (see [Agent Output Review](agent-output-review.md) §2 for why that last one matters) — no coverage or build requirement, since a docs repo has no code to instrument. Reports a `MainGate` commit status. There is no `build-gate.yaml` for a docs repo: no spec/test/build promotion exists to gate.
 
-### 2.2 Branch Protection
+### 2.2 Consuming `gate-checks`
+
+Same pattern as §1.2, but lighter — a docs repo depends on `@weaver-engineering/gate-checks` only, never `@weaver-engineering/task-phases` (nothing here promotes between phase branches, so there's nothing for `task-phases` to do). Root `package.json` needs the `gate-checks` `devDependency` and its `gate-check` script; the workflow's registry auth is identical to §1.2's.
+
+### 2.3 Branch Protection
 
 One ruleset, "Validate main commits" — `include: ["refs/heads/main"]`, `allowed_merge_methods: ["squash"]`, requires the `MainGate` status check. Bypass actors: `OrganizationAdmin` and `RepositoryRole` id `5`, both mode `pull_request` (bypass still goes through a PR, doesn't allow a raw direct push — slightly tighter than the code repos' `always` bypass on `build-protection`/`main-protection`; not necessarily deliberate, just how the reference repos happened to be set up, but worth keeping since it's the safer of the two).
 
-### 2.3 Docs Repo Merge Settings
+### 2.4 Docs Repo Merge Settings
 
 Same as §1.4: `allow_merge_commit: false`, `allow_rebase_merge: true`, `allow_squash_merge: true`, `delete_branch_on_merge: false`.
 
@@ -72,3 +76,9 @@ Turn on a branch's ruleset **after** confirming its required workflow actually r
 | Weaver Engineering (this repo) | n/a (docs only) | ✅ |
 
 Update this table as each gap closes — it's the thing that should make "is project X set up right" a lookup, not a re-investigation.
+
+Every docs repo's ✅ above predates §2's gate-checks-based shape (WVR-158) — each still runs the older self-contained `actions/github-script` check, not `gate-checks`. That migration (plus the docs-repo check profile `gate-checks` itself needs) is tracked as its own follow-on ticket, not retrofitted into this table until it actually lands.
+
+# Rationale
+
+§2's docs-repo workflow originally stayed dependency-free on purpose — no `gate-checks`, no `pnpm`, just a self-contained script, since a docs repo has no code for `gate-checks`' other checks to instrument. [WVR-158](https://linear.app/weaver-engineering/issue/WVR-158/fix-the-tracking-pr-squash-merge-divergence-properly-and-define-the) revisited that once a second requirement appeared that code repos needed too — exactly one commit per PR before merge (see [Agent Output Review](agent-output-review.md) §2). Hand-rolling that a second time in the docs-repo script would have meant two implementations of the same check, free to drift apart; consuming `gate-checks` itself, via a lighter check profile that skips anything code-specific, keeps it to one.
