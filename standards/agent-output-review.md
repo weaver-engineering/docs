@@ -6,6 +6,7 @@
 * [CI/CD Setup](ci-cd-setup.md) - the branch-protection and gate-check shape this standard's enforcement builds on
 * [Documentation Standards](documentation-standards.md) - the document shape this standard follows
 * [Definition of Ready](definition-of-ready.md) / [WVR-160](https://linear.app/weaver-engineering/issue/WVR-160/enforce-a-11-ticketsession-model-architect-approval-for-newsub-work) - the sibling standards whose own Rationale sections both deferred headless-work review as "separate work, not an extension of this document" — this standard is that separate work, scoped to review
+* [Definition of Done](definition-of-done.md) - the sibling standard governing when a ticket's own work is complete; this standard governs the PR mechanism that work is actually merged through
 * [WVR-95 Design The Feature Retrospective](../workflows/feedback/feature-workflow/task-wvr-95.retro.md) - the retrospective whose Future Actions raised this standard ([WVR-158](https://linear.app/weaver-engineering/issue/WVR-158/fix-the-tracking-pr-squash-merge-divergence-properly-and-define-the))
 
 An agent's output — docs, design, or code — is reviewed by a human before it reaches `main`. This standard defines one git mechanism that applies uniformly, and how the depth of review differs between the two shapes of work an agent does.

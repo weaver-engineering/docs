@@ -5,6 +5,7 @@
 * [WVR-177](https://linear.app/weaver-engineering/issue/WVR-177/package-the-peer-session-startstop-mechanism-as-a-dispatcher) - the dispatcher tooling that applies this rule mechanically when it starts and stops a session; this standard defines the rule, not the mechanism that applies it
 * [WVR-95 Design The Feature Retrospective](../workflows/feedback/feature-workflow/task-wvr-95.retro.md) - the retrospective whose Future Actions raised the whole 1:1 ticket:session line of work, including this standard's own originating ticket ([WVR-174](https://linear.app/weaver-engineering/issue/WVR-174/define-a-session-naming-standard-so-a-session-can-be-renamed-to-match))
 * [Definition of Ready](definition-of-ready.md) - the sibling standard governing what a session is given to start from; this one governs what the session is called once it starts
+* [Definition of Done](definition-of-done.md) - the sibling standard governing what "done" means for the ticket this session's worker resolves
 
 A Weaver Engineering workspace has exactly two kinds of Claude Code session: one long-lived **dispatcher**, rooted at `weaver-engineering` itself, which starts and stops every other session; and any number of **workers**, each spun up by the dispatcher with its root, git branch, Linear task, and agent persona all fixed at startup and never changed thereafter. This standard defines what a worker is named, and why that name never needs to change.
 

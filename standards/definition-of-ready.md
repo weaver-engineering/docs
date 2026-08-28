@@ -4,6 +4,7 @@
 * [Weaver Engineering Workflows](../workflows/weaver-workflows.md) - the Feature Workflow and Chunk Cycle this standard sits alongside
 * [Chunk Cycle Workflow](../workflows/chunk-cycle/chunk-cycle-workflow.md) - the headless, the-loom-orchestrated implementation track this standard does not cover
 * [Documentation Standards](documentation-standards.md) - the document shape this standard follows
+* [Definition of Done](definition-of-done.md) - the sibling standard governing what "done" means for the ticket a session resolves; this one governs what the session is given to start from
 * [WVR-95 Design The Feature Retrospective](../workflows/feedback/feature-workflow/task-wvr-95.retro.md) - the retrospective whose Future Actions raised this standard ([WVR-161](https://linear.app/weaver-engineering/issue/WVR-161/definition-of-ready)) alongside its Definition of Done sibling ([WVR-160](https://linear.app/weaver-engineering/issue/WVR-160/enforce-a-11-ticketsession-model-architect-approval-for-newsub-work))
 
 An architect works most Linear issues together with an assisting agent session, not alone and not headlessly. This standard defines when such an issue is ready to be handed to a session — in effect, what "helping the architect work effectively and efficiently with an assisting agent" requires an issue to already contain. It is a definition, not a gate: checking an issue against it today is a manual, interactive judgement the architect makes before opening or resuming a session against it (§4).
