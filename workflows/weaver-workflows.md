@@ -91,6 +91,10 @@ case ever sees (a multiplayer leaderboard's score-collation pipeline, say). A Pr
 Design's own, separate claim about what its chosen components and functions will actually produce. Required and
 Predicted are always independent artifacts, on purpose — see §4.
 
+//TODO (WVR-180) — a Required Product Behaviour can also be derived directly from a Feature's own capability,
+independent of any use case; see [Analysing A Feature §4](feature-workflow/analysing-a-feature.md). Reconciling
+that route into this section, and into Required Behaviors' own mechanics, is still open.
+
 See [Feature Workflow](feature-workflow/feature-workflow.md) and [Design Feature
 Instructions](feature-workflow/design-feature-instructions.md) for how each is actually built.
 
@@ -173,7 +177,9 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | Artifact | Description | Created By |
 |---|---|---|
 | [Feature Doc](feature-workflow/initial-feature-document.md) | The seed narrative a Feature starts from. | `Start` |
-| [Use Case](feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations against one or more Services. | Analyse Feature |
+| [Capability](feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. | Analyse Feature |
+| [User Persona](feature-workflow/user-personas.md) | A use case's human actor, formalized as a Goal and its Frustration(s). | Analyse Feature |
+| [Use Case](feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. | Analyse Feature |
 | [Required Product Behaviour](feature-workflow/required-behaviors.md) | A use case operation's cumulative Given/Required Effect, derived and checksummed. | Analyse Feature |
 | [Service Flows](feature-workflow/architect-feature.md) | The Service topology and data flow chosen to satisfy a Feature's use cases. | Architect Feature |
 | [Product Offering](standards/concepts/product-offering.md) | The channel (UI/CLI/API) a Service's interface is actually delivered through. | Architect Feature |

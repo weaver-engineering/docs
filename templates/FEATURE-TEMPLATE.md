@@ -5,14 +5,16 @@
   `docs/features/{slug}/FEATURE.md` follows
 * [Initial Feature Document](../workflows/feature-workflow/initial-feature-document.md) - what a Feature is, and
   what this document must capture at minimum
+* [Analysing A Feature](../workflows/feature-workflow/analysing-a-feature.md) - what a capability is, and how use
+  cases turn one into a benefit
 * [Feature Workflow](../workflows/feature-workflow/feature-workflow.md) - the workflow this document is the
   `Start` entry requirement for
 
 Template for a Feature's own manifest, `docs/features/{feature-slug}/FEATURE.md` — the directory-per-entity
-pattern, since a Feature accumulates state as the workflow proceeds: its use cases as `Analyse Feature` finds
-them, its Service Flows and design tasks as `Architect Feature`/`Design Service` complete them. The template
-itself is in the Appendix below, since it's reference material to copy from, not indexed content in its own
-right.
+pattern, since a Feature accumulates state as the workflow proceeds: its capabilities and use cases as `Analyse
+Feature` finds them, its Service Flows and design tasks as `Architect Feature`/`Design Service` complete them. The
+template itself is in the Appendix below, since it's reference material to copy from, not indexed content in its
+own right.
 
 # Appendix
 
@@ -33,13 +35,20 @@ it be present.}
 {enough narrative to understand the general idea of what's required and why, sufficient for Analyse Feature to
 begin — it does not need to already enumerate every use case, since analysis is exactly what discovers those}
 
-## 2 Use Cases
+## 2 Capabilities
+
+{grows as Analyse Feature identifies them — one bullet per capability, added as each is named, never removed; see
+Analysing A Feature §1}
+
+* **{capability-slug}** — {one-line statement of what it lets the actor do}
+
+## 3 Use Cases
 
 {grows as Analyse Feature identifies them — one bullet per use case, added as each is written, never removed}
 
 * [{use-case-slug}](../../analysis/use-cases/{use-case-slug}/USE-CASE.md)
 
-## 3 Design
+## 4 Design
 
 {grows as Architect Feature / Design Service proceed}
 

@@ -3,7 +3,10 @@
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step (`Analyse Feature`) that produces use cases and
   their Required Product Behaviours
-* [Initial Feature Document](initial-feature-document.md) - the Feature a use case is grouped under
+* [Initial Feature Document](initial-feature-document.md) - what a Feature is, and how it relates to a use case
+* [Analysing A Feature](analysing-a-feature.md) - how a use case's operations relate to a Feature's own
+  capabilities, and what turns one into a benefit
+* [User Personas](user-personas.md) - the goal/frustration pair a use case's human actor is formalized as
 * [The Product/Service Model](../../standards/product-service-model.md) - where Use Case sits in the wider
   Platform/Product/Service continuum
 * [Required Behaviors](required-behaviors.md) - what a use case's operations turn into once analysed
@@ -50,8 +53,11 @@ Services is the normal case, not an exception needing special handling.
 ## 2 Actors, Operations, And Logical Response
 
 An actor is whoever (or whatever) invokes the use case's operations — an end-user, an internal developer of
-another project, or another system entirely. A use case may also involve supporting actors: other systems or
-roles the primary actor depends on to reach their goal, without being the one pursuing it themselves.
+another project, or another system entirely. A human actor is formalized as a [User Persona](user-personas.md): a
+stated Goal and Frustration(s) that make the use case worth having (User Personas §1) — a systematic actor has no
+persona, since it has no goal or frustration of its own (User Personas §2). A use case may also involve supporting
+actors: other systems or roles the primary actor depends on to reach their goal, without being the one pursuing it
+themselves.
 
 The use case's steps decompose into two things, not one: **operations** — the actor invoking one of *some*
 Service's own interface endpoints — and, for each operation, the **combined logical response** the Service is
@@ -69,13 +75,17 @@ separate decisions about that interface, not the whole decision — see [Weaver 
 §5](../weaver-workflows.md) for the other three (Architecture decides the technology, Design crystallizes the
 concrete specification, Product Offering decides how it's actually delivered for consumption).
 
+An operation either invokes a Feature's own capability directly, or is specified inline when no capability yet
+covers what it needs — see [Analysing A Feature §4](analysing-a-feature.md) for the distinction and how each is
+derived into a Required Behavior.
+
 ## 3 Scope
 
 A use case stays at the Product level: it is never filed under, or owned by, any one Service's own
-`docs/services/{slug}/` — it belongs to the Feature that groups it (see [Initial Feature
-Document](initial-feature-document.md)). This is what keeps a use case's requirement stable even if Design later
-decides to change which Service (or Services) satisfy it, or to split one Service's responsibility into two: the
-requirement didn't move, only its realization did.
+`docs/services/{slug}/`, and it is not owned by any one Feature either — it may invoke capabilities drawn from more
+than one Feature on the way to its actor's goal (see [Analysing A Feature](analysing-a-feature.md)). This is what
+keeps a use case's requirement stable even if Design later decides to change which Service (or Services) satisfy
+it, or to split one Service's responsibility into two: the requirement didn't move, only its realization did.
 
 Filed as `docs/analysis/use-cases/{use-case-slug}/USE-CASE.md` — the directory-per-entity pattern
 (`documentation-standards.md` §2.1), since a use case now always grows its own `behaviors/` subdirectory

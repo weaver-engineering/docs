@@ -5,6 +5,10 @@
   sections, Rationale/Appendix) this template follows, and §2.1's directory-per-entity pattern this document uses
 * [Use Cases](../workflows/feature-workflow/use-cases.md) - what a use case is within the Feature Workflow, and
   why its boundary is the actor's real goal, not operation count
+* [User Personas](../workflows/feature-workflow/user-personas.md) - what the `Actor` field below links to, when the
+  actor is human
+* [Analysing A Feature](../workflows/feature-workflow/analysing-a-feature.md) - how an operation relates to a
+  Feature's own capability, deferred to or defined inline
 * [Required Behaviors](../workflows/feature-workflow/required-behaviors.md) - what this document's Technical
   Interpretation and operations turn into, and the `behaviors/` subdirectory they're derived into
 * [Pseudocode Style](../workflows/feature-workflow/pseudocode-style.md) - the notation the Technical
@@ -21,7 +25,8 @@ indexed content in its own right.
 ```
 # {Use Case Slug} — {Title}
 
-**Actor:** {link to the persona doc under `docs/analysis/user-personas/`}
+**Actor:** {link to the persona doc under `docs/analysis/user-personas/`, or the systematic actor's name directly
+if this use case has no persona (User Personas §2)}
 **Scope:** {one or two lines on what this use case does *not* cover, with a
 forward reference to §7 if there's a longer list}
 
@@ -82,10 +87,11 @@ written, in the sense that matters here: it is never edited to reflect whatever 
 and it does not change just because that solution does. An edit to this section is an edit to the use case's own
 requirement, not ordinary design work.
 
-While writing this pseudocode, every point where the actor crosses a Service's own boundary is an operation
-(Use Cases §2) — identify each one as it's written. Once each operation is identified, Required Behaviors derives
-its Required Product Behaviours into `behaviors/{operation-slug}.md`, checksummed against this Technical
-Interpretation and the rest of this use case; link each operation to its own behaviour file here.}
+While writing this pseudocode, every point where the actor invokes the product is an operation (Use Cases §2) —
+identify each one as it's written, noting whether it defers to an existing capability or needs its own inline spec
+(Analysing A Feature §4). Once each operation is identified, Required Behaviors derives its Required Product
+Behaviours into `behaviors/{operation-slug}.md`, checksummed against this Technical Interpretation and the rest of
+this use case; link each operation to its own behaviour file here.}
 ```
 
 # Rationale
