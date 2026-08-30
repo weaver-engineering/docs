@@ -21,7 +21,8 @@ A capability is real and designable the moment it's named, independent of anythi
 
 ## 2 A Persona's Use Case Is What Turns A Capability Into A Benefit
 
-A [User Persona](user-personas.md) states a Goal and one or more Frustrations. A use case is a sequence of
+A [User Persona](user-personas.md) states a Role, one or more Goals, one or more Frustrations, and its Technical
+Proficiency. A use case is a sequence of
 **operations** a persona performs, some of which invoke a Feature's own capability, to reach that goal and relieve
 that frustration (Use Cases §1). Only in relation to a persona's use case does a capability become a **benefit** —
 a capability with no exercising use case is still valid, but its benefit, and to whom, is unproven.

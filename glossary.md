@@ -38,4 +38,4 @@ copy of its content.
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
 | [Test Infra](workflows/feature-workflow/architect-tests.md) | //TODO — a Service's own test infrastructure. |
 | [Use Case](workflows/feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. |
-| [User Persona](workflows/feature-workflow/user-personas.md) | A use case's human actor, formalized as a Goal and its Frustration(s). |
+| [User Persona](workflows/feature-workflow/user-personas.md) | A use case's human actor, formalized as a Role, Goals, Frustrations, and a Technical Proficiency. |

@@ -178,7 +178,7 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 |---|---|---|
 | [Feature Doc](feature-workflow/initial-feature-document.md) | The seed narrative a Feature starts from. | `Start` |
 | [Capability](feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. | Analyse Feature |
-| [User Persona](feature-workflow/user-personas.md) | A use case's human actor, formalized as a Goal and its Frustration(s). | Analyse Feature |
+| [User Persona](feature-workflow/user-personas.md) | A use case's human actor, formalized as a Role, Goals, Frustrations, and a Technical Proficiency. | Analyse Feature |
 | [Use Case](feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. | Analyse Feature |
 | [Required Product Behaviour](feature-workflow/required-behaviors.md) | A use case operation's cumulative Given/Required Effect, derived and checksummed. | Analyse Feature |
 | [Service Flows](feature-workflow/architect-feature.md) | The Service topology and data flow chosen to satisfy a Feature's use cases. | Architect Feature |

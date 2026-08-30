@@ -10,16 +10,19 @@
 
 ## 1 What A User Persona Is
 
-A User Persona is a named archetype of a use case's actor, stated as a **Goal** — the same real goal a use case is
-scoped to (Use Cases §1) — and one or more **Frustrations**: what already goes wrong, or costs effort, on the way
-to that goal today. A persona exists to answer "who actually wants this, and why" concretely enough that a
-Feature's benefit (Analysing A Feature §2) can be checked against a real actor rather than an assumed one.
+A User Persona is a named archetype of a use case's actor, stated as: a **Role** — what it actually does, and
+whether it's the primary actor for the use cases it appears in or only a supporting one; one or more **Goals** —
+the same real goal(s) a use case is scoped to (Use Cases §1); one or more **Frustrations** — what already goes
+wrong, or costs effort, on the way to those goals today; and its **Technical Proficiency** — how capable it is,
+and what that implies for how a use case can work with it. A persona exists to answer "who actually wants this,
+and why" concretely enough that a Feature's benefit (Analysing A Feature §2) can be checked against a real actor
+rather than an assumed one.
 
 A persona is not every fact about a person — job title, demographics, tools they use elsewhere — only what's
-load-bearing for *this* Product: the goal a use case pursues on their behalf, and the frustration that goal's
-satisfaction is measured against. The toaster's `cook` (goal: cook food; frustrated by having to monitor bread
+load-bearing for *this* Product. The toaster's `cook` (goal: cook food; frustrated by having to monitor bread
 toasting) and `cleaner` (goal: clean the kitchen; frustrated by the toaster dropping crumbs when moved) are each
-just that much, no more.
+just that much, no more — see [User Persona Template](../../templates/USER-PERSONA-TEMPLATE.md) for the full
+shape, extracted from AgentPlugins' own existing persona docs.
 
 ## 2 Not Every Actor Needs A Persona
 
@@ -41,11 +44,14 @@ the first time it needs one, rather than requiring every persona to be pre-decla
 
 # Rationale
 
-**Why goal and frustration, and nothing more.** A persona exists to make one check possible: is a Feature's
-capability actually a benefit, for someone (Analysing A Feature §2)? Goal and frustration are exactly the two
-facts that check needs — anything else about a persona (demographics, job title) has no bearing on whether a given
-capability helps them, and including it invites treating this document as a marketing persona instead of an
-analysis primitive.
+**Why Role, Goals, Frustrations, and Technical Proficiency, and nothing more.** Goals and Frustrations are what
+make a capability checkable as a benefit (Analysing A Feature §2). Role and Technical Proficiency are extracted
+from AgentPlugins' own existing persona docs, not invented here: three personas (`architect`,
+`architects-assistant`, `design-assistant`) had already converged on including both independent of any written
+standard — Role settles whether a use case is written from this persona's own point of view at all, and Technical
+Proficiency settles how much a use case can delegate to this persona outright versus needs a human actively
+present. Anything else about a persona (demographics, job title, tools used elsewhere) still has no bearing on any
+of this, and including it invites treating this document as a marketing persona instead of an analysis primitive.
 
 **Why a persona isn't directory-per-entity.** Applying Documentation Standards §2.1's own test: a persona doesn't
 accumulate a growing set of sub-documents the way a Feature (use cases, service flows, design tasks) or a Use Case

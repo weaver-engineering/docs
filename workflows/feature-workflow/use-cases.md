@@ -54,8 +54,9 @@ Services is the normal case, not an exception needing special handling.
 
 An actor is whoever (or whatever) invokes the use case's operations — an end-user, an internal developer of
 another project, or another system entirely. A human actor is formalized as a [User Persona](user-personas.md): a
-stated Goal and Frustration(s) that make the use case worth having (User Personas §1) — a systematic actor has no
-persona, since it has no goal or frustration of its own (User Personas §2). A use case may also involve supporting
+stated Role, Goals, and Frustrations that make the use case worth having, plus a Technical Proficiency (User
+Personas §1) — a systematic actor has no persona, since it has no goal or frustration of its own (User Personas
+§2). A use case may also involve supporting
 actors: other systems or roles the primary actor depends on to reach their goal, without being the one pursuing it
 themselves.
 
