@@ -2,6 +2,8 @@
 
 ## Context
 * [Feature Workflow](feature-workflow.md) - the `Analyse Feature` step this document is the output of
+* [Analysing A Feature §4](analysing-a-feature.md) - the direct-from-Feature derivation route this document
+  doesn't yet describe (see `//TODO` below)
 * [Use Cases §4](use-cases.md) - what a use case's operations turn into
 * [Weaver Engineering Workflows §3](../weaver-workflows.md) - where Required Product Behaviour sits among the
   three kinds of behaviour, and the two reconciliations it feeds
@@ -19,6 +21,11 @@ built to satisfy, once Design has bound it to something real (see [Weaver Engine
 §4](../weaver-workflows.md), Feature-level reconciliation).
 
 ## 2 Not Independently Authored — Derived, And Checksummed
+
+//TODO (WVR-180) — this section describes only the via-use-case derivation route. A capability's Required
+Behavior can also be derived directly from its Feature-level definition, with no use case involved (see
+[Analysing A Feature §4](analysing-a-feature.md)); reconciling that route's filing location and checksum source
+into this document is still open.
 
 A Required Product Behaviour is never written freehand. It's a mechanical/LLM derivation from the use case's own
 Goal, Preconditions, Main Success Scenario, and Extensions — the same kind of move Design already makes turning a

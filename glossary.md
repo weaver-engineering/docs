@@ -14,6 +14,8 @@ copy of its content.
 
 | Term | Definition |
 | :--- | :--- |
+| [Benefit](workflows/feature-workflow/analysing-a-feature.md) | What a capability becomes only in relation to a persona's use case that actually exercises it — not a property of a Feature by itself. |
+| [Capability](workflows/feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. |
 | [Chaos Testing](workflows/feature-workflow/architect-deployment.md) | //TODO — what chaos testing a Service is required to pass. |
 | [Consumable Service](workflows/feature-workflow/deploy-offering.md) | //TODO — what makes a Service actually consumable through its Offering, as distinct from merely Functional. |
 | [Continuous Deployment](workflows/feature-workflow/architect-deployment.md) | //TODO — Architect Deployment's own CD decisions. |
@@ -21,7 +23,7 @@ copy of its content.
 | [Design Docs](workflows/feature-workflow/design-directory-and-hld.md) | A design task's own directory: its HLD, chunk scope, reconciliation record, and every proposal it's made. |
 | [Dev Infra](workflows/feature-workflow/architect-implementation.md) | //TODO — a Service's own development infrastructure. |
 | [Directory-Per-Entity Pattern](standards/documentation-standards.md#21-the-directory-per-entity-pattern) | A concept that grows multiple satellite artifacts gets its own directory with an UPPERCASE `{CONCEPT}.md` manifest. |
-| [Feature](workflows/feature-workflow/initial-feature-document.md) | A collection of use cases to be implemented or supported, existing before design, Service decomposition, or route to market. |
+| [Feature](workflows/feature-workflow/initial-feature-document.md) | A logical grouping of capabilities a customer can perform through the product, existing before design, Service decomposition, or route to market. |
 | [Functional Service](workflows/feature-workflow/deploy-service.md) | //TODO — what makes a deployed Service "functional." |
 | [Observability](workflows/feature-workflow/architect-implementation.md) | //TODO — what observability Architect Implementation is required to provide for. |
 | [Platform](standards/concepts/platform.md) | A Product whose customers are other projects' own SDEs rather than end-users (e.g. `the-loom`). |
@@ -35,4 +37,5 @@ copy of its content.
 | [SLO / SLI](standards/concepts/slo.md) | A quantified reliability target for one Service, and what's measured to check it. Recorded per-Service. |
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
 | [Test Infra](workflows/feature-workflow/architect-tests.md) | //TODO — a Service's own test infrastructure. |
-| [Use Case](workflows/feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations against one or more Services. |
+| [Use Case](workflows/feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. |
+| [User Persona](workflows/feature-workflow/user-personas.md) | A use case's human actor, formalized as a Role, Goals, Frustrations, and a Technical Proficiency. |
