@@ -37,11 +37,8 @@ notes/
   projects' own SDEs, not end-users — no separate structural marker), and pointers into the rest of this
   structure. Every `<project>-docs` repo *is* one Product (or Platform) — see [Weaver Engineering
   Projects](../projects/weaver-projects.md) for why "project" resolves to Product rather than Service.
-* **`docs/features/`** — one directory per Feature (`{feature-slug}/FEATURE.md`): a logical grouping of
-  capabilities a customer can perform through the product (see [Analysing A
-  Feature](../workflows/feature-workflow/analysing-a-feature.md)). A Feature exists before design, before any
-  Service decomposition, and before route to market — it's a planning-level grouping, not a technical or
-  commercial one.
+* **`docs/features/`** — one directory per Feature (`{feature-slug}/FEATURE.md`): a logical collection of actions that a customer can do with a product. A Feature exists before design, before any Service decomposition, and before route to
+  market — it's a planning-level grouping, not a technical or commercial one.
 * **`docs/services/`** — one directory per Service (`{slug}/SERVICE.md`): a Service's own interface, its Internal
   Components and External Dependencies, and its SLOs/SLIs. A Service is the unit Design actually decomposes a
   Feature's use cases into — see §2.1 and `docs/design/`'s own Rationale below for how a Service's contents get
