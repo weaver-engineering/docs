@@ -59,7 +59,7 @@ FUNCTION view_own_account(bearer_token):
   RETURN 200, account
 ```
 
-The same operation, bound, as `accounts.interface.view-account`'s own pseudocode once Architect Services and Gap
+The same operation, bound, as `accounts.interface.view-account`'s own pseudocode once Architect Service and Gap
 Analysis have run:
 
 ```

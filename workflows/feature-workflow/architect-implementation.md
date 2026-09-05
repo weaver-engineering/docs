@@ -6,8 +6,9 @@
 * [Chunk Cycle Workflow](../chunk-cycle/chunk-cycle-workflow.md) - the `Implement Service` step this pairs with
 
 //TODO - define Architect Implementation: the responsibility paired with `Implement Service`, producing Dev
-Infra, Continuous Integration, and Observability, the same way Architect Feature/Architect Services pair with
-Analysis/Design today. Not yet discussed in enough depth to write up properly (Weaver Engineering Workflows §2 —
+Infra, Continuous Integration, and Observability, the same way Architect Feature/Architect Solution pair with
+Analysis, or Architect Service pairs with Design, today. Not yet discussed in enough depth to write up properly
+(Weaver Engineering Workflows §2 —
 not formally required, but Implement Service can proceed without it, asserting its own infra/CI/observability
 choices without a recorded justification to reconcile them against).
 

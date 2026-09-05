@@ -13,9 +13,11 @@
 
 A Feature is a logical grouping of **capabilities** — things a customer can do through the product (see
 [Analysing A Feature §1](analysing-a-feature.md)). It exists before design, before any decision about which
-Service (or Services) will realize it, and before any route to market — a Feature can be named and scoped the
-moment someone has an idea worth pursuing, long before anything about *how* it's delivered is known, and before
-any use case has been written against it at all.
+functional boundary — Service or Library (`concepts/service.md` §1) — will realize it, and before any route to
+market — a Feature can be named and scoped the moment someone has an idea worth pursuing, long before anything
+about *how* it's delivered is known, and before any use case has been written against it at all. A Feature
+justifies *why* a piece of work is worth doing; it is never itself the boundary a spec is written against
+(Weaver Engineering Workflows, intro).
 
 A capability is not the same thing as a use case: several use cases may invoke the same capability, a capability
 may be invoked by no use case at all, and a use case may invoke capabilities drawn from more than one Feature. A

@@ -6,54 +6,117 @@
 * [The Product/Service Model](../standards/product-service-model.md) - Platform/Product/Use Case/Product
   Offering/Service/System/SLO, the continuum the artifacts below sit within
 * [Feature Workflow](feature-workflow/feature-workflow.md) - detail for `Analyse Feature`, `Architect Feature`,
-  `Design Service`, and `Architect Services`
+  `Architect Solution`, `Design Service`, and `Architect Service`
 * [Chunk Cycle](chunk-cycle/chunk-cycle-workflow.md) - detail for `Implement Service` and `Test Service`
 * [Feature Testing](feature-workflow/feature-testing.md) - detail for `Test Feature`
+
+A spec is written against a defined functional boundary, not against a Feature or a Product directly — a Feature
+justifies *why* the work is worth doing, but the spec itself binds to a boundary that can actually be built and
+tested. A Service (deployable) is the common case; a Library (specifiable, but never deployed on its own) is
+accommodated by the same model but parked, undeveloped beyond this mention, until it's actually needed (see
+[Service §1](../standards/concepts/service.md)).
 
 ## 1 Architecture Is A Cross-Cutting Responsibility, Not A Phase
 
 Every phase of the SDLC — Analysis, Design, Implement, Test, Deploy — is paired with its own Architect
 responsibility, in continuous two-way interplay rather than a one-shot handoff. Architecture is never a sub-step
-performed once inside Analysis or Design; it runs the whole way across, with its own artifacts at every phase:
+performed once inside Analysis or Design; it runs the whole way across, with its own artifacts at every phase.
+
+Analysis pairs with two distinct Architect roles, not one: `Architect Feature` decides how the Feature is actually
+offered for consumption (Product Offering), while `Architect Solution` decides the Service topology and data flow
+that satisfies it (Service Flows) — naming the functional boundary each use case's operations are actually
+specified against. Design, in turn, pairs with a single `Architect Service` role, folding what an earlier version
+of this process treated as a separate `Architect Services` step, ahead of Design, into the same
+paired-with-a-phase pattern every other phase already follows:
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> FeatureDoc[/Feature Doc/]
-    FeatureDoc --> Analysis[Analysis]
-    UserPersona[/User Persona/] -.-> Analysis
-    Analysis <--> Architect1[Architect]
-    Analysis --> UseCases[/Use Cases, Behaviours/]
-    Architect1 --> ProductOffering[/Product Offering/]
+    classDef layout stroke-width:1px,fill:none
+    FEATURE@{shape: doc, label: "Feature Doc"} --> ANAL_LAYOUT
+    subgraph ANAL_LAYOUT[" "]
+        direction LR
+        USER_PERSONAS@{shape: documents, label: "User Persona"} <--> ANALYSIS@{shape: subproc, label: "Analysis"}
+        USE_CASES@{shape: documents, label: "Use Cases"} <--> ANALYSIS
+        subgraph ANAL["Analysis"]
+            direction LR
+            ANALYSIS <--> ARCHITECT_FEATURE@{shape: subproc, label: "Architect Feature"}
+            ANALYSIS <--> ARCHITECT_SOLUTION@{shape: subproc, label: "Architect Solution"}
+        end
+        ARCHITECT_FEATURE --> PRODUCT_OFFERING@{shape: doc, label: "Product Offering"}
+        ARCHITECT_SOLUTION --> SERVICE_FLOWS@{shape: documents, label: "Service Flows"}
+    end
+    ANAL_LAYOUT:::layout
 
-    UseCases --> Design[Design]
-    Design <--> Architect2[Architect]
-    Design --> ServicesOut[/Services, Components, Functions, Behaviours/]
-    Architect2 --> DataServiceFlows[/Data & Service Flows/]
-    Architect2 --> ServiceBoundaries[/Service Boundaries/]
+    ANAL_LAYOUT --> BEHAVIOURS@{shape: doc, label: "Behaviours"} --> DESIGN_LAYOUT
+    ANAL_LAYOUT --> BOUNDARIES@{shape: doc, label: "Boundaries"} --> DESIGN_LAYOUT
 
-    ServicesOut --> Implement[Implement]
-    Implement <--> Architect3[Architect]
-    Implement --> ImplementOut[/Service Tests, Source Code, Metrics/]
-    Architect3 --> DevInfra[/Dev Infra/]
-    Architect3 --> CI[/Continuous Integration/]
-    Architect3 --> Observability[/Observability/]
+    subgraph DESIGN_LAYOUT[" "]
+        direction LR
+        BEHAVIOR_RECONCILIATION@{shape: doc, label: "Behaviour Reconciliation"} <--> DESIGN@{shape: subproc, label: "Design"}
+        CALL_TREES@{shape: documents, label: "Call Trees"} <--> DESIGN
+        FUNCTIONS@{shape: documents, label: "Functions"} <--> DESIGN
+        FUNCTIONAL_BOUNDARIES@{shape: documents, label: "Functional Boundaries"} <--> DESIGN
+        subgraph DES[Design]
+            direction LR
+            DESIGN <--> ARCHITECT_SERVICE@{shape: subproc, label: "Architect Service"}
+        end
+        ARCHITECT_SERVICE --> SERVICE_INTERFACE@{shape: doc, label: "Service Interface"}
+        ARCHITECT_SERVICE --> SYSTEM_REQUIREMENTS@{shape: doc, label: "System Requirements"}
+        ARCHITECT_SERVICE --> INTEGRATIONS@{shape: documents, label: "Integrations"}
+    end
+    DESIGN_LAYOUT:::layout
 
-    ImplementOut --> Test[Test]
-    Test <--> Architect4[Architect]
-    Test --> TestResults[/Test Results/]
-    Architect4 --> TestInfra[/Test Infra/]
+    DESIGN_LAYOUT --> CHUNKS@{shape: documents, label: "Chunks"} --> IMPLEMENT_LAYOUT
+    DESIGN_LAYOUT --> CHUNK_SEQUENCE@{shape: doc, label: "Chunk Sequence"} --> IMPLEMENT_LAYOUT
 
-    TestResults --> Deploy[Deploy]
-    Deploy <--> Architect5[Architect]
-    Deploy --> Product[/Product/]
-    Architect5 --> ChaosTesting[/Chaos Testing/]
-    Architect5 --> ContinuousDeployment[/Continuous Deployment/]
+    subgraph IMPLEMENT_LAYOUT[" "]
+        direction LR
+        BEHAVIOUR_TESTS@{shape: documents, label: "Behaviour Tests"} <--> IMPLEMENT@{shape: subproc, label: "Implement"}
+        METRICS@{shape: documents, label: "Metrics"} <--> IMPLEMENT
+        subgraph IMPL[Implementation]
+            direction LR
+            IMPLEMENT <--> ARCHITECT_IMPLEMENTATION@{shape: subproc, label: "Architect Implementation"}
+        end
+        ARCHITECT_IMPLEMENTATION --> DEV_INFRA@{shape: doc, label: "Development Infrastructure"}
+        ARCHITECT_IMPLEMENTATION --> CONTINUOUS_INTEGRATION@{shape: doc, label: "Continuous Integration"}
+        ARCHITECT_IMPLEMENTATION --> OBSERVABILITY@{shape: doc, label: "Observability / SLIs"}
+    end
+    IMPLEMENT_LAYOUT:::layout
 
-    Product --> Done([Done])
+    IMPLEMENT_LAYOUT --> SOURCE_CODE@{shape: documents, label: "Source Code"} --> TEST_LAYOUT
+
+    subgraph TEST_LAYOUT[" "]
+        direction LR
+        INTEGRATION_TESTS@{shape: documents, label: "Integration Tests"} <--> TEST@{shape: subproc, label: "Test"}
+        subgraph TST["Test"]
+            direction LR
+            TEST <--> ARCHITECT_TEST@{shape: subproc, label: "Architect Testing"}
+        end
+        ARCHITECT_TEST --> TEST_INFRA@{shape: doc, label: "Test Infrastructure"}
+    end
+    TEST_LAYOUT:::layout
+
+    TEST_LAYOUT --> FUNCTIONAL_FEATURE@{shape: stadium, label: "Functional Feature"} --> DEPLOY_LAYOUT
+
+    subgraph DEPLOY_LAYOUT[" "]
+        direction LR
+        subgraph DEPL["Deployment"]
+            direction LR
+            DEPLOY@{shape: subproc, label: "Deploy"} <--> ARCHITECT_DEPLOYMENT@{shape: subproc, label: "Architect Deployment"}
+        end
+        ARCHITECT_DEPLOYMENT --> CONTINUOUS_DELIVERY@{shape: doc, label: "Continuous Delivery"}
+        ARCHITECT_DEPLOYMENT --> CHAOS_TESTING@{shape: doc, label: "Chaos Testing"}
+    end
+    DEPLOY_LAYOUT:::layout
+
+    DEPLOY_LAYOUT --> DEPLOYED_FEATURE@{shape: stadium, label: "Deployed Feature"} --> PRODUCT@{shape: stadium, label: "Product"}
 ```
 
-Each phase produces its own artifacts (left/center); its paired Architect responsibility produces its own,
-distinct artifacts (right) — never the same document wearing two hats.
+Each phase produces its own artifacts; its paired Architect responsibility produces its own, distinct artifacts —
+never the same document wearing two hats. Boundaries flow forward, not backward: `Architect Solution`'s Service
+Flows name the functional boundary each Service occupies *before* Design starts, alongside the Behaviours Analysis
+derives — Design works against an already-named boundary, refining it into the Service's own Functional
+Boundaries, rather than discovering the boundary itself as a side effect of designing.
 
 ## 2 Neither Analysis Nor Architecture Is Formally Required
 
@@ -76,7 +139,7 @@ design and implementation of a Feature — it just leaves nothing to mechanicall
 | Kind | Owner | Filed at |
 |---|---|---|
 | **Required Product Behaviour** | Analysis | `docs/analysis/use-cases/{uc-slug}/behaviors/{operation-slug}.md` |
-| **Required Service Behaviour** | Architect (Services) | `docs/services/{slug}/behaviors/{operation-slug}.md` (proposed inside the owning design task first) |
+| **Required Service Behaviour** | Architect (Service) | `docs/services/{slug}/behaviors/{operation-slug}.md` (proposed inside the owning design task first) |
 | **Predicted Service Behaviour** | Design | the owning design task's own `reconciliation.yaml` |
 
 A Required Product Behaviour is cumulative and mechanically/LLM-derived from the use case, not independently
@@ -119,42 +182,26 @@ elicitation dialogue that starts on the command line and hands off to a browser 
 1. **Analysis** — for each operation, states only which *kind* of interface it requires (UI/CLI/API; an actor may
    be systematic) and what it must be capable of initiating. No technology, no concrete shape, and no claim that
    every operation in the same use case shares it.
-2. **Architecture** — decides what that operation's interface actually *is*, technologically (a React/TS SPA; a
-   `pnpm` CLI tool vs. a bash script vs. a compiled binary; REST vs. RPC) — which in turn informs how it can be
-   offered. The interface is itself a component of a Service: something has to exist to interface with, and that
-   thing has its own components and dependencies.
-3. **Design** — crystallizes the *concrete* specification: the actual CLI name/arguments/outputs, actual UI
-   wireframes, actual API methods and data types. This is the first thing Design does for a Service, before any
-   gap analysis on its components. A use case's own supporting material may already sketch this ("the actor wants
-   a CLI tool like X that does Y and outputs Z") — that's guidance informing Design, never a constraint on it.
+2. **Architecture** (`Architect Solution`) — decides what that operation's interface actually *is*, technologically
+   (a React/TS SPA; a `pnpm` CLI tool vs. a bash script vs. a compiled binary; REST vs. RPC) — which in turn informs
+   how it can be offered. The interface is itself a component of a Service: something has to exist to interface
+   with, and that thing has its own components and dependencies.
+3. **Design** (`Architect Service`, via Crystallize The Interface) — crystallizes the *concrete* specification: the
+   actual CLI name/arguments/outputs, actual UI wireframes, actual API methods and data types, recorded as the
+   Service's own Service Interface. This is the first thing Design does for a Service, before any gap analysis on
+   its components. A use case's own supporting material may already sketch this ("the actor wants a CLI tool like
+   X that does Y and outputs Z") — that's guidance informing Design, never a constraint on it.
 4. **Product Offering** — decides how the now-concrete interface is actually delivered for consumption (see
    [Product Offering](../standards/concepts/product-offering.md)). One Offering can expose many use cases; a use
    case's own required interface *kind* is not itself an Offering decision.
 
 ## 6 Steps
 
-Analyse Feature through Architect Services (below) is defined in real detail today. Implement Service onward is
-placeholder-level — flagged `//TODO` on its own linked doc — pending the same depth of discussion Analysis and
-Design have already had.
-
-```mermaid
-flowchart TD
-    Start([Start]) --> AnalyseFeature[Analyse Feature]
-    AnalyseFeature --> UseCase[/Use Case/]
-    UseCase --> ArchitectFeature[Architect Feature]
-    ArchitectFeature --> ServiceFlows[/Service Flows/]
-    ServiceFlows --> DesignService[Design Service]
-    DesignService <-.-> DesignDocs[/Design Docs/]
-    DesignService --> ImplementService[Implement Service]
-    ImplementService --> TestService[Test Service]
-    TestService --> DeployService[Deploy Service]
-    DeployService --> FunctionalService[/Functional Service/]
-    FunctionalService -.-> DesignDocs
-    FunctionalService --> TestFeature[Test Feature]
-    TestFeature --> DeployOffering[Deploy Offering]
-    DeployOffering --> ConsumableService[/Consumable Service/]
-    ConsumableService --> Done([Done])
-```
+Analyse Feature, Architect Solution, and Design Service (below) are defined in real detail today. Architect
+Feature (Product Offering) and Implement Service onward are placeholder-level — flagged `//TODO` on their own
+linked doc — pending the same depth of discussion Architect Solution and Design have already had. See §1's diagram
+above for the full cross-phase picture; the table below is its Analyse-Feature-through-Deploy-Offering slice,
+sequenced.
 
 `Design Service` (and everything beneath it, down to `Functional Service`) loops once per Service the Service
 Flows identify — a Feature commonly fans out into several Services, each independently designed, implemented,
@@ -163,9 +210,9 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | Step | Description | Exit Criteria |
 |---|---|---|
 | [Analyse Feature](feature-workflow/feature-workflow.md) | Understands a Feature's use case(s) and derives their Required Product Behaviours. | Every use case in scope has a derived, checksummed set of Required Product Behaviours. |
-| [Architect Feature](feature-workflow/architect-feature.md) | Decides the Service topology and data flow that will satisfy the Feature's use cases. | Service Flows exist, naming every Service involved and how data moves between them. |
-| [Architect Services](feature-workflow/design-feature-instructions.md) | Derives, per Service, its own Required Service Behaviours from the Service Flows. | Every Service in the flow has a checksummed set of Required Service Behaviours. |
-| [Design Service](feature-workflow/design-feature-instructions.md) | Crystallizes the Service's own interface, then binds its Required Service Behaviours to real components/functions. | Every Required Service Behaviour has a matching Predicted Service Behaviour; both reconciliations (§4) pass. |
+| [Architect Feature](feature-workflow/architect-feature.md) | Decides how the Feature is actually offered for consumption. | //TODO |
+| [Architect Solution](feature-workflow/architect-solution.md) | Decides the Service topology and data flow that will satisfy the Feature's use cases, naming the functional boundary each use case is specified against. | Service Flows exist, naming every Service involved and how data moves between them. |
+| [Design Service](feature-workflow/design-feature-instructions.md) | Derives, per Service (its own `Architect Service` phase), its own Required Service Behaviours from the Service Flows; crystallizes the Service's own interface; binds those behaviours to real components/functions. | Every Service in the flow has a checksummed set of Required Service Behaviours, each with a matching Predicted Service Behaviour; both reconciliations (§4) pass. |
 | [Implement Service](chunk-cycle/chunk-cycle-workflow.md) | //TODO | //TODO |
 | [Test Service](chunk-cycle/chunk-cycle-workflow.md) | //TODO | //TODO |
 | [Deploy Service](feature-workflow/deploy-service.md) | //TODO | //TODO |
@@ -181,12 +228,17 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | [User Persona](feature-workflow/user-personas.md) | A use case's human actor, formalized as a Role, Goals, Frustrations, and a Technical Proficiency. | Analyse Feature |
 | [Use Case](feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. | Analyse Feature |
 | [Required Product Behaviour](feature-workflow/required-behaviors.md) | A use case operation's cumulative Given/Required Effect, derived and checksummed. | Analyse Feature |
-| [Service Flows](feature-workflow/architect-feature.md) | The Service topology and data flow chosen to satisfy a Feature's use cases. | Architect Feature |
-| [Product Offering](standards/concepts/product-offering.md) | The channel (UI/CLI/API) a Service's interface is actually delivered through. | Architect Feature |
-| [Service Boundaries](feature-workflow/design-feature-instructions.md) | A Service's own interface and the components/dependencies it's built from. | Architect Services |
-| [Required Service Behaviour](feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from the Service Flows. | Architect Services |
+| [Service Flows](feature-workflow/architect-solution.md) | The Service topology and data flow chosen to satisfy a Feature's use cases — the Boundaries that flow forward into Design (§1). | Architect Solution |
+| [Product Offering](../standards/concepts/product-offering.md) | The channel (UI/CLI/API) a Service's interface is actually delivered through. | Architect Feature |
+| [Functional Boundaries](feature-workflow/design-feature-instructions.md) | A Service's own interface and the components/dependencies it's built from, once crystallized by Design. | Design Service |
+| [Required Service Behaviour](feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from the Service Flows. | Design Service |
 | [Predicted Service Behaviour](feature-workflow/specific-behaviors.md) | What a Service's designed components/functions actually predict, from its own bound pseudocode. | Design Service |
+| [Service Interface](feature-workflow/design-feature-instructions.md) | The Service's own concrete interface specification — actual CLI/UI/API shape — crystallized before any gap analysis. | Design Service |
+| [System Requirements](feature-workflow/design-feature-instructions.md) | //TODO | Design Service |
+| [Integrations](feature-workflow/design-feature-instructions.md) | //TODO | Design Service |
 | [Design Docs](feature-workflow/design-directory-and-hld.md) | The design task's own directory: HLD, chunk scope, reconciliation record, and every proposal it's made. | Design Service |
+| [Chunks](feature-workflow/specification-document.md) | //TODO | Design Service |
+| [Chunk Sequence](feature-workflow/the-chunk-sequence.md) | //TODO | Design Service |
 | [Service Tests](chunk-cycle/chunk-cycle-workflow.md) | //TODO | Implement Service |
 | [Source Code](chunk-cycle/chunk-cycle-workflow.md) | //TODO | Implement Service |
 | [Metrics](chunk-cycle/chunk-cycle-workflow.md) | //TODO | Implement Service |
@@ -196,8 +248,10 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | [Test Results](chunk-cycle/chunk-cycle-workflow.md) | //TODO | Test Service |
 | [Test Infra](feature-workflow/architect-tests.md) | //TODO | Architect (Test) |
 | [Functional Service](feature-workflow/deploy-service.md) | //TODO | Deploy Service |
+| [Functional Feature](feature-workflow/feature-testing.md) | //TODO — the Feature-level state once every in-scope Service has passed Feature testing. | Test Feature |
 | [Chaos Testing](feature-workflow/architect-deployment.md) | //TODO | Architect (Deploy) |
-| [Continuous Deployment](feature-workflow/architect-deployment.md) | //TODO | Architect (Deploy) |
+| [Continuous Delivery](feature-workflow/architect-deployment.md) | //TODO | Architect (Deploy) |
+| [Deployed Feature](feature-workflow/deploy-offering.md) | //TODO — the deployed, running instance of the Feature's Product Offering(s). | Deploy Offering |
 | [Product](feature-workflow/deploy-offering.md) | //TODO | Deploy |
 | [Consumable Service](feature-workflow/deploy-offering.md) | //TODO | Deploy Offering |
 
@@ -215,11 +269,26 @@ For more detail see [Chunk Cycle](chunk-cycle/chunk-cycle-workflow.md).
 earlier framing treated architecting the solution as a sub-step inside Design (deciding Service topology once,
 before binding functions). That broke down as soon as Implement, Test, and Deploy were considered: each of those
 phases has its own genuine architectural decisions (dev infrastructure and CI, test infrastructure, chaos testing
-and continuous deployment) that are not remotely Design's concern, but are exactly the same *kind* of decision
+and continuous delivery) that are not remotely Design's concern, but are exactly the same *kind* of decision
 Design's own Architect pairing makes — deciding the structural facts a phase's own work depends on, in continuous
 interplay with that phase rather than a one-shot handoff before it starts. One responsibility, paired identically
 with every phase, is what the pattern actually is; carving it out as "a step Design does once" was only ever true
 for the one phase that had been thought through so far.
+
+**Why `Architect Services` folded into a single, Design-paired `Architect Service`, rather than staying its own
+step ahead of Design.** The same rule above — architecture is paired with a phase, never a phase (or a step
+ahead of one) in its own right — was violated by treating `Architect Services` as a distinct step between
+`Architect Solution` and `Design Service`. Folding it into `Architect Service`, paired directly with Design the
+same way every other phase's Architect responsibility is, makes the pattern actually uniform rather than
+uniform-except-for-the-one-part-thought-through-first.
+
+**Why Analysis pairs with two Architect roles (`Architect Feature`, `Architect Solution`) instead of one.** An
+earlier version used a single `Architect Feature` name for both deciding the Feature's Product Offering and
+deciding its Service topology — two decisions that happen to share the same Architecture-paired-with-Analysis
+responsibility but produce unrelated artifacts. Naming the boundary-deciding half `Architect Solution` is what
+actually re-centers this workflow on a spec being written against a defined functional boundary (see the intro
+above): the boundary is that role's own, sole output, not one of two unrelated things a single step happens to
+produce.
 
 **Why Analysis and Architecture are both explicitly optional.** Making either mandatory would contradict how this
 whole process already works elsewhere (design-feature-instructions.md §8: this process is iterative, not a rigid

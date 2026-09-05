@@ -1,11 +1,11 @@
 # The Design Directory And HLD
 
 ## Context
-* [Feature Workflow](feature-workflow.md) - the workflow steps (`Architect Services`, `Design Service`) this
+* [Feature Workflow](feature-workflow.md) - the workflow steps (`Architect Service`, `Design Service`) this
   document defines the output of
 * [Design Feature Instructions](design-feature-instructions.md) - the process that produces and checks this
   document's content; this document defines the shape, that one defines how to get there
-* [Architect Feature](architect-feature.md) - the Feature-wide Service Flows this design task's own scope is a
+* [Architect Solution](architect-solution.md) - the Feature-wide Service Flows this design task's own scope is a
   slice of
 * [Pseudocode Style](pseudocode-style.md) - the notation a top-level function's own pseudocode (§4.5) is written in
 * [Use Cases](use-cases.md) - the analysis-step artifact a design translates into concrete decisions
@@ -23,7 +23,7 @@
 A Feature's design work lives at `docs/design/{feature-slug}/` in the project's own `<project>-docs` repo —
 `docs/design/` is already part of the minimum directory structure every such repo has. Two things live directly
 at that root, Feature-wide, accumulated across however many design tasks it takes: `service-flows.md` (Architect
-Feature) and `feature-reconciliation.yaml` (Weaver Engineering Workflows §4's Feature-level reconciliation).
+Solution) and `feature-reconciliation.yaml` (Weaver Engineering Workflows §4's Feature-level reconciliation).
 
 Everything else belongs to one specific design task, filed under `docs/design/{feature-slug}/{design-task-ref}/`
 — its entry point is `hld.md`, the high-level design document for that task's own slice of the Feature (one
@@ -248,7 +248,7 @@ participates in.
 
 ## 6 From Required Behaviours To Predicted Service Behaviours
 
-`Architect Services` (Design Feature Instructions) walks `service-flows.md` to derive, for a Service in the flow,
+`Architect Service` (Design Feature Instructions) walks `service-flows.md` to derive, for a Service in the flow,
 its own Required Service Behaviours — an independent artifact from anything Design produces (Weaver Engineering
 Workflows §3). This HLD's own Key Decisions (§2.1) are what turn those Required Service Behaviours, plus this
 task's own Crystallize The Interface step, into concrete, technology-specific interactions — a chosen interface,

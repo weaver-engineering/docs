@@ -13,8 +13,8 @@ actually consumable, producing the deployed Product. Not yet discussed in enough
 //TODO - what makes a Service actually consumable through its Offering, as distinct from merely Functional
 (Deploy Service).
 
-## 2 Product
+## 2 Deployed Feature
 
-//TODO - the deployed, running instance of the Product this step produces — distinct from the `Product` concept
-(`standards/concepts/product.md`, one code+docs repo); this sense needs its own disambiguated name before it can
-be glossaried.
+//TODO - the deployed, running instance of the Feature's Product Offering(s) this step produces — the
+disambiguated name for what an earlier version of this document called `Product` here, distinct from the
+`Product` concept (`standards/concepts/product.md`, one code+docs repo).

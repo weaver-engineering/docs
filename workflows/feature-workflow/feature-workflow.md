@@ -6,7 +6,7 @@
   two reconciliations, Architecture as a cross-cutting responsibility) this workflow is one slice of
 ## Workflow
 ```
-(Start) ---> [Analyse Feature] ---> [Architect Feature] ---> [Design Service] <-+
+(Start) ---> [Analyse Feature] ---> [Architect Solution] ---> [Design Service] <-+
                                                                      |          |
                                                                      V          |
                                                           [Chunk The Design]    |
@@ -30,9 +30,14 @@
                                                                      V
                                                           [Retrospective]
 ```
-`Design Service` through `Implement/Test/Deploy Service` loops once per Service `Architect Feature`'s own
+`Design Service` through `Implement/Test/Deploy Service` loops once per Service `Architect Solution`'s own
 Service Flows identify (Weaver Engineering Workflows §6) — a Feature commonly fans out into several
 independently-designed-and-delivered Services before `Test Feature` exercises the assembled whole.
+
+`Architect Feature`, deciding the Feature's own Product Offering(s), is paired with Analysis the same way
+`Architect Solution` is (Weaver Engineering Workflows §1) — it doesn't occupy its own sequential box above, since
+it's a parallel Architecture decision rather than a step this fan-out passes through, and isn't yet defined in
+the same depth (`architect-feature.md`).
 
 ### Start
 The entry requirements for the Feature workflow are that a 'Feature' has been suggested for delivery as part of a
@@ -56,16 +61,17 @@ The whole Feature does not need to be analysed before design work can begin — 
 at all (Weaver Engineering Workflows §2) — but a Feature analysed enough to avoid future rework of an already-
 designed Service is worth the cost of doing it properly.
 
-### 2 Architect Feature
-The entry requirement is at least one use case with derived Required Product Behaviours. `Architect Feature`
-decides the Service topology, archetypes, interfaces, supporting systems, and data flow that will satisfy them,
-recorded as [Service Flows](architect-feature.md). Also not formally required — skipping it means a Service's own
-design can proceed on an architect's bare assertion of its required behaviours, with nothing to reconcile that
-assertion against (Weaver Engineering Workflows §2).
+### 2 Architect Solution
+The entry requirement is at least one use case with derived Required Product Behaviours. `Architect Solution`
+decides the Service topology, archetypes, interfaces, supporting systems, and data flow that will satisfy them —
+naming the functional boundary each use case's operations are actually specified against — recorded as [Service
+Flows](architect-solution.md). Also not formally required — skipping it means a Service's own design can proceed
+on an architect's bare assertion of its required behaviours, with nothing to reconcile that assertion against
+(Weaver Engineering Workflows §2).
 
 ### 3 Design Service
 The entry requirement is `service-flows.md` naming this Service, or an architect's own direct assertion of what
-it's required to do if Architecture was skipped. For the Service (or Services) in scope, `Architect Services`
+it's required to do if Architecture was skipped. For the Service (or Services) in scope, `Architect Service`
 derives that Service's own Required Service Behaviours from its slice of the flow, then `Design Service`
 crystallizes the Service's own interface and binds those behaviours to real components and functions, producing
 Predicted Service Behaviours. The full process, including how to resume it partway through from a fresh session
@@ -114,8 +120,8 @@ can be considered done, its Required Product Behaviours **must** be tested end t
 and found to be delivering their expected benefits (see [Feature Testing](feature-testing.md)).
 
 There is no requirement to wait for every Service to be delivered before testing what's already functional. If a
-Service fails to deliver its expected benefits, the behaviours it was required to realize return to `Architect
-Services`/`Design Service` to be reworked.
+Service fails to deliver its expected benefits, the behaviours it was required to realize return to `Design
+Service` (its own `Architect Service` phase) to be reworked.
 
 Only once **all** Services `service-flows.md` names have been delivered and **passed** Feature testing can the
 Feature be said to be done, ready for `Deploy Offering`.
