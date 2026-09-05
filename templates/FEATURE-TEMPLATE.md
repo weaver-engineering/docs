@@ -12,7 +12,7 @@
 
 Template for a Feature's own manifest, `docs/features/{feature-slug}/FEATURE.md` — the directory-per-entity
 pattern, since a Feature accumulates state as the workflow proceeds: its capabilities and use cases as `Analyse
-Feature` finds them, its Service Flows and design tasks as `Architect Feature`/`Design Service` complete them. The
+Feature` finds them, its Service Flows and design tasks as `Architect Solution`/`Design Service` complete them. The
 template itself is in the Appendix below, since it's reference material to copy from, not indexed content in its
 own right.
 
@@ -50,10 +50,10 @@ Analysing A Feature §1}
 
 ## 4 Design
 
-{grows as Architect Feature / Design Service proceed}
+{grows as Architect Solution / Design Service proceed}
 
 * **Service Flows:** [service-flows.md](../../design/{feature-slug}/service-flows.md) — omit this line entirely
-  until `Architect Feature` has produced it
+  until `Architect Solution` has produced it
 * **Design Tasks:**
   + [{design-task-ref}](../../design/{feature-slug}/{design-task-ref}/hld.md) — {Service slug} — {"complete" once
     Design Feature Instructions §9.2 reaches full completion for it, otherwise omit any further annotation}

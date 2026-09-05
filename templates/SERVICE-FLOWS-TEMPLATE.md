@@ -3,7 +3,7 @@
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered
   sections, Rationale/Appendix) this template follows
-* [Architect Feature](../workflows/feature-workflow/architect-feature.md) - the process that produces this
+* [Architect Solution](../workflows/feature-workflow/architect-solution.md) - the process that produces this
   document, and where it's filed
 * [Service §3](../standards/concepts/service.md) - the three archetypes §1 below chooses between
 
@@ -20,7 +20,7 @@ not indexed content in its own right.
 ## Context
 * {link to the initial feature document}
 * {link to each use case this flow covers}
-* Architect Feature (@docs/workflows/feature-workflow/architect-feature.md) - the process that produced this document
+* Architect Solution (@docs/workflows/feature-workflow/architect-solution.md) - the process that produced this document
 
 ## 1 Services
 
@@ -36,7 +36,7 @@ not indexed content in its own right.
 {a diagram — Mermaid `flowchart`, one node per Service plus the operations that trigger them — showing how data
 actually moves between the Services above to turn each operation into a result, followed by one paragraph per
 hop stating what's passed downstream and why. This is what a Service's own Required Service Behaviours (Architect
-Services) are derived from — not restated prose, an actual traceable flow.}
+Service) are derived from — not restated prose, an actual traceable flow.}
 
 ```mermaid
 flowchart LR
@@ -47,7 +47,7 @@ flowchart LR
 ## 3 Operation Coverage
 
 {every operation named by a Required Product Behaviour in scope, and which Service(s) in §1 realize it — the
-exit criterion Architect Feature §5 checks}
+exit criterion Architect Solution §5 checks}
 
 | Operation | Covered By | Notes |
 | :--- | :--- | :--- |

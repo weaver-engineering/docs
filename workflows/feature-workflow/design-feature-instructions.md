@@ -1,9 +1,9 @@
-# Architect Services / Design Service — Instructions
+# Architect Service / Design Service — Instructions
 
 ## Context
-* [Feature Workflow](feature-workflow.md) - the workflow steps (`Architect Services`, `Design Service`) this
+* [Feature Workflow](feature-workflow.md) - the workflow steps (`Architect Service`, `Design Service`) this
   process carries out
-* [Architect Feature](architect-feature.md) - the Feature-wide Service Flows this process reads a slice of
+* [Architect Solution](architect-solution.md) - the Feature-wide Service Flows this process reads a slice of
 * [Design Directory And HLD](design-directory-and-hld.md) - the HLD, Internal Component, and External Dependency
   shapes this process populates
 * [Specific Behaviors](specific-behaviors.md) - the Predicted Service Behaviour shape and Given/When/Then/Call
@@ -18,7 +18,7 @@
 * [Weaver Engineering Workflows §3, §4](../weaver-workflows.md) - the three kinds of behaviour and the two
   reconciliations this whole process exists to produce and check
 
-These are the steps an agent follows to carry out `Architect Services` and `Design Service`
+These are the steps an agent follows to carry out `Architect Service` and `Design Service`
 ([Feature Workflow](feature-workflow.md)) for one design task — one Service, usually — and produce a complete
 design task directory. The architect's judgement is required at specific, named points (§3 ideation, §4
 Crystallize The Interface, §7's side-effect resolution, §9 final review, §10 Design→Analysis feedback) —
@@ -36,10 +36,10 @@ Before doing anything, check the design task directory's current state in this o
 next unit of work; everything before it is already done.
 
 1. Does `docs/design/{feature-slug}/service-flows.md` exist, naming this task's own Service and this task's own
-   HLD Scope (`hld.md` §1)? If not, `Architect Feature` (a different task, possibly this one) is a prerequisite —
+   HLD Scope (`hld.md` §1)? If not, `Architect Solution` (a different task, possibly this one) is a prerequisite —
    confirm scope before anything else.
 2. Does every operation this Service's slice of the flow names have a derived Required Service Behaviour file
-   under `services/{service-slug}/behaviors/`? Any that don't need §2, `Architect Services`.
+   under `services/{service-slug}/behaviors/`? Any that don't need §2, `Architect Service`.
 3. Has this Service's own `interface` been crystallized (Design Directory And HLD §4.4) — a concrete
    specification, not just the kind+technology `service-flows.md` already names? If not, §4 is next.
 4. Does the HLD's Internal Components and External Dependencies list classify every function this Service's
@@ -59,7 +59,7 @@ next unit of work; everything before it is already done.
 10. Project-wide (this Feature's every design task, and every other Feature's) — does every leaf behaviour have a
     `reviewed` entry (§9.2), with no `//REDESIGN_REQUIRED` flag standing? Needs §9.2 wherever it doesn't.
 11. Once every Service `service-flows.md` names has a fully-reviewed set of Predicted Service Behaviours: has
-    Feature-level reconciliation (`architect-feature.md` §5) been run against the current state of
+    Feature-level reconciliation (`architect-solution.md` §5) been run against the current state of
     `feature-reconciliation.yaml`? If stale or absent, that's next — mechanically the same shape as step 9, one
     level up.
 
@@ -68,7 +68,7 @@ an agent runs the same sequence restricted to that Service's own artifacts. Step
 way — their whole purpose is catching invalidation or non-coverage that reaches outside the task currently being
 worked on — so they always run at their own stated scope.
 
-## 2 Architect Services
+## 2 Architect Service
 
 Whole-Service, reading this Service's own slice of `service-flows.md` (the operations that land on it, what it
 receives from upstream, what it must pass downstream) together with every Required Product Behaviour whose
@@ -83,7 +83,7 @@ Design never invents a Service behaviour during binding (§6 onward) — a behav
 derived from the architected flow, before anything can bind it to a real function. Where tracing a bound
 pseudocode later (§7) reveals an effect the flow doesn't actually require, or a required effect the flow can't
 actually produce, that's a defect in this step, not a discovery Design gets to silently correct — return here and
-revise, or raise it back to `Architect Feature` if the flow itself is wrong.
+revise, or raise it back to `Architect Solution` if the flow itself is wrong.
 
 Exit: this Service has a checksummed Required Service Behaviour file for every operation its slice of the flow
 names.
@@ -269,7 +269,7 @@ For each behaviour needing review (§1 step 10 — never reviewed, or a function
     address belongs to a different, already-shipped task; otherwise just remove the `new` entry.
 
 Once every Service `service-flows.md` names has every behaviour reviewed, Feature-level reconciliation
-(`architect-feature.md` §5, `feature-reconciliation.yaml`) becomes checkable — the same mechanical
+(`architect-solution.md` §5, `feature-reconciliation.yaml`) becomes checkable — the same mechanical
 checksum-and-walk shape as §9.1, one level up, walking Service-to-Service through the flow instead of function-to-
 function within one Service.
 
@@ -311,7 +311,7 @@ process entirely, and needs its own handling (chunk-scope's own `mutated` case).
 
 # Rationale
 
-**Why Architect Services (§2) is a separate phase from Gap Analysis (§3), not folded into it.** Gap Analysis asks
+**Why Architect Service (§2) is a separate phase from Gap Analysis (§3), not folded into it.** Gap Analysis asks
 "does something already exist that satisfies this requirement" — a question that only makes sense once the
 requirement itself is known. Under the old process, the requirement (an operation's entry conditions and Then)
 was invented by Design as a side effect of Gap Analysis and binding; that's exactly the reversal this whole
@@ -329,7 +329,7 @@ against what the use case's own guidance material actually wanted. Naming it as 
 does closes that gap the same way §4.2's own document-creation step (below) closed a similar one for standing
 component documents.
 
-**Why the two reconciliations (§9.1, and Feature-level in `architect-feature.md`) are kept as genuinely separate
+**Why the two reconciliations (§9.1, and Feature-level in `architect-solution.md`) are kept as genuinely separate
 checks rather than one combined pass.** Required Service Behaviour and Predicted Service Behaviour are
 independent artifacts specifically so each reconciliation can be a cheap, targeted checksum comparison (Weaver
 Engineering Workflows §4) — collapsing them into one check would mean either re-deriving both together every

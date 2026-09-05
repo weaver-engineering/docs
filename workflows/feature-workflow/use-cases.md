@@ -27,11 +27,11 @@ alone does.
 the outside — a use case exists because an actor needs something to be true afterward, not because some endpoint
 happens to be callable.
 
-A use case is written independent of any one Service. Nothing about a use case's own definition — its actors, its
-goal, its steps — commits to which Service (or Services) actually realize it; that binding is Design's job, made
-while working out *how* to satisfy the use case, never Analysis's. A use case that ends up split across more than
-one Service is still one use case: what varies is how many Services its operations resolve to, not how many use
-cases were written.
+A use case is written independent of any one functional boundary. Nothing about a use case's own definition — its
+actors, its goal, its steps — commits to which Service (or Library, `concepts/service.md` §1) actually realizes
+it; that binding is `Architect Solution`'s job, made while working out *how* to satisfy the use case, never
+Analysis's. A use case that ends up split across more than one Service is still one use case: what varies is how
+many Services its operations resolve to, not how many use cases were written.
 
 ### 1.1 A Use Case Is Not "One Operation"
 
@@ -73,8 +73,9 @@ Success Scenario).
 A use case's own statement of an operation names only which *kind* of interface it requires (UI/CLI/API — an
 actor may itself be systematic) and what that interface must be capable of initiating. It is the first of four
 separate decisions about that interface, not the whole decision — see [Weaver Engineering Workflows
-§5](../weaver-workflows.md) for the other three (Architecture decides the technology, Design crystallizes the
-concrete specification, Product Offering decides how it's actually delivered for consumption).
+§5](../weaver-workflows.md) for the other three (`Architect Solution` decides the technology, `Design Service`
+crystallizes the concrete specification, `Architect Feature`'s Product Offering decides how it's actually
+delivered for consumption).
 
 An operation either invokes a Feature's own capability directly, or is specified inline when no capability yet
 covers what it needs — see [Analysing A Feature §4](analysing-a-feature.md) for the distinction and how each is
@@ -82,11 +83,12 @@ derived into a Required Behavior.
 
 ## 3 Scope
 
-A use case stays at the Product level: it is never filed under, or owned by, any one Service's own
+A use case stays at the Product level: it is never filed under, or owned by, any one functional boundary's own
 `docs/services/{slug}/`, and it is not owned by any one Feature either — it may invoke capabilities drawn from more
 than one Feature on the way to its actor's goal (see [Analysing A Feature](analysing-a-feature.md)). This is what
-keeps a use case's requirement stable even if Design later decides to change which Service (or Services) satisfy
-it, or to split one Service's responsibility into two: the requirement didn't move, only its realization did.
+keeps a use case's requirement stable even if `Architect Solution` later decides to change which Service (or
+Services) satisfy it, or to split one Service's responsibility into two: the requirement didn't move, only its
+realization did.
 
 Filed as `docs/analysis/use-cases/{use-case-slug}/USE-CASE.md` — the directory-per-entity pattern
 (`documentation-standards.md` §2.1), since a use case now always grows its own `behaviors/` subdirectory
@@ -104,10 +106,10 @@ it is the actual test of whether this use case was written with enough detail.
 
 # Rationale
 
-**Why a use case names no Service.** A use case that named its Service directly would stop being a statement of
-requirement and start being a statement of design — indistinguishable, later, from a decision Design was supposed
-to make. Keeping a use case Service-agnostic is what lets Design actually choose, and re-choose, without ever
-having to edit the requirement itself to do it.
+**Why a use case names no functional boundary.** A use case that named its Service (or Library) directly would
+stop being a statement of requirement and start being a statement of design — indistinguishable, later, from a
+decision `Architect Solution` was supposed to make. Keeping a use case boundary-agnostic is what lets Architecture
+actually choose, and re-choose, without ever having to edit the requirement itself to do it.
 
 **Why §1.1 exists as its own section, not folded into §1's general statement.** §1 already said a use case is
 written independent of any one Service, which implies operation count doesn't set use case boundaries. That
