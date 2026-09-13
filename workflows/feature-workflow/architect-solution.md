@@ -24,10 +24,9 @@ boundary) — not a Design activity, and not required before Design can start (�
 ## 1 Entry Requirements
 
 At least one use case in scope with a derived, checksummed set of Required Product Behaviours (`Analyse Feature`).
-Every use case's own Technical Interpretation and Required Product Behaviours are read together, Feature-wide —
-the same breadth Gap Analysis already reads a use case's Technical Interpretation at (`design-feature-instructions.md`
-§3) — not one use case at a time, since a Service one use case needs may be exactly the Service another use case
-in the same Feature also needs, and that's only visible reading them together.
+Every use case's own Step Contracts (Use Cases §2.1) and Required Product Behaviours are read together,
+Feature-wide — not one use case at a time, since a Service one use case needs may be exactly the Service another
+use case in the same Feature also needs, and that's only visible reading them together.
 
 ## 2 What This Step Decides
 

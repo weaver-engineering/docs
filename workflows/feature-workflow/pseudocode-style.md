@@ -1,18 +1,22 @@
 # Pseudocode Style
 
 ## Context
-* [Use Case Template §Technical Interpretation](../../templates/USE-CASE-TEMPLATE.md) - where solution-independent pseudocode in this style is first written, during Analyse Feature
-* [Design Feature Instructions §6, §9.1](design-feature-instructions.md) - where bound pseudocode is recorded and compared against a function's own definition
+* [Design Feature Instructions §6, §9.1](design-feature-instructions.md) - where this pseudocode is recorded; §6's comparison against Technical Interpretation is **stale**, see this document's own Rationale
 * [Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) - where a function's own pseudocode, in this style, is recorded
 * [External Dependency Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) - where a dependency's declared error modes, referenced by `ON FAILURE` below, are defined
+* [Use Cases §2.1](use-cases.md) - Step Contracts: what a use case's own steps are stated in now, in plain prose, not this notation
 * [Documentation Standards](../../standards/documentation-standards.md) - the document shape this convention follows
 
-Pseudocode gets written at two different points — a use case's Technical Interpretation, during `Analyse Feature`
-([Use Case Template](../../templates/USE-CASE-TEMPLATE.md)), and a Service function's own definition, during
-`Design Service` ([Design Feature Instructions §6, §9.1](design-feature-instructions.md)) — and design review
-depends on comparing the two. That only works if both are written in one shared, disciplined notation: precise
-enough to trace mechanically, not so heavy that it tips into committing to an actual programming language. This
-document is that notation.
+This is the notation a Service function's own pseudocode is written in, during `Design Service`
+([Design Feature Instructions §6, §9.1](design-feature-instructions.md)): precise enough to trace mechanically,
+not so heavy that it tips into committing to an actual programming language.
+
+A use case's own steps do **not** use this notation. An earlier version of this document also covered a use
+case's Technical Interpretation — solution-independent pseudocode, with targets left unbound to any real
+function, that a function's own pseudocode would later be checked against. That comparison no longer happens (see
+the Rationale), and a use case's steps are now stated directly as Step Contracts, in prose
+([Use Cases §2.1](use-cases.md)). This document keeps only the one form still in use: a function's own pseudocode,
+its targets always bound to a real address.
 
 ## 1 Vocabulary
 
@@ -34,33 +38,13 @@ A fixed set of keywords; everything else is free text.
   behaviour [Required Behaviors §4](required-behaviors.md) names: one only visible once the pseudocode is
   written against real components.
 
-## 2 Two Vocabularies, One Style
+## 2 Call Targets Are Bound
 
-The same keywords are used at both points pseudocode gets written, but a call's target differs:
+A call's target is always bound to a real address, `[{address}: {name} - {args}]`. The logical name is kept
+alongside the real address, so the pseudocode still reads without cross-referencing what the address actually is.
 
-* **Technical Interpretation** ([Use Case Template](../../templates/USE-CASE-TEMPLATE.md)) — targets are
-  logical capability names, `[{name} - {args}]`. No real Internal Component, External Dependency, or Service is
-  named; this pseudocode is solution-independent.
-* **A function's own pseudocode** ([Design Feature Instructions
-  §6](design-feature-instructions.md), [Design Directory And HLD §4.5](design-directory-and-hld.md)) — targets
-  are bound, `[{address}: {name} - {args}]`. The logical name is kept alongside the real address, so the
-  pseudocode still reads without cross-referencing what the address actually is.
-
-Worked example — Technical Interpretation:
-
-```
-FUNCTION view_own_account(bearer_token):
-  identity <-- [resolve_session - bearer_token]
-    ON FAILURE (unavailable): RETURN 503, no body
-  IF identity IS NOT authenticated:
-    RETURN 401
-  account <-- [find_account - identity.user_id]
-    ON FAILURE (unavailable): RETURN 503, no body
-  RETURN 200, account
-```
-
-The same operation, bound, as `accounts.interface.view-account`'s own pseudocode once Architect Service and Gap
-Analysis have run:
+Worked example — `accounts.interface.view-account`'s own pseudocode once Architect Service and Gap Analysis have
+run:
 
 ```
 FUNCTION accounts.interface.view-account:
@@ -113,6 +97,20 @@ its own calls, and confirm each one is either caught there or added to that func
 whatever calls it. Anything that's neither is a reconciliation failure, not a stylistic gap.
 
 # Rationale
+
+**Why Technical Interpretation's vocabulary is gone rather than kept alongside the bound form.** This document
+used to define two forms specifically so a use case's own pseudocode and a function's own pseudocode could be
+compared, call for call, as part of Design's substitution check. That check assumed a use case stated its
+requirement as pseudocode a real function could be checked against; the use case now states it directly as
+required effects (a Step Contract's Given/Then, [Use Cases §2.1](use-cases.md)), and nothing on the Design side
+binds against a use case's own pseudocode any more. A vocabulary kept "just in case" for a comparison that no
+longer runs would be notation nobody reads for a purpose nobody has.
+
+**A consequence this ticket does not resolve.** `design-feature-instructions.md` §6 and §9.1, and the
+`pseudocode-substitution-checker` skill, are written against Technical Interpretation as their input — binding a
+candidate function's pseudocode against it and comparing. That input no longer exists. Fixing Design's own
+substitution machinery to reconcile against Required Product Behaviours (or Step Contracts directly) instead is
+real work, out of scope here, and should be raised as its own ticket rather than patched in passing.
 
 **Why `<--` instead of a `CALL` keyword.** An earlier version used `CALL {name}({args})`, with the keyword doing
 the work of distinguishing a call from ordinary computation. The arrow does the same job more compactly, and it

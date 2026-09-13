@@ -14,7 +14,7 @@ One template, two users, differing only in owner, source, and filing root:
 
 | | Required Product Behaviour | Required Service Behaviour |
 |---|---|---|
-| Derived from | a use case's own Technical Interpretation | a Service's own slice of the Feature's Service Flows |
+| Derived from | a use case's own Step Contracts | a Service's own slice of the Feature's Service Flows |
 | Owned by | Analysis | Architect (Services) |
 | Filed at (final) | `docs/analysis/use-cases/{use-case-slug}/behaviors/{operation-slug}.md` | `docs/services/{service-slug}/behaviors/{operation-slug}.md`, proposed first at `docs/design/{feature-slug}/{design-task-ref}/services/{service-slug}/behaviors/{operation-slug}.md` |
 | Addressed as | `{use-case-slug}.{operation-slug}-N` | `{service-slug}.{operation-slug}-N` |

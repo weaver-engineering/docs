@@ -41,12 +41,13 @@ copy of its content.
 | [Product](standards/concepts/product.md) | One Weaver Engineering project: one code repository plus one `<project>-docs` repository. |
 | [Product Offering](standards/concepts/product-offering.md) | The channel — UI, CLI, API — through which a Service's endpoint is actually consumed; the route to market. |
 | [Promotion](standards/design-layout-standards.md#7-why-the-layout-is-drawn-this-way) | Turning a contained boundary into a design target of its own, in place: it changes the boundary's type, never its position, so no address changes and — given the right layout — no document moves. |
-| [Required Product Behaviour](workflows/feature-workflow/required-behaviors.md) | A use case operation's cumulative Given/Required Effect, mechanically/LLM-derived from the use case and checksummed against it. |
+| [Required Product Behaviour](workflows/feature-workflow/required-behaviors.md) | A use case operation's Given/Required Effect, mechanically folded from its own Step Contract and checksummed against it. |
 | [Required Service Behaviour](workflows/feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from architecting the design — independent of, and reconciled against, its Predicted Service Behaviour. |
 | [Service](standards/concepts/service.md) | The functional execution boundary a Use Case's operations run against; owns its own interface, components, dependencies, and SLOs/SLIs. |
 | [Service Flows](workflows/feature-workflow/architect-solution.md) | The Service topology and data flow chosen, by architecting a solution, to satisfy a Feature's use cases. |
 | [Service Interface](workflows/feature-workflow/design-feature-instructions.md) | The Service's own concrete interface specification, crystallized by Design before any gap analysis. |
 | [SLO / SLI](standards/concepts/slo.md) | A quantified reliability target for one Service, and what's measured to check it. Recorded per-Service. |
+| [Step Contract](workflows/feature-workflow/use-cases.md#21-step-contracts) | A use case operation's own perceived Boundary, Given and Then, stated directly on its step and witnessed by a fixture. Replaces Technical Interpretation. |
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
 | [System Requirements](workflows/feature-workflow/design-feature-instructions.md) | //TODO — one of Architect Service's own outputs, paired with Design. |
 | [Test Infra](workflows/feature-workflow/architect-tests.md) | //TODO — a Service's own test infrastructure. |
