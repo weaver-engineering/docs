@@ -92,7 +92,8 @@ state it assumes, and the state it establishes, each state witnessed by a concre
 
 ```
 N. {Step name}
-    **Boundary:** {the boundary this operation is perceived to cross}
+    **Boundary:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
+    thing it is — a CLI, an API, a UI — or any further hypothetical detail worth recording}
     **GIVEN:** {state assumed} [{fixture}](fixtures/{file}.md#{section})
     {narrative description of the step}
     **THEN:** {state established} [{fixture}](fixtures/{file}.md#{section})
@@ -101,14 +102,20 @@ N. {Step name}
 A step that is pure branching or narrative — nothing crossing a boundary — carries none of these; the state in
 force is whatever the preceding contract established.
 
-**Boundary is a hypothesis, not a commitment.** It's the use case's own perception, at Analysis time, of where an
-operation crosses — before any Service exists to actually own it.
+**Boundary is a hypothesis, not a commitment, and the hypothesis isn't limited to which boundary.** It's the use
+case's own perception, at Analysis time, of where an operation crosses — before any Service exists to actually
+own it — and that perception can go beyond a bare name. It may also guess at *what kind* of thing the boundary
+looks like (a CLI, an API, a UI) and carry as much further hypothetical shape as actually seems useful to write
+down: a bare name is enough where nothing more is obvious, and a fuller sketch is just as legitimate where the
+use case already has a strong sense of it. None of it binds anything — it's exactly the same kind of guess as
+naming the boundary at all, just at whatever resolution is worth stating.
 [`Architect Solution`](architect-solution.md) is what turns a use case's whole set of perceived boundaries and
 operations into the real Service topology and data flow ([Weaver Engineering Workflows
 §7](../weaver-workflows.md), Service Flows): confirming some, merging others, splitting others. That reframing —
 not the use case's narrative alone — is what actually identifies the Services being designed, which is why a use
-case is allowed, and expected, to name a boundary it turns out to be wrong about: naming one is what gives
-architecting a starting hypothesis to work from, not a decision already made on its behalf.
+case is allowed, and expected, to name a boundary — and guess at its shape — it turns out to be wrong about:
+doing so is what gives architecting a starting hypothesis to work from, not a decision already made on its
+behalf.
 
 **Consecutive Step Contracts chain by construction.** A step's own `GIVEN` is exactly what the step or steps
 before it left `THEN` — there is nothing to compose, because writing the steps in order already states the
@@ -161,6 +168,14 @@ Behaviors](required-behaviors.md) for the fold itself and why attempting it is t
 use case's Step Contracts were written with enough detail.
 
 # Rationale
+
+**Why a Step Contract's Boundary may guess an interface kind (CLI/API/UI) without contradicting §2's own use of
+that vocabulary.** §2 states a real requirement: the actor-facing interface kind an operation needs, which is
+given by what the actor actually is, not guessed. A Step Contract's Boundary can use the same three words for a
+different, hypothetical purpose — a guess at what an *internal* boundary the actor never touches might turn out
+to look like, offered with no more authority than the boundary name it sits beside. Reusing the vocabulary is
+deliberate: both are describing the same kind of thing (an interface's shape), just at different confidence —
+one stated, one guessed — so a reader isn't learning two unrelated meanings for CLI/API/UI.
 
 **Why a perceived Boundary (§2.1) doesn't contradict §1's "a use case names no functional boundary."** The two
 are different kinds of claim. Naming a *functional* boundary would be naming which Service actually realizes an

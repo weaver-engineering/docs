@@ -53,7 +53,8 @@ Services it ends up taking to get there}
 by a fixture:
 
 N. {Step name}
-    **Boundary:** {the boundary this operation is perceived to cross}
+    **Boundary:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
+    thing it is — a CLI, an API, a UI — or any further hypothetical detail worth recording}
     **GIVEN:** {the state this operation assumes} [{fixture}](fixtures/{file}.md#{section})
     {narrative description of the step}
     **THEN:** {the state this operation establishes} [{fixture}](fixtures/{file}.md#{section})
