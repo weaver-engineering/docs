@@ -4,11 +4,11 @@
 * [Feature Workflow](feature-workflow.md) - the `Analyse Feature` step this document is the output of
 * [Analysing A Feature §4](analysing-a-feature.md) - the direct-from-Feature derivation route this document
   doesn't yet describe (see `//TODO` below)
+* [Use Cases §2.1](use-cases.md) - Step Contracts: the Boundary/Given/Then a use case states directly on its own
+  steps, the source this document folds
 * [Use Cases §4](use-cases.md) - what a use case's operations turn into
 * [Weaver Engineering Workflows §3](../weaver-workflows.md) - where Required Product Behaviour sits among the
   three kinds of behaviour, and the two reconciliations it feeds
-* [Pseudocode Style](pseudocode-style.md) - the notation a use case's own Technical Interpretation is written in,
-  the source this derivation reads
 * [Required Behavior Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md) - the fill-in-the-blank shape this
   document describes
 
@@ -20,48 +20,63 @@ Service, Internal Component, or External Dependency named. It's the thing a late
 built to satisfy, once Design has bound it to something real (see [Weaver Engineering Workflows
 §4](../weaver-workflows.md), Feature-level reconciliation).
 
-## 2 Not Independently Authored — Derived, And Checksummed
+## 2 Not Independently Authored — Folded From Step Contracts, And Checksummed
 
 //TODO (WVR-180) — this section describes only the via-use-case derivation route. A capability's Required
 Behavior can also be derived directly from its Feature-level definition, with no use case involved (see
 [Analysing A Feature §4](analysing-a-feature.md)); reconciling that route's filing location and checksum source
 into this document is still open.
 
-A Required Product Behaviour is never written freehand. It's a mechanical/LLM derivation from the use case's own
-Goal, Preconditions, Main Success Scenario, and Extensions — the same kind of move Design already makes turning a
-Technical Interpretation into bound pseudocode (`design-feature-instructions.md` §6), just run one step
-earlier, directly against the use case's own narrative instead of against a solution-independent pseudocode
-rewrite of it.
+A Required Product Behaviour is never written freehand. Each use case operation already carries its own Step
+Contract ([Use Cases §2.1](use-cases.md)) — a Boundary, a Given, and a Then, stated directly on the step. A
+Required Product Behaviour is a mechanical fold of that: its Given is the operation's own Step Contract Given, and
+its Required Effect is the operation's own Step Contract Then, restated as an effect rather than a state. There is
+no inference left to make about *what* is required — that was settled when the Step Contract was written; folding
+only restates it in this document's own shape, indexed and filed where Feature-level reconciliation expects it.
 
-The derivation records a checksum of the exact use case content it read. This is falsifiable the same way every
+**A Step Contract's fixtures are a Required Product Behaviour's fixtures — the same artefact, not a second copy.**
+An operation's Step Contract already names, by reference, the fixtures that witness its Given and its Then (Use
+Cases §2.1); the fold carries those references forward rather than re-deriving or re-authoring anything literal.
+This is also what `M3`'s own fixture set is built from, once Design exists to build one: Design references a Step
+Contract's fixture as an external fact — an address and a checksum, never parsed or copied — rather than owning a
+second fixture that happens to agree with it. Where Design needs a fixture no Step Contract provides (an internal
+state no use case has reason to know about), it defines and owns that one itself, distinctly from anything
+Analysis stated.
+
+The derivation records a checksum of the exact Step Contracts it read. This is falsifiable the same way every
 other reconciliation in this process already is (`documentation-standards.md` §4's own Rationale makes the same
-argument for `.index/`): recompute the checksum later, and a mismatch against what's recorded means the use case
-changed since this behaviour was derived, and the derivation needs re-running — without anyone needing to notice
-by hand that a step's wording quietly shifted underneath an already-derived behaviour.
+argument for `.index/`): recompute the checksum later, and a mismatch against what's recorded means the use case's
+Step Contracts changed since this behaviour was folded, and the fold needs re-running — without anyone needing to
+notice by hand that a step's Given or Then quietly shifted underneath an already-folded behaviour.
 
 This also gives "is the use case detailed enough" a real, mechanical test instead of a judgment call. Attempting
-the derivation and seeing whether it actually succeeds — produces literal fixtures and a real required effect
-without inventing anything not already implied by the use case's own Preconditions/Extensions — *is* the check.
-A derivation that has to invent missing detail to complete itself is exactly the signal that the use case needs
-more, not a license to invent it here; the fix is to revise the use case, then re-derive.
+the fold and seeing whether it actually succeeds — every operation step has a Boundary, a Given, a Then, and a
+fixture behind each, with nothing missing to invent — *is* the check. A fold that has to invent missing detail to
+complete itself is exactly the signal that the use case's Step Contracts need more, not a license to invent it
+here; the fix is to add or correct the Step Contract, then re-fold.
 
 ## 3 The Cumulative Given
 
-A use case's Main Success Scenario is a sequence of steps; some of those steps are operations (Use Cases §2).
-Each operation's own Required Product Behaviour inherits, as its baseline Given, the use case's own entry
-conditions (Preconditions) plus the Required Effect of every operation that precedes it in the scenario:
+**Superseded by Step Contracts, and now a mechanical read rather than a fresh composition.** A use case's Main
+Success Scenario is a sequence of steps; some of those steps are operations (Use Cases §2), each carrying its own
+Step Contract (Use Cases §2.1). Consecutive Step Contracts already chain by construction — a step's own Given is
+exactly what the step or steps before it left Then — so an operation's Required Product Behaviour never needs its
+baseline composed from the use case's Preconditions plus every prior operation's Required Effect; it is simply
+that operation's own Step Contract Given, already stated:
 
 ```
-operation 1: Given(UC Preconditions)                          / When / Required Effect
-operation 2: Given(UC Preconditions + operation-1 Required Effect)              / When / Required Effect
-operation 3: Given(UC Preconditions + operation-1 + operation-2 Required Effect) / When / Required Effect
+operation 1: Given = Step 1's own Given (= UC Preconditions, at the first operation)   / When / Required Effect (= Step 1's Then)
+operation 2: Given = Step 2's own Given (= Step 1's Then)                              / When / Required Effect (= Step 2's Then)
+operation 3: Given = Step 3's own Given (= Step 2's Then)                              / When / Required Effect (= Step 3's Then)
 ...
 ```
 
 This is what makes Feature-level reconciliation (`weaver-workflows.md` §4) a real check rather than an assumption:
 each operation's own required effect is only ever demanded relative to what the use case has already guaranteed
 true by that point, so confirming the whole chain holds is confirming the use case's own Postconditions are
-actually reached, step by step, not just that each operation looks reasonable in isolation.
+actually reached, step by step, not just that each operation looks reasonable in isolation. Because the chain is
+now stated rather than composed, a use case whose Step Contracts don't actually chain — an operation's Given that
+doesn't match what the preceding step's Then established — is directly checkable, not merely assumed consistent.
 
 An Extension (Use Cases Template §6) supplies its own baseline the same way, inheriting from whichever base step
 it branches off, not from the full main-scenario chain — an Extension is a different path through the use case,
@@ -96,20 +111,28 @@ actor may be systematic) this operation must be reachable through — the first 
 
 # Rationale
 
-**Why Required Product Behaviour is derived rather than authored, unlike a use case's own narrative.** A use
-case's Goal/Preconditions/Main Success Scenario/Extensions are irreducibly human judgment — nobody else can
-decide what an actor actually wants. Turning that narrative into concrete, literal fixtures and effects is
-mechanical translation, not judgment, the same distinction `design-feature-instructions.md` already draws between
-authoring a Key Decision (judgment) and substituting an already-decided function into bound pseudocode
-(mechanical). Treating it as a derivation, checksummed against its source, is what makes it cheap to keep current
-and gives "is the use case good enough" an actual test instead of a reviewer's impression.
+**Why Required Product Behaviour is folded rather than authored, unlike a use case's own narrative.** A use
+case's Goal/Preconditions/Main Success Scenario/Extensions, and the Step Contracts stated on them, are irreducibly
+human judgment — nobody else can decide what an actor actually wants, or where an operation's state boundary
+actually sits. Turning that already-stated Given/Then into this document's own filed, indexed shape is mechanical
+restatement, not judgment. Treating it as a fold, checksummed against its source, is what makes it cheap to keep
+current and gives "is the use case good enough" an actual test instead of a reviewer's impression.
 
-**Why the cumulative Given is stated as an explicit formula rather than left implicit in "operations happen in
-sequence."** Before this, an operation's own entry conditions were agreed informally during Design (§5.1 of the
-old `design-feature-instructions.md`), late enough that nothing forced them to actually account for what earlier
-operations in the same use case had already guaranteed. Stating the chain explicitly, at Analysis time, is what
-lets Feature-level reconciliation be a mechanical walk instead of a judgment call about whether a Service's
-required behaviours "seem to" add up to the use case's goal.
+**Why the cumulative Given used to be stated as a composed formula, and no longer is.** Before Step Contracts
+existed, an operation's own entry conditions were agreed informally during Design (§5.1 of the old
+`design-feature-instructions.md`), late enough that nothing forced them to actually account for what earlier
+operations in the same use case had already guaranteed; composing the chain explicitly, in this document, was
+what first made Feature-level reconciliation a mechanical walk rather than a judgment call. Step Contracts move
+that same statement one level up, onto the use case's own steps, at the point the state is actually decided — so
+this document now reads the chain rather than building it, and a use case whose steps don't actually chain is a
+defect in the use case, not something this document has to reconcile around.
+
+**A consequence for Design, recorded here rather than acted on.** Design's own substitution check
+(`design-feature-instructions.md` §6, the `pseudocode-substitution-checker` skill, and `pseudocode-style.md`'s
+Technical-Interpretation vocabulary) was built to bind and compare against Technical Interpretation, which this
+change retires. Those documents now describe a step that no longer has an input. Fixing them is out of scope
+here — a follow-on ticket should retire or rewrite Design's own substitution machinery to reconcile against
+Required Product Behaviours (or Step Contracts directly) instead.
 
 **Why one file per operation rather than one per behaviour.** A behaviour rarely stands alone — entry-state
 permutations and unhappy paths of the same operation share almost everything (§4 above), and

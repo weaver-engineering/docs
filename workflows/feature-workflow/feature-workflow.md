@@ -53,9 +53,8 @@ The process of analysing a Feature is to understand the 'wh...s' of the Feature 
 its benefit, where and when it happens, which resources it affects, why it happens — by writing its
 [use cases](use-cases.md): an actor's real goal, achieved through one or more operations, never sliced down to
 match one operation or one Service (Use Cases §1.1). For each use case, its Main Success Scenario and Extensions
-are rewritten as Technical Interpretation (solution-independent pseudocode, Use Case Template), and each
-operation's [Required Product Behaviours](required-behaviors.md) are mechanically/LLM-derived from it and
-checksummed.
+are annotated with Step Contracts (Boundary/Given/Then, Use Cases §2.1), and each operation's
+[Required Product Behaviours](required-behaviors.md) are mechanically folded from them and checksummed.
 
 The whole Feature does not need to be analysed before design work can begin — this step is not formally required
 at all (Weaver Engineering Workflows §2) — but a Feature analysed enough to avoid future rework of an already-
