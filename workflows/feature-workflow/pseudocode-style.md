@@ -106,11 +106,12 @@ required effects (a Step Contract's Given/Then, [Use Cases §2.1](use-cases.md))
 binds against a use case's own pseudocode any more. A vocabulary kept "just in case" for a comparison that no
 longer runs would be notation nobody reads for a purpose nobody has.
 
-**A consequence this ticket does not resolve.** `design-feature-instructions.md` §6 and §9.1, and the
-`pseudocode-substitution-checker` skill, are written against Technical Interpretation as their input — binding a
-candidate function's pseudocode against it and comparing. That input no longer exists. Fixing Design's own
-substitution machinery to reconcile against Required Product Behaviours (or Step Contracts directly) instead is
-real work, out of scope here, and should be raised as its own ticket rather than patched in passing.
+**A consequence this ticket does not resolve, and doesn't need its own follow-on to resolve.**
+`design-feature-instructions.md` §6 and §9.1, and the `pseudocode-substitution-checker` skill, are written
+against Technical Interpretation as their input — binding a candidate function's pseudocode against it and
+comparing. That input no longer exists, and neither is patched here: `design-feature-instructions.md` is due a
+root-and-branch rewrite once the new design-assistant model lands, and `pseudocode-substitution-checker` belongs
+to the solution that model replaces outright, so it's dropped rather than rewritten.
 
 **Why `<--` instead of a `CALL` keyword.** An earlier version used `CALL {name}({args})`, with the keyword doing
 the work of distinguishing a call from ordinary computation. The arrow does the same job more compactly, and it

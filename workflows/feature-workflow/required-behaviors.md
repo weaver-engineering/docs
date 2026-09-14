@@ -128,11 +128,12 @@ this document now reads the chain rather than building it, and a use case whose 
 defect in the use case, not something this document has to reconcile around.
 
 **A consequence for Design, recorded here rather than acted on.** Design's own substitution check
-(`design-feature-instructions.md` §6, the `pseudocode-substitution-checker` skill, and `pseudocode-style.md`'s
-Technical-Interpretation vocabulary) was built to bind and compare against Technical Interpretation, which this
-change retires. Those documents now describe a step that no longer has an input. Fixing them is out of scope
-here — a follow-on ticket should retire or rewrite Design's own substitution machinery to reconcile against
-Required Product Behaviours (or Step Contracts directly) instead.
+(`design-feature-instructions.md` §6 and the `pseudocode-substitution-checker` skill) was built to bind and
+compare against Technical Interpretation, which this change retires. Neither is patched here, and neither needs
+its own follow-on ticket to fix: `design-feature-instructions.md` is due a root-and-branch rewrite once the new
+design-assistant model lands, not a targeted edit, and `pseudocode-substitution-checker` belongs to the solution
+that model is replacing outright — it's being dropped, not rewritten to reconcile against Required Product
+Behaviours instead.
 
 **Why one file per operation rather than one per behaviour.** A behaviour rarely stands alone — entry-state
 permutations and unhappy paths of the same operation share almost everything (§4 above), and
