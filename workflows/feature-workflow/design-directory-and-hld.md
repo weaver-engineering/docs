@@ -9,7 +9,7 @@
   slice of
 * [Pseudocode Style](pseudocode-style.md) - the notation a top-level function's own pseudocode (§4.5) is written in
 * [Use Cases](use-cases.md) - the analysis-step artifact a design translates into concrete decisions
-* [Required Behaviors](required-behaviors.md) - the Required Product Behaviours a design must satisfy
+* [Operation Fixtures](operation-fixtures.md) - the use case operation condition spaces a design must satisfy
 * [Specific Behaviors](specific-behaviors.md) - the Predicted Service Behaviours a design identifies; this
   document defines where they come from, that one defines their format
 * [Chunk Scope](chunk-scope.md) - the artefact a design task's own §1 Scope entry links to once its work is complete
@@ -226,7 +226,7 @@ function has (§4.1). Each one also carries, in the component document's own fro
   Internal Component and External Dependency calls it makes — the general, all-callers designed solution, as
   distinct from any one relying behaviour's own bound pseudocode, which changes across design iterations
   differently for each one;
-* a list of every Required Product Behaviour operation that relies on it, if any (some `interface` functions
+* a list of every use case operation that relies on it, if any (some `interface` functions
   exist purely to satisfy other Services in the flow, or purely internal Required Service Behaviours — see
   Weaver Engineering Workflows §3);
 * a list of every Predicted Service Behaviour that exercises it.

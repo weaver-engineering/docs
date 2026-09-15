@@ -29,25 +29,27 @@ copy of its content.
 | [Design Docs](workflows/feature-workflow/design-directory-and-hld.md) | A design task's own directory: its HLD, chunk scope, reconciliation record, and every proposal it's made. |
 | [Design Target](standards/design-layout-standards.md#7-why-the-layout-is-drawn-this-way) | A boundary designed in its own right: it owns its requirements, is mockable, bounds a trace, bounds authority, and owns its NFR consideration. |
 | [Dev Infra](workflows/feature-workflow/architect-implementation.md) | //TODO — a Service's own development infrastructure. |
+| [Dimension](workflows/feature-workflow/operation-fixtures.md#2-three-categories-three-obligations) | An axis that varies what an operation does — payload, dependency, or parameter — every value of which must be exposed across its kept cells. |
 | [Directory-Per-Entity Pattern](standards/documentation-standards.md#21-the-directory-per-entity-pattern) | A concept that grows multiple satellite artifacts gets its own directory with an UPPERCASE `{CONCEPT}.md` manifest. |
 | [Feature](workflows/feature-workflow/initial-feature-document.md) | A logical grouping of capabilities a customer can perform through the product, existing before design, Service decomposition, or route to market. |
 | [Functional Boundary](standards/concepts/service.md) | What a spec is actually written against, not a Feature or Product directly — Service (deployable) is the common case, Library (specifiable, not deployed) is parked. |
 | [Functional Feature](workflows/feature-workflow/feature-testing.md) | //TODO — the Feature-level state once every in-scope Service has passed Feature testing. |
 | [Functional Service](workflows/feature-workflow/deploy-service.md) | //TODO — what makes a deployed Service "functional." |
 | [Integrations](workflows/feature-workflow/design-feature-instructions.md) | //TODO — one of Architect Service's own outputs, paired with Design. |
+| [Invariant](workflows/feature-workflow/operation-fixtures.md#2-three-categories-three-obligations) | A condition that defines what an operation does without varying it — earns no cell, and must be witnessed exactly once. |
 | [Observability](workflows/feature-workflow/architect-implementation.md) | //TODO — what observability Architect Implementation is required to provide for. |
 | [Platform](standards/concepts/platform.md) | A Product whose customers are other projects' own SDEs rather than end-users (e.g. `the-loom`). |
 | [Predicted Service Behaviour](workflows/feature-workflow/specific-behaviors.md) | What a Service's own designed components/functions actually predict will happen, read off its own bound pseudocode. Design's own claim. |
 | [Product](standards/concepts/product.md) | One Weaver Engineering project: one code repository plus one `<project>-docs` repository. |
 | [Product Offering](standards/concepts/product-offering.md) | The channel — UI, CLI, API — through which a Service's endpoint is actually consumed; the route to market. |
 | [Promotion](standards/design-layout-standards.md#7-why-the-layout-is-drawn-this-way) | Turning a contained boundary into a design target of its own, in place: it changes the boundary's type, never its position, so no address changes and — given the right layout — no document moves. |
-| [Required Product Behaviour](workflows/feature-workflow/required-behaviors.md) | A use case operation's Given/Required Effect, mechanically folded from its own Step Contract and checksummed against it. |
 | [Required Service Behaviour](workflows/feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from architecting the design — independent of, and reconciled against, its Predicted Service Behaviour. |
+| [Route To A Value](workflows/feature-workflow/operation-fixtures.md#2-three-categories-three-obligations) | A fixture-level property of *how* a dimension reaches one of its values, not a dimension itself — the legitimate reason one value has several fixtures. |
 | [Service](standards/concepts/service.md) | The functional execution boundary a Use Case's operations run against; owns its own interface, components, dependencies, and SLOs/SLIs. |
 | [Service Flows](workflows/feature-workflow/architect-solution.md) | The Service topology and data flow chosen, by architecting a solution, to satisfy a Feature's use cases. |
 | [Service Interface](workflows/feature-workflow/design-feature-instructions.md) | The Service's own concrete interface specification, crystallized by Design before any gap analysis. |
 | [SLO / SLI](standards/concepts/slo.md) | A quantified reliability target for one Service, and what's measured to check it. Recorded per-Service. |
-| [Step Contract](workflows/feature-workflow/use-cases.md#21-step-contracts) | A use case operation's own perceived Boundary, Given and Then, stated directly on its step and witnessed by a fixture. Replaces Technical Interpretation. |
+| [Step Contract](workflows/feature-workflow/use-cases.md#21-step-contracts) | A use case operation's own perceived Boundary plus a pointer to its condition space (an operation document). Replaces Technical Interpretation. |
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
 | [System Requirements](workflows/feature-workflow/design-feature-instructions.md) | //TODO — one of Architect Service's own outputs, paired with Design. |
 | [Test Infra](workflows/feature-workflow/architect-tests.md) | //TODO — a Service's own test infrastructure. |

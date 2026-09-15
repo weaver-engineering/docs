@@ -70,12 +70,13 @@ repo still complies with §3 through §5, including the glossary rule above: see
 A concept that grows multiple satellite artifacts over its lifetime — rather than staying a single, self-contained
 document — gets its own directory, with an UPPERCASE `{CONCEPT}.md` manifest as that directory's entry point:
 `PRODUCT.md`, `docs/services/{slug}/SERVICE.md`, `docs/features/{slug}/FEATURE.md`, and, once a Use Case has grown
-behaviors of its own, `docs/analysis/use-cases/{slug}/USE-CASE.md`. The manifest may carry machine-authored
+operations and fixtures of its own, `docs/analysis/use-cases/{slug}/USE-CASE.md`. The manifest may carry machine-authored
 frontmatter (§3) alongside its narrative body — a hybrid a plain `.md` document elsewhere in this repo doesn't
 otherwise carry.
 
 This is a test, not a fixed list: apply it to any future concept by asking whether it accumulates its own growing
-set of sub-documents (a Service's components and dependencies; a Feature's use cases; a Use Case's own behaviors)
+set of sub-documents (a Service's components and dependencies; a Feature's use cases; a Use Case's own operations
+and fixtures)
 or stays a single fact worth stating once. Product Offering hasn't yet been confirmed either way — nothing so far
 has shown it accumulating satellite artifacts the way a Service or Feature does, but that's not a settled no,
 just not yet a demonstrated yes.
@@ -89,18 +90,29 @@ just not yet a demonstrated yes.
   usable even when it arrived from outside this ecosystem, or before its own frontmatter-writing tool existed yet.
 * `# Title` in InitCaps, matching the file's slug.
 * `## Context` — links, each with a one-line summary, to documents that provide context for this one. Not
-  indexed.
+  indexed, and excluded from numbering entirely — not merely unnumbered, but invisible to the computation, at
+  whatever depth it appears: a `Context` nested under a subsection takes no position, so it does not make the
+  heading after it the *second* subsection. Recognized case-insensitively (`# CONTEXT`, `## context`).
+  `Context` never has subsections of its own — not policed, just unsupported.
 * Body sections, numbered `## N Title` / `### N.M Title` / code blocks `N.M.a`. The first section (or
   subsection) after Context may be left unnumbered in the visible heading; it still gets the implicit id `0`
   for indexing.
-* Optional `# Appendix` — supplementary reference material. Excluded from word-indexing (§4), along with
-  everything nested beneath it — but still locatable and extractable via `.sections.yaml` (§4), not dropped
-  from the index entirely.
+* Optional `# Appendix` — supplementary reference material. The heading itself is never numbered, but it opens
+  its own numbering **region**: everything nested beneath it is numbered the same way the body is — including
+  the same first-sibling-defaults-to-hidden-`0` rule — starting fresh and independently of the body's own
+  sequence. Recognized case-insensitively. Excluded from word-indexing (§4), along with everything nested
+  beneath it — but still locatable and extractable via `.sections.yaml` (§4), not dropped from the index
+  entirely.
 * Optional `# Rationale` — the justification for the document's content: why it says what it says, options
-  considered and discarded. Excluded from word-indexing (§4), along with everything nested beneath it — but
-  still locatable and extractable via `.sections.yaml` (§4), not dropped from the index entirely. Kept separate
-  so the indexed body stays concise and an agent doesn't have to read justification to get the facts, while
-  it's still available for edge-case analysis.
+  considered and discarded. Numbered the same way `# Appendix` is: the heading itself unnumbered, its own
+  independent region beneath it. Excluded from word-indexing (§4), along with everything nested beneath it —
+  but still locatable and extractable via `.sections.yaml` (§4), not dropped from the index entirely. Kept
+  separate so the indexed body stays concise and an agent doesn't have to read justification to get the facts,
+  while it's still available for edge-case analysis.
+* A reference into a region other than the body is region-qualified: `§1.2` names the body's section `1.2`,
+  `§Appendix.1.2` names the Appendix's own. The qualifier is matched case-insensitively, like the region
+  heading it names — this is what keeps each region's own independent sequence from making an id ambiguous
+  across regions (§6).
 
 Factual/normative content belongs in the numbered body. Justification belongs in `# Rationale`. This standard
 polices that separation — it does not apply to itself by exception (see this document's own Rationale, below).
@@ -171,10 +183,26 @@ automatically (see Rationale).
 ## 6 Cross-References
 
 Within a document, a section reference is a `§M.N` or `§M.N.O` token — either plain text ("see §3.2") or the
-text of a markdown link (`[§3.2](#3-2-title)`). These, together with any markdown link's `#anchor` target, are
-the only same-document tokens a renumbering tool may rewrite when sections move. A bare `A.B.C`-shaped string
-elsewhere in the prose (a version number, say) is never touched — the `§` sigil, or appearing as a link, is
-what makes something a reference.
+text of a markdown link (`[§3.2](#3-2-title)`), optionally region-qualified (`§Appendix.1.2`, §3). These,
+together with any markdown link's `#anchor` target, are the only same-document tokens a renumbering tool may
+rewrite when sections move. A bare `A.B.C`-shaped string elsewhere in the prose (a version number, say) is
+never touched — the `§` sigil, or appearing as a link, is what makes something a reference.
+
+**A `§` token inside a markdown link's text follows the link's target, never its own appearance.** It is
+rewritten only where the link's target resolves to *this* document, and left exactly as written where it
+resolves anywhere else. `[model's own §2.3](other-doc.md)` and `[the retry rules §2.1](this-doc.md)` read
+identically as text and are treated oppositely — the target decides, the text never does.
+
+The target is **resolved** before it is compared, never matched as a string: `this-doc.md` and `./this-doc.md`
+name the same document, and a rule written against the literal spelling would rewrite one and not the other. A
+**bare anchor** (`#3-2-title`, no path at all) has nothing to resolve and is internal by definition — always
+this document.
+
+Only a `file://` target or a bare relative path is resolved this way. A link whose target carries any other
+protocol (`https://`, say) is never rewritten — not to save the cost of checking it, but because the question
+has no answer from the repo alone: a document is edited before it's published, publication may change it, and
+the same content may sit at more than one URL, so nothing at a remote address is *this document* in any sense
+checkable here.
 
 A reference to a heading or section in a *different* project's docs repo uses
 `@{repo-slug}/{path}[/][§M.N]` — e.g. `@magpieweaver-docs/docs/glossary.md/§4` for a specific section, or
@@ -379,6 +407,29 @@ it; only the noise of that justification is kept out of ordinary search results.
 instance §3 describes — was considered and explicitly dropped rather than adopted: nothing in this standard
 supports more than one Appendix or one Rationale per document, and the zone mechanism happening to be
 position-agnostic as an implementation detail isn't a claim otherwise.
+
+**Why `Context` is excluded from numbering at any depth, while `Appendix` and `Rationale` are unnumbered but
+open their own numbered region (§3).** These read as one rule until a document actually nests a `Context`
+under a subsection, which `number-document-sections` (`@agent-plugins-docs/docs/analysis/use-cases/
+number-document-sections/USE-CASE.md`) hit while writing its own fixtures. Excluding `Appendix`/`Rationale`
+from numbering entirely, the way `Context` is excluded, would mean a document, its Appendix and its Rationale
+could never independently number their own sections — exactly the content those regions are for. `Context`
+has no content of its own worth numbering, so full exclusion costs nothing; `Appendix`/`Rationale` do, so
+they get their own heading left unnumbered but everything beneath it numbered like any other region. The
+consequence worth stating plainly: `Context` taking no position means a `Context` nested under a subsection
+does not shift what follows it into being the second of its siblings — the heading after it is still the
+first, because `Context` was never counted at all.
+
+**Why a `§` token in a link's text follows the link's target rather than its own appearance (§6).** The
+original wording treated any markdown link carrying a `§` token in its text as a same-document reference,
+which is only true when the link actually points here. `[model's own §2.3](other-doc.md)` and `[the retry
+rules §2.1](this-doc.md)` are indistinguishable as text — a renumbering tool reading only the text would
+either rewrite both or neither, and both are wrong for one of the two. The target is what actually carries
+the answer, and it has to be resolved (not string-matched) because a document has more than one spelling of
+its own path — `this-doc.md` and `./this-doc.md` are the same file, and a literal-string rule would treat
+them as different documents. This was also found while writing `number-document-sections`' own fixtures,
+which needed all three forms — an external target, and two spellings of the current document — on adjacent
+lines to make the contrast checkable at all.
 
 §4's word-indexing rules (stemming, stopwords, link-by-URL-only, `todo.yaml`) were elicited while writing
 AgentPlugins' UC-003 (Index A Path) — the section-structure schema was settled first, but the actual word-index

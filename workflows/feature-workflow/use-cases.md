@@ -2,19 +2,22 @@
 
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step (`Analyse Feature`) that produces use cases and
-  their Required Product Behaviours
+  their operations' condition spaces
 * [Initial Feature Document](initial-feature-document.md) - what a Feature is, and how it relates to a use case
 * [Analysing A Feature](analysing-a-feature.md) - how a use case's operations relate to a Feature's own
   capabilities, and what turns one into a benefit
 * [User Personas](user-personas.md) - the goal/frustration pair a use case's human actor is formalized as
 * [The Product/Service Model](../../standards/product-service-model.md) - where Use Case sits in the wider
   Platform/Product/Service continuum
-* [Required Behaviors](required-behaviors.md) - what a use case's operations turn into once analysed
+* [Architect Solution](architect-solution.md) - what a use case's operations and perceived boundaries feed
+  into once analysed
 * [Weaver Engineering Workflows §5](../weaver-workflows.md) - the four-layer interface decision (use case,
   Architecture, Design, Product Offering) a use case's own interface statement is only the first layer of
 * [Use Case Template](../../templates/USE-CASE-TEMPLATE.md) - the fill-in-the-blank shape this document describes
 * [Documentation Standards §2.1](../../standards/documentation-standards.md#21-the-directory-per-entity-pattern) -
-  the directory-per-entity pattern a use case's `behaviors/` and `fixtures/` subdirectories follow
+  the directory-per-entity pattern a use case's `operations/` and `fixtures/` subdirectories follow
+* [Use Case Operation Template](../../templates/USE-CASE-OPERATION-TEMPLATE.md), [Operation Fixtures](operation-fixtures.md) -
+  the shape and the rules for what a Step Contract's `STATES` field points at
 
 ## 1 What A Use Case Is
 
@@ -87,20 +90,36 @@ derived into a Required Behavior.
 
 ### 2.1 Step Contracts
 
-A step that performs an operation carries its own **Step Contract**: the boundary it's perceived to cross, the
-state it assumes, and the state it establishes, each state witnessed by a concrete fixture.
+A step that performs an operation carries its own **Step Contract**: the boundary it's perceived to cross, and
+a pointer to that operation's own condition space.
 
 ```
 N. {Step name}
-    **Boundary:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
+    **BOUNDARY:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
     thing it is — a CLI, an API, a UI — or any further hypothetical detail worth recording}
-    **GIVEN:** {state assumed} [{fixture}](fixtures/{file}.md#{section})
+    **STATES:** [operations/{N}-{operation-slug}.md](operations/{N}-{operation-slug}.md) — the entry states
+    this step admits, the state each establishes, and the fixture exposing each
     {narrative description of the step}
-    **THEN:** {state established} [{fixture}](fixtures/{file}.md#{section})
 ```
 
-A step that is pure branching or narrative — nothing crossing a boundary — carries none of these; the state in
-force is whatever the preceding contract established.
+A step that is pure branching or narrative — nothing crossing a boundary — carries neither.
+
+**A step does not have one entry state and one exit state — it has a condition space.** An operation's
+fixtures bracket a payload dimension, a dependency dimension, a parameter dimension, however many of each
+actually vary its behaviour — not a single `Given` and a single `Then`. `STATES` points at a document holding
+exactly that: every dimension the operation's fixtures must expose, the invariants they must witness, and the
+cells they combine into, one per operation, filed at
+`docs/analysis/use-cases/{use-case-slug}/operations/{N}-{operation-slug}.md` ([Use Case Operation
+Template](../../templates/USE-CASE-OPERATION-TEMPLATE.md), [Operation Fixtures](operation-fixtures.md) for how
+to write one). This is the bracketing this repo used to attempt with a single `Given`/`Then` pair per step; a
+pair can only ever express whichever one cell its author happened to have in mind, so it has been replaced.
+
+**Extensions are cells of that same condition space, not operations of their own.** `1a`, `1b`, `1c` are
+different outcomes of step 1's own operation, reached under different conditions — sharing one operation
+document is the point, since it's the one place the whole set of input conditions an operation actually faces
+is visible together. An Extension accordingly carries no Step Contract of its own; its `BOUNDARY` is the same
+as the step it branches from (a property of the step, not of a cell), and its states are whichever cell of the
+operation document it corresponds to.
 
 **Boundary is a hypothesis, not a commitment, and the hypothesis isn't limited to which boundary.** It's the use
 case's own perception, at Analysis time, of where an operation crosses — before any Service exists to actually
@@ -117,23 +136,16 @@ case is allowed, and expected, to name a boundary — and guess at its shape —
 doing so is what gives architecting a starting hypothesis to work from, not a decision already made on its
 behalf.
 
-**Consecutive Step Contracts chain by construction.** A step's own `GIVEN` is exactly what the step or steps
-before it left `THEN` — there is nothing to compose, because writing the steps in order already states the
-chain. An Extension's own baseline is whatever `THEN` its branch point left, not the full main-scenario chain,
-since an Extension is a different path through the use case, not a continuation of the happy path past where it
-diverges (see [Required Behaviors §3](required-behaviors.md)).
-
-**Fixtures live beside the use case, not inside it.** A Step Contract references a fixture by a markdown link
-into the use case's own `fixtures/` subdirectory ([Documentation Standards
-§2.1](../../standards/documentation-standards.md#21-the-directory-per-entity-pattern) — the same reason a use
-case grows a `behaviors/` subdirectory, §4 below). A fixture document may hold one fixture or several under their
-own headings, grouped however they're naturally cohesive — one file per fixture is not required, only that each
-fixture resolves to its own addressable section.
+**A later operation's own dependency and payload states account for what an earlier one established.** Where
+one operation's result becomes another's entry condition, that's stated as one of the later operation's own
+dimension values (its document, its Context, names the operation it follows) — the chaining a single `Then`
+used to carry is now just an ordinary dependency or payload state of whichever operation comes next.
 
 **A use case is drafted before it's contracted.** The Main Success Scenario and Extensions are a complete,
-reviewable statement of the actor's goal with plain narrative steps and no Step Contracts at all; Boundary and
-GIVEN/THEN are added in a second pass, once the steps that cross a boundary are identified. A use case with no
-Step Contracts yet is an earlier, legitimate state of the document, not a malformed one.
+reviewable statement of the actor's goal with plain narrative steps and no Step Contracts at all; `BOUNDARY`
+and `STATES` — and the operation document `STATES` points at — are added in a second pass, once the steps
+that cross a boundary are identified. A use case with no Step Contracts yet is an earlier, legitimate state of
+the document, not a malformed one.
 
 This is what an earlier version of this document, and of [Use Case
 Template](../../templates/USE-CASE-TEMPLATE.md), called a use case's **Technical Interpretation** — solution
@@ -141,8 +153,8 @@ independent pseudocode, held in the use case's own Appendix, that a design step 
 against, pseudocode-to-pseudocode. That comparison no longer happens: Design reconciles against required effects
 derived from the use case, not against a pseudocode restatement of it, so there is nothing left for a separate
 pseudocode form to serve. Step Contracts keep only what Technical Interpretation was still actually doing —
-identifying operations and fixing the state around them — stated directly on the steps, in the same prose the
-rest of the use case is already written in.
+identifying operations and fixing the state around them — stated directly on the steps and their own operation
+documents, in the same prose the rest of the use case is already written in.
 
 ## 3 Scope
 
@@ -154,18 +166,28 @@ Services) satisfy it, or to split one Service's responsibility into two: the req
 realization did.
 
 Filed as `docs/analysis/use-cases/{use-case-slug}/USE-CASE.md` — the directory-per-entity pattern
-(`documentation-standards.md` §2.1), since a use case now always grows its own `behaviors/` subdirectory
-alongside it (§4). A use case is addressed by its own slug, never a numeric id — the same convention already used
-for Feature and Service.
+(`documentation-standards.md` §2.1), since a use case grows its own `operations/` and `fixtures/`
+subdirectories alongside it (§2.1). A use case is addressed by its own slug, never a numeric id — the same
+convention already used for Feature and Service.
 
-## 4 Required Behaviors
+## 4 What A Use Case Feeds
 
-A use case's Required Product Behaviours are what a later Chunk's tests are ultimately built to satisfy. They are
-not independently authored: they're mechanically folded from this use case's own Step Contracts (§2.1) — each
-operation's Boundary, Given and Then, chained in scenario order — one behaviour document per operation, filed
-under `docs/analysis/use-cases/{use-case-slug}/behaviors/{operation-slug}.md`. See [Required
-Behaviors](required-behaviors.md) for the fold itself and why attempting it is the actual test of whether this
-use case's Step Contracts were written with enough detail.
+A use case's operation documents and their fixtures (§2.1) are the requirement itself — what a later Chunk's
+tests are ultimately built to satisfy. Nothing folds them into a second artifact: they stay where they were
+written, and everything downstream references them.
+
+What they feed first is [`Architect Solution`](architect-solution.md), which reads every use case's perceived
+boundaries and operations together, Feature-wide, and decides the real Service topology and data flow that will
+satisfy them. That decision — the functional boundary each operation is actually specified against — is what
+joins Analysis to Design ([Weaver Engineering Workflows §1](../weaver-workflows.md)). Design then works against
+a named boundary, sourcing what it must establish from these documents as external facts it references and
+never owns ([Operation Fixtures §1](operation-fixtures.md)).
+
+An earlier version of this process had a use case additionally derive **Required Product Behaviours** into its
+own `behaviors/` subdirectory — a cumulative Given and Required Effect per operation, checksummed against the
+use case. That was an earlier answer to how Analysis joins Design, written before an operation's own condition
+space existed to state the same facts more completely and with fixtures attached. It is retired: a use case now
+grows `operations/` and `fixtures/`, and no `behaviors/` of its own.
 
 # Rationale
 

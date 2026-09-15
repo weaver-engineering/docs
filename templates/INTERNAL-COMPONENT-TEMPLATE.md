@@ -32,7 +32,7 @@ functions:  # one entry per numbered function below, keyed by its own §N — ma
     pseudocode: |
       {the currently designed solution for this operation, in the Pseudocode Style, linked to the specific component and dependency calls it makes — see Design Directory And HLD §4.5}
     used_by_operations:
-      - "{use-case-slug}.{operation-slug}"  # every Required Product Behaviour operation that relies on this function directly, if any — some interface functions exist purely to satisfy other Services in the flow, or purely internal Required Service Behaviours, and carry none
+      - "{use-case-slug}.{operation-slug}"  # every use case operation that relies on this function directly, if any — some interface functions exist purely to satisfy other Services in the flow, or purely internal Required Service Behaviours, and carry none
     used_by_behaviors:
       - "{service-slug}.{operation-slug}-N"  # every Predicted Service Behaviour that exercises it
   "2":

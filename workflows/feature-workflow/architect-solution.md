@@ -6,7 +6,8 @@
   responsibility, the three kinds of behaviour, and the two reconciliations this step's output feeds
 * [Architect Feature](architect-feature.md) - the sibling Architecture responsibility paired with Analysis,
   deciding the Feature's own Product Offering rather than its Service topology
-* [Required Behaviors](required-behaviors.md) - the Required Product Behaviours this step reads, Feature-wide
+* [Use Cases §2.1](use-cases.md), [Operation Fixtures](operation-fixtures.md) - the Step Contracts and
+  operation condition spaces this step reads, Feature-wide
 * [The Product/Service Model](../../standards/product-service-model.md), [Service §3](../../standards/concepts/service.md)
   - the Service archetypes this step chooses between
 * [Design Feature Instructions](design-feature-instructions.md) - `Architect Service` and `Design Service`, the
@@ -23,10 +24,11 @@ boundary) — not a Design activity, and not required before Design can start (�
 
 ## 1 Entry Requirements
 
-At least one use case in scope with a derived, checksummed set of Required Product Behaviours (`Analyse Feature`).
-Every use case's own Step Contracts (Use Cases §2.1) and Required Product Behaviours are read together,
-Feature-wide — not one use case at a time, since a Service one use case needs may be exactly the Service another
-use case in the same Feature also needs, and that's only visible reading them together.
+At least one use case in scope whose operations each carry a Step Contract and an operation document
+enumerating their own condition space (`Analyse Feature`). Every use case's own Step Contracts and operation
+documents (Use Cases §2.1) are read together, Feature-wide — not one use case at a time, since a Service one
+use case needs may be exactly the Service another use case in the same Feature also needs, and that's only
+visible reading them together.
 
 ## 2 What This Step Decides
 
@@ -39,10 +41,16 @@ For the Feature's use cases considered together:
 * **Archetype** — for each Service involved, which of the three archetypes it is (Request-Driven, Pipeline,
   Storage — `concepts/service.md` §3), since this governs which SLIs and which kind of design that Service's own
   `Design Service` step will actually produce.
-* **Interface** — for each Service's own `.interface`, what it actually *is*, technologically (a React/TS SPA; a
-  `pnpm` CLI tool vs. a bash script vs. a compiled binary; REST vs. RPC) — the second of the four interface layers
-  (Weaver Engineering Workflows §5). Not yet the concrete specification (wireframes, exact CLI arguments, exact
-  API methods) — that's `Design Service`'s own first step, Crystallize The Interface.
+* **Interface, and the delivery surface it presents** — for each Service's own `.interface`, what it actually
+  *is*, technologically (a React/TS SPA; a `pnpm` CLI tool vs. a bash script vs. a compiled binary; REST vs.
+  RPC) — the second of the four interface layers (Weaver Engineering Workflows §5). A delivery surface is a
+  property of a deployable boundary, and this is where the decision is **formally** made: in context, across
+  the whole Feature, and against the use cases the boundary has to satisfy. Analysis only ever hypothesises it
+  (Use Cases §2.1's `BOUNDARY`), and a design that reaches this question with no answer from here does not stop
+  — the architect asserts it and the design claims the fact, sourced to that assertion rather than to this step
+  (Weaver Engineering Workflows §2). Deciding it here is what makes it reconcilable; deciding it here is not
+  what makes it *possible*. Not yet the concrete specification (wireframes, exact CLI arguments, exact API
+  methods) — that's `Design Service`'s own first step, Crystallize The Interface.
 * **Supporting systems** — what each Service actually needs to run on (`docs/infrastructure/`), at the level of
   "a queue, a relational store, a scheduled job runner," not a deployment topology (that's `Architect
   Implementation`'s own concern once it exists).
@@ -55,6 +63,13 @@ This can surface Services with no use-case-visible role at all — a purely inte
 flow, invisible to any use case's own steps (the leaderboard example, Weaver Engineering Workflows §3). Naming
 such a Service here, even though no use case ever touches it, is exactly this step's job: without it, nothing
 would ever derive that Service's own required behaviours at all.
+
+//TODO — **this step is expected to produce fixtures of its own**, and the shape of that has not been worked
+through. A Service with no use-case-visible role has conditions and states nobody analysed, because no actor
+ever sees them; deciding the flow is what first makes those concrete enough to witness. Those fixtures would sit
+alongside a use case's own ([Operation Fixtures §9](operation-fixtures.md)) and be referenced the same way,
+rather than being a second kind of thing. What is not yet settled is where they are filed, what they attach to
+in the absence of a use case operation, and how they reach a design.
 
 ## 3 Recording Service Flows
 
@@ -78,8 +93,8 @@ nothing to walk if no flow was ever recorded.
 ## 5 Exit Criteria, And What It Feeds
 
 `service-flows.md` names every Service the current use cases in scope need, each with its own archetype,
-interface kind+technology, supporting systems, and its place in the data flow; every operation named by an
-in-scope Required Product Behaviour is covered by at least one Service in the flow, or explicitly deferred with a
+interface kind+technology, supporting systems, and its place in the data flow; every operation carrying a Step
+Contract in an in-scope use case is covered by at least one Service in the flow, or explicitly deferred with a
 reason.
 
 Its output feeds two things directly:

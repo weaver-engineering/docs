@@ -35,7 +35,7 @@ A fixed set of keywords; everything else is free text.
 * `RETURN {value(s)}` — exits the function.
 * `RAISE {exception class}` — the function's own logic detects an exceptional condition itself, not from a
   failed call — a divide by zero, an invariant that doesn't hold. This is the third source of unhappy-path
-  behaviour [Required Behaviors §4](required-behaviors.md) names: one only visible once the pseudocode is
+  behaviour [Operation Fixtures §5.1](operation-fixtures.md) names: one only visible once the pseudocode is
   written against real components.
 
 ## 2 Call Targets Are Bound
@@ -89,7 +89,7 @@ A propagating exception is fine, provided it's declared on whatever function it 
 that's neither caught locally nor declared anywhere along the chain up to the Service's own `interface`: a
 failure mode nobody has actually designed a response for, at any level — not "handled ungracefully," genuinely
 undecided, which is a direct violation of the broad, blanket graceful-failure requirement Analysis is expected to
-have stated ([Required Behaviors §4](required-behaviors.md)).
+have stated ([Operation Fixtures §5.1](operation-fixtures.md)).
 
 [Design Feature Instructions §9.1](design-feature-instructions.md) checks this mechanically: walk each
 function's pseudocode, collect every exception class it raises itself (`RAISE`) or lets propagate uncaught from
@@ -102,8 +102,8 @@ whatever calls it. Anything that's neither is a reconciliation failure, not a st
 used to define two forms specifically so a use case's own pseudocode and a function's own pseudocode could be
 compared, call for call, as part of Design's substitution check. That check assumed a use case stated its
 requirement as pseudocode a real function could be checked against; the use case now states it directly as
-required effects (a Step Contract's Given/Then, [Use Cases §2.1](use-cases.md)), and nothing on the Design side
-binds against a use case's own pseudocode any more. A vocabulary kept "just in case" for a comparison that no
+required effects (a Step Contract's own operation document, [Use Cases §2.1](use-cases.md)), and nothing on the
+Design side binds against a use case's own pseudocode any more. A vocabulary kept "just in case" for a comparison that no
 longer runs would be notation nobody reads for a purpose nobody has.
 
 **A consequence this ticket does not resolve, and doesn't need its own follow-on to resolve.**

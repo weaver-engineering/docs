@@ -4,7 +4,7 @@
 * [Feature Workflow](feature-workflow.md) - the workflow step (`Design Service`) this document is an output of
 * [Design Feature Instructions §6-§9](design-feature-instructions.md) - the process that produces and checks this
   document's content; this document defines the shape, that one defines how to get there
-* [Required Behaviors](required-behaviors.md) - the Required Service Behaviour a Predicted Service Behaviour is
+* [Required Behavior Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md) - the Required Service Behaviour a Predicted Service Behaviour is
   bound from, and reconciled against
 * [Use Cases §2](use-cases.md) - what an operation is
 * [Design Directory And HLD](design-directory-and-hld.md) - Internal Components and External Dependencies, whose
@@ -22,13 +22,15 @@ following the Required Service Behaviour's own entry state through this design t
 (Design Feature Instructions §6-§7).
 
 It is never authored freehand: it's read off a traced call tree through the Service's own call graph (§2), the
-same way the Required Service Behaviour it binds was itself derived, not invented (Required Behaviors §2). And it
+same way the Required Service Behaviour it binds was itself derived from the Service Flows, not invented
+([Architect Solution §5](architect-solution.md)). And it
 is always reconciled against that Required Service Behaviour (Weaver Engineering Workflows §4) — the two are
 independent artifacts on purpose, never one collapsing into the other, so that reconciliation stays a cheap
 checksum comparison rather than a fresh semantic walk every time either one is touched.
 
 There is no separate prose Given/When/Then document for a Predicted Service Behaviour. The Required Service
-Behaviour's own Given and Required Effect (Required Behaviors §4, §5) already state, in human-readable prose,
+Behaviour's own Given and Required Effect ([Required Behavior
+Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md)) already state, in human-readable prose,
 what's required; the call tree — comment-annotated with the concrete interaction at each node, the same
 convention already used below — states what Design predicts actually happens to satisfy it. Together they're
 what a Chunk's failing tests are built from; splitting the same fact across two documents that could drift apart
