@@ -97,6 +97,17 @@ just not yet a demonstrated yes.
 * Body sections, numbered `## N Title` / `### N.M Title` / code blocks `N.M.a`. The first section (or
   subsection) after Context may be left unnumbered in the visible heading; it still gets the implicit id `0`
   for indexing.
+* A code block acting as a figure carries its own `N.M.a` in one of three notations — combinable on one figure,
+  since none of them occupy the same space:
+  1. A caption line immediately before the fence: `*fig.* N.M.a` (optionally with a title, e.g. `*fig.* 2.1.a —
+     Some Title`). Renders as visible text; never touches the fence's own info string.
+  2. A bare numeric info string, no language tag: `` ```N.M.a `` … `` ``` ``. Fine where the block isn't a
+     language that needs its info string for anything else.
+  3. A YAML-frontmatter-style block inside the fence, coexisting with a real language tag — e.g. `` ```mermaid ``,
+     then a `---`-delimited block containing `fig: N.M.a` (room for other frontmatter alongside it), then the
+     diagram source, then the closing fence. The one that rescues a language-tagged block whose own renderer
+     requires the info string to stay exactly that language.
+  See this document's own Rationale for why a single fence-info-string form isn't enough on its own.
 * Optional `# Appendix` — supplementary reference material. The heading itself is never numbered, but it opens
   its own numbering **region**: everything nested beneath it is numbered the same way the body is — including
   the same first-sibling-defaults-to-hidden-`0` rule — starting fresh and independently of the body's own
@@ -237,7 +248,8 @@ blurb
 ### 1.1 The First Numbered Section Of The Subsection
 blurb
 
-``` 1.1.a Figure Title
+*fig.* 1.1.a — Figure Title
+```
 some code block content
 ```
 ```
@@ -255,7 +267,7 @@ sections:
     title: "The First Numbered Section"
     type: section
     start_line: 12
-    end_line: 25
+    end_line: 26
   "1.0":
     title: "Another Unnumbered First Section"
     type: section
@@ -265,12 +277,12 @@ sections:
     title: "The First Numbered Section Of The Subsection"
     type: section
     start_line: 20
-    end_line: 25
+    end_line: 26
   "1.1.a":
     title: "Figure Title"
     type: code-block
     start_line: 23
-    end_line: 25
+    end_line: 26
 ```
 
 the word index (`this-is-a-title.words.yaml`) is:
@@ -291,6 +303,8 @@ sections:
   "1.1":
     blurb: 1
   "1.1.a":
+    figure: 1
+    title: 1
     code: 1
     block: 1
     content: 1
@@ -440,3 +454,17 @@ redundant with it, and indexing both would double-count the same signal. And `to
 file rather than folded into `words.yaml` because a `//TODO` is a distinct kind of fact (outstanding work, with
 its own optional task reference) rather than ordinary indexed prose — conflating the two would make "find open
 TODOs" and "search document content" the same query when they're not.
+
+**Why a figure's `N.M.a` moved from a single fence-info-string form to three combinable notations (§3).** The
+original convention — writing the number (and an optional title) directly into the fence's own info string, as
+in this document's own worked example — predates this corpus using Mermaid diagrams as figures, and breaks
+against one: a Mermaid block only renders when its info string is exactly `mermaid`, so a pseudo-number sharing
+that slot silences the diagram. It was also invisible even where it didn't break anything, since an info string
+is never rendered to a reader. Found while dog-fooding the design-assistant against real work
+([WVR-206](https://linear.app/weaver-engineering/issue/WVR-206)). Three notations replace it rather than one,
+because no single one covers every case: a caption line is the most legible and the only one of the three that
+carries a title, but a bare numeric info string is simplest where nothing else needs that slot, and only the
+frontmatter form rescues a block whose language tag itself is load-bearing (Mermaid, most visibly). All three are
+deliberately combinable rather than mutually exclusive, so a document never has to fight the notation to say what
+it means. `fig.` — the caption form's own marker word — is stopworded for the same reason `document` is: once
+figures use this convention throughout a corpus, the marker itself carries no discriminating power for search.

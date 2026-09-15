@@ -102,7 +102,17 @@ N. {Step name}
     {narrative description of the step}
 ```
 
-A step that is pure branching or narrative — nothing crossing a boundary — carries neither.
+A step that is pure branching or narrative — nothing crossing a boundary — carries neither, and once assessed is
+written as a markdown blockquote:
+
+```
+> N. {narrative description of the step}
+```
+
+The blockquote is the marker itself, not decoration: it's what a reader has to tell "assessed, deliberately no
+Step Contract" apart from "not yet assessed" — otherwise indistinguishable, since both would render as identical
+plain prose. A step still in the use case's first-pass, no-Step-Contracts-yet state (below) stays unquoted; the
+blockquote only appears once a step has actually been looked at and found to cross no boundary.
 
 **A step does not have one entry state and one exit state — it has a condition space.** An operation's
 fixtures bracket a payload dimension, a dependency dimension, a parameter dimension, however many of each
@@ -145,7 +155,9 @@ used to carry is now just an ordinary dependency or payload state of whichever o
 reviewable statement of the actor's goal with plain narrative steps and no Step Contracts at all; `BOUNDARY`
 and `STATES` — and the operation document `STATES` points at — are added in a second pass, once the steps
 that cross a boundary are identified. A use case with no Step Contracts yet is an earlier, legitimate state of
-the document, not a malformed one.
+the document, not a malformed one — and none of its steps are blockquoted yet either (§2.1, above): that marker
+is only added once a step has actually been assessed and found to cross no boundary, so an unquoted step in a
+first-pass draft means "not yet reached," never "assessed, no contract."
 
 This is what an earlier version of this document, and of [Use Case
 Template](../../templates/USE-CASE-TEMPLATE.md), called a use case's **Technical Interpretation** — solution
@@ -220,3 +232,15 @@ concrete example, rather than trusting the general principle to be applied corre
 prevents it recurring — the same reasoning `documentation-standards.md` already applies to itself (its own
 Rationale: a standard that states an end state without saying how it's checked gets violated by the very next PR
 that touches it).
+
+**Why an assessed no-Step-Contract step is marked with a blockquote (§2.1), rather than left as plain prose or
+given the contracted form's own title line.** §2.1 already establishes that a use case with no Step Contracts
+yet is a legitimate, earlier document state, not a malformed one — but that same sentence makes a *partly*
+contracted use case genuinely ambiguous: an unquoted step reads identically whether nobody has reached it yet or
+it was deliberately assessed and found to cross no boundary. Found while dog-fooding the design-assistant
+against real work ([WVR-206](https://linear.app/weaver-engineering/issue/WVR-206), fed in from WVR-203). A
+blockquote resolves it more cheaply than either alternative it was weighed against: giving every step the
+contracted form's title line makes every narrative step carry a heading it has nothing to put under, and saying
+nothing (absence as the only marker) is exactly the ambiguity being fixed. A blockquote costs one character per
+line, needs no new field, and is a marker a reader (or an agent) can check for mechanically without parsing
+prose.

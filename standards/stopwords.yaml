@@ -133,3 +133,4 @@ stopwords:
   # domain-specific (this corpus is documentation about documentation;
   # near-universal here, so low signal for search)
   - document
+  - fig.
