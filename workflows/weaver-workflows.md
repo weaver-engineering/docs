@@ -37,6 +37,7 @@ flowchart TD
         direction LR
         USER_PERSONAS@{shape: documents, label: "User Persona"} <--> ANALYSIS@{shape: subproc, label: "Analysis"}
         USE_CASES@{shape: documents, label: "Use Cases"} <--> ANALYSIS
+        FIXTURES@{shape: documents, label: "Fixtures"} <--> ANALYSIS
         subgraph ANAL["Analysis"]
             direction LR
             ANALYSIS <--> ARCHITECT_FEATURE@{shape: subproc, label: "Architect Feature"}
@@ -44,10 +45,11 @@ flowchart TD
         end
         ARCHITECT_FEATURE --> PRODUCT_OFFERING@{shape: doc, label: "Product Offering"}
         ARCHITECT_SOLUTION --> SERVICE_FLOWS@{shape: documents, label: "Service Flows"}
+        ARCHITECT_SOLUTION --> FIXTURES
     end
     ANAL_LAYOUT:::layout
 
-    ANAL_LAYOUT --> BEHAVIOURS@{shape: doc, label: "Behaviours"} --> DESIGN_LAYOUT
+    ANAL_LAYOUT --> CONDITION_SPACES@{shape: documents, label: "Operations and Fixtures"} --> DESIGN_LAYOUT
     ANAL_LAYOUT --> BOUNDARIES@{shape: doc, label: "Boundaries"} --> DESIGN_LAYOUT
 
     subgraph DESIGN_LAYOUT[" "]
@@ -114,9 +116,14 @@ flowchart TD
 
 Each phase produces its own artifacts; its paired Architect responsibility produces its own, distinct artifacts —
 never the same document wearing two hats. Boundaries flow forward, not backward: `Architect Solution`'s Service
-Flows name the functional boundary each Service occupies *before* Design starts, alongside the Behaviours Analysis
-derives — Design works against an already-named boundary, refining it into the Service's own Functional
-Boundaries, rather than discovering the boundary itself as a side effect of designing.
+Flows name the functional boundary each Service occupies *before* Design starts — Design works against an
+already-named boundary, refining it into the Service's own Functional Boundaries, rather than discovering the
+boundary itself as a side effect of designing.
+
+That boundary is what actually joins Analysis to Design. Analysis's other output — each operation's own
+condition space and the fixtures witnessing it (§3) — crosses the same line, but as something Design
+**references** rather than something handed over and re-expressed: the requirement stays where it was written,
+and Design's own claims are sourced from it.
 
 ## 2 Neither Analysis Nor Architecture Is Formally Required
 
@@ -134,19 +141,25 @@ being built is actually a consumable benefit:
 Formally analysing and architecting a Feature is what *enables* reconciliation. Not doing so doesn't prevent
 design and implementation of a Feature — it just leaves nothing to mechanically check it against.
 
-## 3 The Three Kinds Of Behaviour
+**What Design owes is that every question got asked and answered — not that Analysis answered it.** A design is
+never blocked by a missing analysis; it is blocked by an unanswered question. So Design's own role is to make
+sure each fact it depends on has an answer and a recorded source, and then to **claim the fact**: Analysis
+informed it, or the architect asserted it, and which of those it was is recorded rather than lost. Both are
+legitimate sources and neither is refused. What varies is only what the claim can later be reconciled against —
+a fact informed by an analysis can be checked back against that analysis; a fact the architect asserted can
+only be checked against the architect. That is the same trade §1 and the bullets above describe, stated as the
+rule the design actually follows: never "wait for Analysis", always "ask the question, record who answered it".
+
+Where a fact is one a phase's paired Architect responsibility owns, that responsibility is where the decision is
+*formally* made — `Architect Solution` for the Service topology, what each Service actually is, and the flow
+between them — and a design asserting it for itself is doing so in that role's absence, not in its place.
+
+## 3 The Two Kinds Of Behaviour
 
 | Kind | Owner | Filed at |
 |---|---|---|
-| **Required Product Behaviour** | Analysis | `docs/analysis/use-cases/{uc-slug}/behaviors/{operation-slug}.md` |
 | **Required Service Behaviour** | Architect (Service) | `docs/services/{slug}/behaviors/{operation-slug}.md` (proposed inside the owning design task first) |
 | **Predicted Service Behaviour** | Design | the owning design task's own `reconciliation.yaml` |
-
-A Required Product Behaviour is cumulative and mechanically/LLM-derived from the use case, not independently
-authored: step *N*'s Given is the use case's own entry conditions plus every prior step's own Then. The derivation
-records a checksum of the use case content it read — falsifiable the same way every other reconciliation in this
-process already is, and a real test of whether the use case itself was written with enough detail: a derivation
-that has to invent missing detail is the signal that the use case needs more, not a license to invent it here.
 
 A Required Service Behaviour is what a Service is required to do, derived from architecting the design — both
 behaviours a use case's own operation touches directly, and ones purely internal to the chosen flow that no use
@@ -154,9 +167,22 @@ case ever sees (a multiplayer leaderboard's score-collation pipeline, say). A Pr
 Design's own, separate claim about what its chosen components and functions will actually produce. Required and
 Predicted are always independent artifacts, on purpose — see §4.
 
-//TODO (WVR-180) — a Required Product Behaviour can also be derived directly from a Feature's own capability,
-independent of any use case; see [Analysing A Feature §4](feature-workflow/analysing-a-feature.md). Reconciling
-that route into this section, and into Required Behaviors' own mechanics, is still open.
+**Analysis contributes no behaviour of its own, and deliberately so.** What it produces is the requirement
+itself: each use case operation's own condition space — its dimensions, the cells they combine into, and the
+concrete fixtures witnessing each — recorded against the operation rather than folded into a separate behaviour
+document ([Use Cases §2.1](feature-workflow/use-cases.md), [Operation
+Fixtures](feature-workflow/operation-fixtures.md)). Everything downstream **references** that: Design sources
+its own required effects from it as external facts, never owning or restating them. An earlier version of this
+process had Analysis derive a third kind, **Required Product Behaviour**, into
+`docs/analysis/use-cases/{uc-slug}/behaviors/{operation-slug}.md` — a cumulative Given and Required Effect per
+operation, checksummed against the use case. That was a second copy of what the operation documents now hold
+directly, and a weaker one: a single cumulative chain where the operation document states a whole condition
+space, with fixtures attached. It has been retired rather than kept in step.
+
+//TODO (WVR-180) — [Analysing A Feature §4](feature-workflow/analysing-a-feature.md) still describes a route
+that derives a capability's required behaviour directly from a Feature, with no use case involved. That route
+has no operation document to sit in, is likely defunct, and is being replaced rather than retrofitted; it is
+recorded here so the gap stays visible until the replacement lands.
 
 See [Feature Workflow](feature-workflow/feature-workflow.md) and [Design Feature
 Instructions](feature-workflow/design-feature-instructions.md) for how each is actually built.
@@ -167,8 +193,9 @@ Instructions](feature-workflow/design-feature-instructions.md) for how each is a
 precisely because Required and Predicted Service Behaviour never collapse into one artifact:
 
 1. **Feature-level.** Do the Required Service Behaviours and the Service Flows connecting them, triggered by the
-   use case's own operations, actually combine to produce the Required Product Behaviours? This is also where a
-   required Service is found to have no design at all yet, not just an inconsistent one.
+   use case's own operations, actually combine to establish what those operations' own condition spaces require
+   — cell by cell, against the fixtures witnessing each (§3)? This is also where a required Service is found to
+   have no design at all yet, not just an inconsistent one.
 2. **Service-level.** Do a Service's own Predicted Service Behaviours actually match its Required Service
    Behaviours?
 
@@ -209,7 +236,7 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 
 | Step | Description | Exit Criteria |
 |---|---|---|
-| [Analyse Feature](feature-workflow/feature-workflow.md) | Understands a Feature's use case(s) and derives their Required Product Behaviours. | Every use case in scope has a derived, checksummed set of Required Product Behaviours. |
+| [Analyse Feature](feature-workflow/feature-workflow.md) | Understands a Feature's use case(s) and enumerates each operation's own condition space, with the fixtures witnessing it. | Every use case in scope has a Step Contract per operation, an operation document enumerating its condition space, and a fixture behind every cell that needs one. |
 | [Architect Feature](feature-workflow/architect-feature.md) | Decides how the Feature is actually offered for consumption. | //TODO |
 | [Architect Solution](feature-workflow/architect-solution.md) | Decides the Service topology and data flow that will satisfy the Feature's use cases, naming the functional boundary each use case is specified against. | Service Flows exist, naming every Service involved and how data moves between them. |
 | [Design Service](feature-workflow/design-feature-instructions.md) | Derives, per Service (its own `Architect Service` phase), its own Required Service Behaviours from the Service Flows; crystallizes the Service's own interface; binds those behaviours to real components/functions. | Every Service in the flow has a checksummed set of Required Service Behaviours, each with a matching Predicted Service Behaviour; both reconciliations (§4) pass. |
@@ -227,7 +254,8 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | [Capability](feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. | Analyse Feature |
 | [User Persona](feature-workflow/user-personas.md) | A use case's human actor, formalized as a Role, Goals, Frustrations, and a Technical Proficiency. | Analyse Feature |
 | [Use Case](feature-workflow/use-cases.md) | An actor's real goal, achieved through one or more operations, each deferring to a Feature's own capability or defined inline. | Analyse Feature |
-| [Required Product Behaviour](feature-workflow/required-behaviors.md) | A use case operation's cumulative Given/Required Effect, derived and checksummed. | Analyse Feature |
+| [Operation Condition Space](feature-workflow/operation-fixtures.md) | One use case operation's own dimensions, invariants and cells, with the fixtures witnessing each — what a Step Contract's `STATES` points at. | Analyse Feature |
+| [Fixtures](feature-workflow/operation-fixtures.md) | The concrete states witnessing a condition space: what goes into an operation, what each dependency presents it with, and what it leaves and prints. Referenced by everything downstream, never re-derived. //TODO — `Architect Solution` is expected to produce fixtures of its own too; see [its own §2](feature-workflow/architect-solution.md). | Analyse Feature |
 | [Service Flows](feature-workflow/architect-solution.md) | The Service topology and data flow chosen to satisfy a Feature's use cases — the Boundaries that flow forward into Design (§1). | Architect Solution |
 | [Product Offering](../standards/concepts/product-offering.md) | The channel (UI/CLI/API) a Service's interface is actually delivered through. | Architect Feature |
 | [Functional Boundaries](feature-workflow/design-feature-instructions.md) | A Service's own interface and the components/dependencies it's built from, once crystallized by Design. | Design Service |

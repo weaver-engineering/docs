@@ -6,7 +6,8 @@
 * [Use Cases](use-cases.md) - the full mechanical shape (actor, goal, steps, extensions) a use case takes once one
   exists
 * [User Personas](user-personas.md) - the goal/frustration pair a use case's human actor is formalized as
-* [Required Behaviors](required-behaviors.md) - the mechanical derivation both routes described here feed into
+* [Operation Fixtures](operation-fixtures.md) - how a use case operation's own condition space is enumerated,
+  which is what the via-use-case route in §4 now feeds
 * [Feature Workflow §1](feature-workflow.md) - the `Analyse Feature` step this document guides
 
 ## 1 Capability: What A Feature Actually Groups
@@ -63,7 +64,14 @@ didn't change; what's required of it got sharper.
 
 ## 4 Deriving Required Behaviors: Two Routes
 
-A capability's Required Behavior ([Required Behaviors](required-behaviors.md)) can be derived one of two ways:
+//TODO (WVR-180) — **route 1 below is likely defunct and is being replaced, not retrofitted.** What a use case
+operation actually requires is now stated as that operation's own condition space, in its own operation
+document ([Use Cases §2.1](use-cases.md), [Operation Fixtures](operation-fixtures.md)) — an artefact that
+exists per use case operation and has no counterpart for a capability with no use case behind it. Route 2 is
+therefore live and route 1 has nowhere to land. Both are left described here until the replacement lands, so
+the gap stays visible rather than silently disappearing.
+
+A capability's Required Behavior can be derived one of two ways:
 
 1. **Directly from the Feature.** The capability's own effect is derived from its Feature-level definition, with no
    use case involved. This is the generic, unconstrained behaviour §3 describes — always available, since a
@@ -75,8 +83,8 @@ A capability's Required Behavior ([Required Behaviors](required-behaviors.md)) c
    * **defines itself inline** — its own effect, written in the same style a capability's would be, when no
      capability yet covers what this step needs.
 
-   Both forms are written in the same shape, so both feed the same mechanical derivation (Required Behaviors §2)
-   regardless of whether the specification they read lives at the Feature level or is local to one use case.
+   Both forms are written in the same shape, so both feed the same downstream analysis regardless of whether the
+   specification they read lives at the Feature level or is local to one use case.
 
 ### 4.1 Operation And Capability Are Distinct
 
@@ -116,7 +124,8 @@ already have a matching capability would block a use case from specifying a one-
 (or may never be) generalized into something reusable.
 
 **Status.** This document is a first cut (WVR-180), written before the Doc Search & Reporting Feature (WVR-179) has
-actually been analysed against it. Expect revision as that analysis exercises the model for real — in particular,
-[Required Behaviors](required-behaviors.md) itself still describes only the via-use-case derivation (its own §2);
-reconciling the direct-from-Feature route into its mechanics (filing location, checksum source) is open, flagged
-there as `//TODO (WVR-180)`.
+actually been analysed against it. Expect revision as that analysis exercises the model for real — and in
+particular, §4's direct-from-Feature route never acquired mechanics of its own and is now likely defunct: what
+a use case operation requires is stated in that operation's own condition space, which a capability with no use
+case behind it has no equivalent of. A replacement is being written rather than the route retrofitted; §4 is
+flagged accordingly.

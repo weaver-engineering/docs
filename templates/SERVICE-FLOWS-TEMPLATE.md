@@ -46,7 +46,7 @@ flowchart LR
 
 ## 3 Operation Coverage
 
-{every operation named by a Required Product Behaviour in scope, and which Service(s) in §1 realize it — the
+{every operation carrying a Step Contract in an in-scope use case, and which Service(s) in §1 realize it — the
 exit criterion Architect Solution §5 checks}
 
 | Operation | Covered By | Notes |

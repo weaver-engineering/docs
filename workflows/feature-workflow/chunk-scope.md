@@ -6,7 +6,7 @@
   sibling within
 * [Design Feature Instructions §7, §9.2](design-feature-instructions.md) - the process that decides a behaviour is
   new/mutated/deleted, and when a design task's own work is actually complete
-* [Required Behaviors §4](required-behaviors.md) - the `{use-case-or-service-slug}.{operation-slug}-N` addressing
+* [Required Behavior Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md) - the `{service-slug}.{operation-slug}-N` addressing
   this artefact's own behaviours list uses
 
 A Feature comprises many Services, not all designed and delivered together — a single Feature's `service-flows.md`
@@ -66,8 +66,9 @@ behaviors:
     status: deleted
 ```
 
-Every specific behaviour this design task's work touched, addressed the same way Required Behaviors and Specific
-Behaviors already address one (`{use-case-or-service-slug}.{operation-slug}-N`), tagged with exactly one status:
+Every specific behaviour this design task's work touched, addressed the same way a Required Service Behaviour
+and a Specific Behavior already address one (`{service-slug}.{operation-slug}-N`), tagged with exactly one
+status:
 
 * **`new`** — didn't exist before this design task; a wholly new test to write.
 * **`mutated`** — existed and passed before, its expected result changed; an existing test to edit.

@@ -9,15 +9,18 @@
   actor is human
 * [Analysing A Feature](../workflows/feature-workflow/analysing-a-feature.md) - how an operation relates to a
   Feature's own capability, deferred to or defined inline
-* [Required Behaviors](../workflows/feature-workflow/required-behaviors.md) - what this document's Step
-  Contracts and operations turn into, and the `behaviors/` subdirectory they're derived into
+* [Architect Solution](../workflows/feature-workflow/architect-solution.md) - what this document's Step
+  Contracts and operations feed into, Feature-wide
+* [Use Case Operation Template](USE-CASE-OPERATION-TEMPLATE.md), [Operation Fixtures](../workflows/feature-workflow/operation-fixtures.md) -
+  the shape and rules for what a Step Contract's `STATES` field points at
 
 Template for a single use case, filed as `docs/analysis/use-cases/{use-case-slug}/USE-CASE.md` — the
-directory-per-entity pattern, since a use case always grows a `behaviors/` subdirectory alongside it (one file
-per operation, holding that operation's Required Product Behaviours), and commonly grows a `fixtures/`
-subdirectory alongside it too, holding the concrete fixtures its Step Contracts reference (Use Cases §2.1). A use
-case is addressed by its own slug, never a numeric id. The template itself is in the Appendix below, since it's
-reference material to copy from, not indexed content in its own right.
+directory-per-entity pattern, since a use case grows `operations/` alongside it (one file per operation, its own
+condition space — [Use Case Operation Template](USE-CASE-OPERATION-TEMPLATE.md)) and `fixtures/` (the concrete
+fixtures those condition spaces reference, [Operation
+Fixtures](../workflows/feature-workflow/operation-fixtures.md)). A use case is addressed by its own slug, never
+a numeric id. The template itself is in the Appendix below, since it's reference material to copy from, not
+indexed content in its own right.
 
 # Appendix
 
@@ -49,22 +52,22 @@ Services it ends up taking to get there}
 ## 4 Main Success Scenario
 
 {numbered steps. A step that performs an operation (Use Cases §2) carries its own **Step Contract** (Use Cases
-§2.1) — the boundary it's perceived to cross, the state it assumes, and the state it establishes, each witnessed
-by a fixture:
+§2.1) — the boundary it's perceived to cross, and a pointer to that operation's own condition space:
 
 N. {Step name}
-    **Boundary:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
+    **BOUNDARY:** {the boundary this operation is perceived to cross, optionally with a guess at what kind of
     thing it is — a CLI, an API, a UI — or any further hypothetical detail worth recording}
-    **GIVEN:** {the state this operation assumes} [{fixture}](fixtures/{file}.md#{section})
+    **STATES:** [operations/{N}-{operation-slug}.md](operations/{N}-{operation-slug}.md) — the entry states
+    this step admits, the state each establishes, and the fixture exposing each
     {narrative description of the step}
-    **THEN:** {the state this operation establishes} [{fixture}](fixtures/{file}.md#{section})
 
-A step that is pure branching or narrative — nothing crossing a boundary — carries none of these; the state in
-force is whatever the preceding contract established. A use case may be drafted with plain narrative steps and no
-Step Contracts at all; Boundary/GIVEN/THEN are added in a second pass, once the steps crossing a boundary are
-identified (Use Cases §2.1). While adding Step Contracts, note for each operation whether it defers to an
-existing capability or needs its own inline spec (Analysing A Feature §4); once identified, Required Behaviors
-folds it into `behaviors/{operation-slug}.md` — link each operation to its own behaviour file here.
+A step that is pure branching or narrative — nothing crossing a boundary — carries neither. A use case may be
+drafted with plain narrative steps and no Step Contracts at all; `BOUNDARY`/`STATES` are added in a second
+pass, once the steps crossing a boundary are identified (Use Cases §2.1). While adding Step Contracts, note
+for each operation whether it defers to an existing capability or needs its own inline spec (Analysing A
+Feature §4), and write its condition space at `operations/{N}-{operation-slug}.md` (Use Case Operation
+Template). Nothing folds that into a further document: it is the requirement, and everything downstream
+references it.
 
 A step that relies on another use case's functionality references it inline, by id, at that step, as an actual
 markdown link to that use case's own directory — e.g. "...generates the section index
@@ -76,15 +79,15 @@ field would just be a second place for the same information to drift out of sync
 ## 5 Postconditions
 
 {observable end state once the main scenario completes — what Feature-level
-reconciliation ultimately checks the chained Required Product Behaviours
-against, see Required Behaviors §3}
+reconciliation ultimately checks the chain of operations against, see
+Weaver Engineering Workflows §4}
 
 ## 6 Extensions
 
 {numbered-step branches, Cockburn-style: `<step><letter>` — e.g. `2a`, `4c` —
-each naming the branching condition and what happens instead. A branch step that performs an operation carries
-its own Step Contract the same way a main-scenario step does, with its GIVEN inherited from whichever step it
-branches off (Use Cases §2.1) rather than from the full main-scenario chain.}
+each naming the branching condition and what happens instead. An Extension is a cell of the operation it
+branches from, not an operation of its own — it carries no Step Contract, only a pointer to which cell of that
+operation's own document (`operations/{N}-{operation-slug}.md`) it corresponds to (Use Cases §2.1).}
 
 ## 7 Open Design Questions (not resolved by this use case)
 
@@ -125,16 +128,24 @@ to manage it.
 
 **Why a use case may be drafted with no Step Contracts and still be complete.** The actor-level narrative — Goal,
 Preconditions, Main Success Scenario, Extensions, Postconditions — is a real, reviewable statement of what's
-wanted on its own; Boundary/GIVEN/THEN add the state and boundary detail that later derivation and architecting
-need, but adding them is a distinct, later act of analysis, not a precondition for the narrative itself being
-finished. Requiring Step Contracts up front would force every use case through a heavier first draft than its
-goal always warrants.
+wanted on its own; `BOUNDARY`/`STATES` and the operation documents they point at add the condition-space detail
+that later derivation and architecting need, but adding them is a distinct, later act of analysis, not a
+precondition for the narrative itself being finished. Requiring Step Contracts up front would force every use
+case through a heavier first draft than its goal always warrants.
+
+**Why a Step Contract points at a condition space rather than stating a single Given/Then pair.** An earlier
+version of this template bracketed a step with a single entry state and a single established state, each
+carrying one fixture. A step that crosses a boundary rarely has just one of either — it has a condition space,
+several dimensions of it, and a Given/Then pair can only ever express whichever one cell its author happened
+to have written first. `STATES` points at [Use Case Operation Template](USE-CASE-OPERATION-TEMPLATE.md)'s own document instead,
+which is that same bracketing done properly: every dimension, every cell, and the fixture behind each — see
+[Operation Fixtures](../workflows/feature-workflow/operation-fixtures.md) for why and how.
 
 **Why fixtures live in their own `fixtures/` subdirectory rather than back in this document.** The directory a
 use case occupies exists specifically so it can carry growing satellite material next to `USE-CASE.md`
-(Documentation Standards §2.1) — `behaviors/` already does this for Required Product Behaviours. A fixture needs
-to be distinctly and separately referenceable the way a behaviour file already is, which an inline appendix
+(Documentation Standards §2.1) — `operations/` already does this for each operation's own condition space. A
+fixture needs to be distinctly and separately referenceable the way those already are, which an inline appendix
 section cannot give it without inventing a second addressing scheme; a sibling file, referenced by section
-anchor, gets that for free from the indexing this repo already has. Nothing here requires one file per fixture —
-fixtures that are naturally cohesive (a command's CLI output and log lines, say) may share a document, sectioned,
-so long as each fixture resolves to its own addressable heading.
+anchor, gets that for free from the indexing this repo already has. Nothing here requires one file per fixture — fixtures that are naturally
+cohesive (a command's rendered reports, say) may share a document, sectioned, so long as each fixture resolves
+to its own addressable heading.

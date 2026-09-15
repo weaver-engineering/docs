@@ -96,7 +96,7 @@ is itself structured cites another `### 4.N` entry by name, never an inline anon
 
 ## 7 Predicted Service Behaviours
 
-* [{service-slug}.{operation-slug}](./services/{service-slug}/behaviors/{operation-slug}.md) - binds [{use-case-slug}.{operation-slug}]({link to the Required Product or Required Service Behaviour it realizes})
+* [{service-slug}.{operation-slug}](./services/{service-slug}/behaviors/{operation-slug}.md) - binds [{use-case-slug}.{operation-slug}]({link to the Required Service Behaviour, or the use case operation, it realizes})
 
 ## 8 Technology Stack
 

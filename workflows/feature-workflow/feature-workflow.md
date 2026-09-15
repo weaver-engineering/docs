@@ -53,15 +53,17 @@ The process of analysing a Feature is to understand the 'wh...s' of the Feature 
 its benefit, where and when it happens, which resources it affects, why it happens — by writing its
 [use cases](use-cases.md): an actor's real goal, achieved through one or more operations, never sliced down to
 match one operation or one Service (Use Cases §1.1). For each use case, its Main Success Scenario and Extensions
-are annotated with Step Contracts (Boundary/Given/Then, Use Cases §2.1), and each operation's
-[Required Product Behaviours](required-behaviors.md) are mechanically folded from them and checksummed.
+are annotated with Step Contracts (`BOUNDARY`/`STATES`, Use Cases §2.1), and each operation's own condition
+space — its dimensions, invariants and cells, with a fixture behind each — is enumerated in its own operation
+document ([Operation Fixtures](operation-fixtures.md)).
 
 The whole Feature does not need to be analysed before design work can begin — this step is not formally required
 at all (Weaver Engineering Workflows §2) — but a Feature analysed enough to avoid future rework of an already-
 designed Service is worth the cost of doing it properly.
 
 ### 2 Architect Solution
-The entry requirement is at least one use case with derived Required Product Behaviours. `Architect Solution`
+The entry requirement is at least one use case whose operations carry Step Contracts and their own condition
+spaces. `Architect Solution`
 decides the Service topology, archetypes, interfaces, supporting systems, and data flow that will satisfy them —
 naming the functional boundary each use case's operations are actually specified against — recorded as [Service
 Flows](architect-solution.md). Also not formally required — skipping it means a Service's own design can proceed
@@ -115,8 +117,9 @@ The output is a working Service — `Deploy Service` (`../weaver-workflows.md`) 
 
 ### 6 Test Feature
 The entry requirement is every Service `service-flows.md` names in a `Functional Service` state. Before a Feature
-can be considered done, its Required Product Behaviours **must** be tested end to end — the use cases exercised
-and found to be delivering their expected benefits (see [Feature Testing](feature-testing.md)).
+can be considered done, what its use cases' operations actually require **must** be tested end to end — the use
+cases exercised and found to be delivering their expected benefits (see [Feature
+Testing](feature-testing.md)).
 
 There is no requirement to wait for every Service to be delivered before testing what's already functional. If a
 Service fails to deliver its expected benefits, the behaviours it was required to realize return to `Design

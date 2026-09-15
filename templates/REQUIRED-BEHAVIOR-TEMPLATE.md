@@ -3,21 +3,18 @@
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered
   sections, Rationale/Appendix) this template follows
-* [Required Behaviors](../workflows/feature-workflow/required-behaviors.md) - what a Required Product Behaviour
-  is, the derivation-and-checksum shape below, and why one file holds every behaviour of one operation
-* [Weaver Engineering Workflows §3](../workflows/weaver-workflows.md) - Required Service Behaviour, the second
-  user of this same shape
+* [Weaver Engineering Workflows §3](../workflows/weaver-workflows.md) - what a Required Service Behaviour is,
+  and the reconciliation it feeds
+* [Architect Solution](../workflows/feature-workflow/architect-solution.md) - the Service Flows a Required
+  Service Behaviour is derived from
 * [Specific Behaviors §4.1](../workflows/feature-workflow/specific-behaviors.md) - the nested-numbering,
   heading-depth-tracks-nesting convention this template's own numbered sections follow
 
-One template, two users, differing only in owner, source, and filing root:
-
-| | Required Product Behaviour | Required Service Behaviour |
-|---|---|---|
-| Derived from | a use case's own Step Contracts | a Service's own slice of the Feature's Service Flows |
-| Owned by | Analysis | Architect (Services) |
-| Filed at (final) | `docs/analysis/use-cases/{use-case-slug}/behaviors/{operation-slug}.md` | `docs/services/{service-slug}/behaviors/{operation-slug}.md`, proposed first at `docs/design/{feature-slug}/{design-task-ref}/services/{service-slug}/behaviors/{operation-slug}.md` |
-| Addressed as | `{use-case-slug}.{operation-slug}-N` | `{service-slug}.{operation-slug}-N` |
+Template for a **Required Service Behaviour**: what one Service is required to do at one of its operations,
+derived from that Service's own slice of the Feature's Service Flows and owned by `Architect Service`. Filed at
+`docs/services/{service-slug}/behaviors/{operation-slug}.md`, proposed first inside the owning design task at
+`docs/design/{feature-slug}/{design-task-ref}/services/{service-slug}/behaviors/{operation-slug}.md`, and
+addressed as `{service-slug}.{operation-slug}-N`.
 
 One file per operation, never one file per behaviour — `{...}-N` above is a *reference* into the file, the same
 way `§M.N` already addresses a section elsewhere in this repo, not a filename pattern. The file holds every
@@ -35,19 +32,18 @@ derivation:
 # {Operation Slug} — {Operation Title}
 
 ## Context
-* {link to the owning use case or Service}
-* Required Behaviors (@docs/workflows/feature-workflow/required-behaviors.md) - the convention this document follows
+* {link to the owning Service}
+* {link to the Service Flows slice this operation's behaviours are derived from}
 
-**Realizes:** {the use case step(s), or Service Flow slice, this operation covers}
-
-**Required Delivery Surface:** {UI | CLI | API — the first of the four interface layers, Weaver Engineering Workflows §5}
+**Realizes:** {the Service Flow slice this operation covers — and, where this operation is one a use case's own
+step actually triggers, that use case's operation document and the cells of it this behaviour answers to}
 
 ## 1 {Shared Entry Condition — Happy Path, Or Named Entry-State Variation}
 
-**Realizes:** {which variation this is — "happy path", or "happy path (extension {M}{letter})" if this entry state exercises a use case Extension instead of the base steps}
+**Realizes:** {which variation this is — "happy path", or a named variation of it}
 
-**Given** {the concrete entry conditions/fixtures for this variation — the use case's own Preconditions plus every
-prior operation's own Required Effect (Required Behaviors §3), literal example values, no Service named}
+**Given** {the concrete entry conditions for this variation, taken from what the Service Flows say this Service
+receives at this point — literal example values, no Internal Component or External Dependency named}
 
 {If nothing further permutes this condition, §1 is a leaf: it's a complete behaviour on its own, so continue
 directly with its own **Required Effect** here, in the same shape §1.1 uses below. If, as shown in this
@@ -58,11 +54,11 @@ everything it states; its own outcome isn't determined until a child narrows it 
 
 {heading depth tracks nesting depth, one `#` deeper per `.`-separated segment beyond the first}
 
-**Realizes:** {which variation this is — the happy path, or a named unhappy path, of either the base steps or a named Extension}
+**Realizes:** {which variation this is — the happy path, or a named unhappy path}
 
 **Given** — as §1, but {only the condition(s) that actually differ}
 
-**Required Effect** {the concrete, Service-agnostic outcome this variation demands — what must be true afterward, stated abstractly enough that no Service, Internal Component, or External Dependency is named}
+**Required Effect** {the concrete outcome this variation demands of this Service — what must be true afterward, stated abstractly enough that no Internal Component or External Dependency is named}
 
 ### 1.2 {Second Permutation Of §1 — the alternative condition}
 
@@ -89,13 +85,24 @@ everything it states; its own outcome isn't determined until a child narrows it 
 
 # Rationale
 
-**Why one template serves both Required Product and Required Service Behaviour.** Both are the same kind of
-fact, asked at two different levels of the same system: "what is required here, stated abstractly enough that
-nothing downstream has been decided yet." A Required Product Behaviour asks that of a use case's own operation; a
-Required Service Behaviour asks it of a Service, once architecting has decided that Service participates in a
-flow. Giving them separate templates would suggest they're different kinds of thing when the only real
-differences are who derives them, what they're checksummed against, and where they're filed — all already
-captured in the table above.
+**Why this template no longer serves two users.** An earlier version served both Required Product Behaviour and
+Required Service Behaviour, on the argument that they were one kind of fact asked at two levels. Required
+Product Behaviour has since been retired: a use case's own operation documents state its condition space, its
+cells and its fixtures directly, and Design references those rather than a second, folded restatement of them
+([Use Cases §2.1](../workflows/feature-workflow/use-cases.md), [Operation
+Fixtures](../workflows/feature-workflow/operation-fixtures.md)). What remains is the one user that was never a
+restatement of anything upstream: a Service's own required behaviours, derived from architecting a flow, and
+covering behaviours no use case ever sees.
+
+**Why there is no Required Delivery Surface field.** An earlier version stamped the interface kind (UI/CLI/API)
+onto each behaviour document. A delivery surface is a property of a deployable boundary rather than of a
+behaviour, and it is formally decided by [`Architect
+Solution`](../workflows/feature-workflow/architect-solution.md), in context and against the use cases the
+boundary has to satisfy — so it is recorded there, with the Service it belongs to, and a behaviour document
+neither states nor restates it. Where that decision has not been made, the question is still answered rather
+than deferred: the architect asserts it and the design claims the fact against that assertion ([Weaver
+Engineering Workflows §2](../workflows/weaver-workflows.md)). A behaviour document is not the right home in
+either case.
 
 **Why a derivation checksum, not a `reviewed`/call-tree block like a Specific Behavior document carries.** This
 document records what's *required*, never what's *predicted* — binding to real functions, call trees, and
