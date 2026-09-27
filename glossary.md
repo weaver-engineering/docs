@@ -14,6 +14,7 @@ copy of its content.
 
 | Term | Definition |
 | :--- | :--- |
+| [Aspect That Can Wait](standards/roadmaps.md#3-aspects-that-can-wait) | A known part of a product — a capability, an open decision, a needed design — that nothing yet depends on; recorded in the roadmap, not a slice, and either sure to exist or not yet sure. |
 | [Benefit](workflows/feature-workflow/analysing-a-feature.md) | What a capability becomes only in relation to a persona's use case that actually exercises it — not a property of a Feature by itself. |
 | [Capability](workflows/feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. |
 | [Category Directory](standards/design-layout-standards.md#3-category-directories) | A flat directory holding a category of satellite artefacts in a design (`operations/`, `NFRs/`, `fixtures/`), created when first populated — not a boundary, and not subject to the containment rule. |
@@ -44,10 +45,12 @@ copy of its content.
 | [Product Offering](standards/concepts/product-offering.md) | The channel — UI, CLI, API — through which a Service's endpoint is actually consumed; the route to market. |
 | [Promotion](standards/design-layout-standards.md#7-why-the-layout-is-drawn-this-way) | Turning a contained boundary into a design target of its own, in place: it changes the boundary's type, never its position, so no address changes and — given the right layout — no document moves. |
 | [Required Service Behaviour](workflows/feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from architecting the design — independent of, and reconciled against, its Predicted Service Behaviour. |
+| [Roadmap](standards/roadmaps.md) | A project's `ROADMAP.md`: its delivered slices, which are history; its planned slices, which are aspirations; and the aspects that can wait. |
 | [Route To A Value](workflows/feature-workflow/operation-fixtures.md#2-three-categories-three-obligations) | A fixture-level property of *how* a dimension reaches one of its values, not a dimension itself — the legitimate reason one value has several fixtures. |
 | [Service](standards/concepts/service.md) | The functional execution boundary a Use Case's operations run against; owns its own interface, components, dependencies, and SLOs/SLIs. |
 | [Service Flows](workflows/feature-workflow/architect-solution.md) | The Service topology and data flow chosen, by architecting a solution, to satisfy a Feature's use cases. |
 | [Service Interface](workflows/feature-workflow/design-feature-instructions.md) | The Service's own concrete interface specification, crystallized by Design before any gap analysis. |
+| [Slice](standards/roadmaps.md#2-slices) | A thin, end-to-end piece of a product, delivered by a ticket or a few; records what it required the docs to define, and what it delivers. |
 | [SLO / SLI](standards/concepts/slo.md) | A quantified reliability target for one Service, and what's measured to check it. Recorded per-Service. |
 | [Step Contract](workflows/feature-workflow/use-cases.md#21-step-contracts) | A use case operation's own perceived Boundary plus a pointer to its condition space (an operation document). Replaces Technical Interpretation. |
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
