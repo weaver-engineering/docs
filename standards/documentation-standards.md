@@ -37,6 +37,9 @@ notes/
   projects' own SDEs, not end-users — no separate structural marker), and pointers into the rest of this
   structure. Every `<project>-docs` repo *is* one Product (or Platform) — see [Weaver Engineering
   Projects](../projects/weaver-projects.md) for why "project" resolves to Product rather than Service.
+* **`ROADMAP.md`** — optional, repo root, beside `PRODUCT.md` and linked from its Context: how the product is being
+  built, slice by slice, and the aspects of it that can wait. Not part of the required minimum; a project with
+  nothing yet to plan has none (see [Roadmaps](roadmaps.md)).
 * **`docs/features/`** — one directory per Feature (`{feature-slug}/FEATURE.md`): a logical grouping of
   capabilities a customer can perform through the product (see [Analysing A
   Feature](../workflows/feature-workflow/analysing-a-feature.md)). A Feature exists before design, before any

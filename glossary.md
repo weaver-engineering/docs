@@ -14,7 +14,7 @@ copy of its content.
 
 | Term | Definition |
 | :--- | :--- |
-| [Aspect That Can Wait](standards/roadmaps.md#3-aspects-that-can-wait) | A known part of a product — a capability, an open decision, a needed design — that nothing yet depends on; recorded in the roadmap, not a slice, and either sure to exist or not yet sure. |
+| [Aspect That Can Wait](standards/roadmaps.md#3-aspects-that-can-wait) | A known part of a product — a capability, an open decision, a needed design — that no slice yet depends on; recorded in the roadmap, not a slice, and either sure to exist or not yet sure. It may have parts, each an aspect in its own right, and may need other aspects, parts or slices. |
 | [Benefit](workflows/feature-workflow/analysing-a-feature.md) | What a capability becomes only in relation to a persona's use case that actually exercises it — not a property of a Feature by itself. |
 | [Capability](workflows/feature-workflow/analysing-a-feature.md) | A logical unit a Feature groups: something a customer can do through the product, independent of any use case. |
 | [Category Directory](standards/design-layout-standards.md#3-category-directories) | A flat directory holding a category of satellite artefacts in a design (`operations/`, `NFRs/`, `fixtures/`), created when first populated — not a boundary, and not subject to the containment rule. |
@@ -25,6 +25,7 @@ copy of its content.
 | [Continuous Delivery](workflows/feature-workflow/architect-deployment.md) | //TODO — Architect Deployment's own CD decisions. |
 | [Continuous Integration](workflows/feature-workflow/architect-implementation.md) | //TODO — Architect Implementation's own CI decisions. |
 | [Cross-Cutting Boundary](standards/design-layout-standards.md#58-nfrs) | A named association of a set of NFR rules with the functions they are imposed on; a design may declare several of one category, and each earns its own document. |
+| [Dependency Diagram](standards/roadmaps.md#5-the-dependency-diagram) | A roadmap's generated diagram of what its aspects that can wait need — aspects, their parts, and slices — before work on them can start; focused on one aspect, just what that aspect needs. |
 | [Deployed Feature](workflows/feature-workflow/deploy-offering.md) | //TODO — the deployed, running instance of a Feature's Product Offering(s). |
 | [Design Directory](standards/design-layout-standards.md#1-the-design-directory) | The directory a design occupies, marked by a `DESIGN.yaml` declaring its namespace; its subdirectories are part of it, except any that is itself a design directory. |
 | [Design Docs](workflows/feature-workflow/design-directory-and-hld.md) | A design task's own directory: its HLD, chunk scope, reconciliation record, and every proposal it's made. |
