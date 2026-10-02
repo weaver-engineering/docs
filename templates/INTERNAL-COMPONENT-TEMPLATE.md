@@ -108,7 +108,7 @@ signature, machine-managed graph edges — aligned without duplicating the funct
 second way.
 
 `calls:` is declared once, on the function that does the calling, rather than assembled into a separate global
-graph document — the same shape this repo already uses for `.index/` (documentation-standards.md §4): a fact
+graph document: a fact
 lives with the document that's authoritative for it. `calls:` is deliberately the *superset* of what a function
 might call, not a single fixed sequence; a Predicted Service Behaviour's own traced call tree (Specific Behaviors
 §2) picks one concrete walk through it for one concrete scenario.

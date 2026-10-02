@@ -356,8 +356,7 @@ is genuinely missing, is caught by attempting the Required Product Behaviour der
 under-specified (Required Behaviors §2) — a different check, run earlier, by Analysis itself.
 
 **Why `reconciliation.yaml` is checksums, not a checkbox.** A checkbox only ever records that a check passed
-once; it can't say whether it's still true. Checksums make the record falsifiable — the same argument
-`documentation-standards.md` §4 already makes for `.index/`.
+once; it can't say whether it's still true. Checksums make the record falsifiable.
 
 **Why §9.1 is a subset check, not an equality check.** A Required Service Behaviour and a Service's own designed
 pseudocode are written for different purposes and can never read the same — one is deliberately solution-

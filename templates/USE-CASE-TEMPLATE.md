@@ -72,8 +72,8 @@ references it.
 A step that relies on another use case's functionality references it inline, by id, at that step, as an actual
 markdown link to that use case's own directory — e.g. "...generates the section index
 ([find-a-path](../use-cases/find-a-path/USE-CASE.md))...". This is the only place dependencies are declared: no
-separate "Depends On" summary field. Once the word-indexer exists, a document's dependency set is mechanically
-recoverable anyway, by scanning its own word index for use-case-slug links outside `## Context` — so a bespoke
+separate "Depends On" summary field. A document's dependency set is mechanically
+recoverable anyway, by scanning it for use-case-slug links outside `## Context` — so a bespoke
 field would just be a second place for the same information to drift out of sync with the actual steps.}
 
 ## 5 Postconditions
@@ -105,7 +105,7 @@ any project, not just AgentPlugins, so the template belongs here rather than in 
 Putting the template in `# Appendix` rather than a numbered body section is a direct use of the documentation
 standard's own vocabulary: it's supplementary reference material to copy from, not indexed content in its own
 right — placeholder text (`{...}`) throughout would make for a fairly useless search index anyway. This mirrors
-how `magpieweaver-docs`' `ADR-TEMPLATE.md`/`SPEC-TEMPLATE.md` are treated, predating this indexing scheme.
+how `magpieweaver-docs`' `ADR-TEMPLATE.md`/`SPEC-TEMPLATE.md` are treated.
 
 **Why Step Contracts replace what an earlier version of this template called Technical Interpretation.**
 Technical Interpretation was solution-independent pseudocode, held in this Appendix, that Design would later
@@ -146,6 +146,6 @@ use case occupies exists specifically so it can carry growing satellite material
 (Documentation Standards §2.1) — `operations/` already does this for each operation's own condition space. A
 fixture needs to be distinctly and separately referenceable the way those already are, which an inline appendix
 section cannot give it without inventing a second addressing scheme; a sibling file, referenced by section
-anchor, gets that for free from the indexing this repo already has. Nothing here requires one file per fixture — fixtures that are naturally
+anchor, gets that for free from the section numbering this repo already has. Nothing here requires one file per fixture — fixtures that are naturally
 cohesive (a command's rendered reports, say) may share a document, sectioned, so long as each fixture resolves
 to its own addressable heading.
