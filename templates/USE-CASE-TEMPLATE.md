@@ -98,9 +98,8 @@ in a `# Rationale` section per the documentation standard, if one is needed}
 
 # Rationale
 
-The shape had only ever existed as one worked example (AgentPlugins' UC-001, "Discuss A Project Concept And
-Document It") before this template formalized it — worth stating explicitly since a use case can be written for
-any project, not just AgentPlugins, so the template belongs here rather than in a single project's docs repo.
+A use case can be written for any project, not just AgentPlugins, so the template belongs here rather than in a
+single project's docs repo.
 
 Putting the template in `# Appendix` rather than a numbered body section is a direct use of the documentation
 standard's own vocabulary: it's supplementary reference material to copy from, not indexed content in its own

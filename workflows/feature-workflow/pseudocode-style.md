@@ -1,14 +1,13 @@
 # Pseudocode Style
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
-* [Design Feature Instructions §6, §9.1](design-feature-instructions.md) - where this pseudocode is recorded; §6's comparison against Technical Interpretation is **stale**, see this document's own Rationale
-* [Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) - where a function's own pseudocode, in this style, is recorded
 * [External Dependency Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) - where a dependency's declared error modes, referenced by `ON FAILURE` below, are defined
 * [Use Cases §2.1](use-cases.md) - Step Contracts: what a use case's own steps are stated in now, in plain prose, not this notation
 * [Documentation Standards](../../standards/documentation-standards.md) - the document shape this convention follows
 
-This is the notation a Service function's own pseudocode is written in, during `Design Service`
-([Design Feature Instructions §6, §9.1](design-feature-instructions.md)): precise enough to trace mechanically,
+This is the notation a Service function's own pseudocode is written in, during `Design Service`: precise enough to trace mechanically,
 not so heavy that it tips into committing to an actual programming language.
 
 A use case's own steps do **not** use this notation. An earlier version of this document also covered a use
@@ -91,11 +90,6 @@ failure mode nobody has actually designed a response for, at any level — not "
 undecided, which is a direct violation of the broad, blanket graceful-failure requirement Analysis is expected to
 have stated ([Operation Fixtures §5.1](operation-fixtures.md)).
 
-[Design Feature Instructions §9.1](design-feature-instructions.md) checks this mechanically: walk each
-function's pseudocode, collect every exception class it raises itself (`RAISE`) or lets propagate uncaught from
-its own calls, and confirm each one is either caught there or added to that function's own declared contract for
-whatever calls it. Anything that's neither is a reconciliation failure, not a stylistic gap.
-
 # Rationale
 
 **Why Technical Interpretation's vocabulary is gone rather than kept alongside the bound form.** This document
@@ -105,13 +99,6 @@ requirement as pseudocode a real function could be checked against; the use case
 required effects (a Step Contract's own operation document, [Use Cases §2.1](use-cases.md)), and nothing on the
 Design side binds against a use case's own pseudocode any more. A vocabulary kept "just in case" for a comparison that no
 longer runs would be notation nobody reads for a purpose nobody has.
-
-**A consequence this ticket does not resolve, and doesn't need its own follow-on to resolve.**
-`design-feature-instructions.md` §6 and §9.1, and the `pseudocode-substitution-checker` skill, are written
-against Technical Interpretation as their input — binding a candidate function's pseudocode against it and
-comparing. That input no longer exists, and neither is patched here: `design-feature-instructions.md` is due a
-root-and-branch rewrite once the new design-assistant model lands, and `pseudocode-substitution-checker` belongs
-to the solution that model replaces outright, so it's dropped rather than rewritten.
 
 **Why `<--` instead of a `CALL` keyword.** An earlier version used `CALL {name}({args})`, with the keyword doing
 the work of distinguishing a call from ordinary computation. The arrow does the same job more compactly, and it

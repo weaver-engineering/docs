@@ -1,10 +1,10 @@
 # The Design Directory And HLD
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow steps (`Architect Service`, `Design Service`) this
   document defines the output of
-* [Design Feature Instructions](design-feature-instructions.md) - the process that produces and checks this
-  document's content; this document defines the shape, that one defines how to get there
 * [Architect Solution](architect-solution.md) - the Feature-wide Service Flows this design task's own scope is a
   slice of
 * [Pseudocode Style](pseudocode-style.md) - the notation a top-level function's own pseudocode (§4.5) is written in
@@ -15,7 +15,6 @@
 * [Chunk Scope](chunk-scope.md) - the artefact a design task's own §1 Scope entry links to once its work is complete
 * [HLD Template](../../templates/HLD-TEMPLATE.md) - the fill-in-the-blank shape of the HLD itself
 * [External Dependency Template](../../templates/EXTERNAL-DEPENDENCY-TEMPLATE.md) - the fill-in-the-blank shape of an ED document
-* [Internal Component Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md) - the fill-in-the-blank shape of an IC document
 * [Documentation Standards](../../standards/documentation-standards.md) - the document shape and directory structure this convention builds on
 
 ## 1 Design Directory Location And Naming
@@ -166,8 +165,8 @@ future design task against the same Service. A detail private to a single Chunk 
 ### 4.1 Where Internal Component Documents Live, And How They're Addressed
 
 Each Service documents its own internal components under `docs/services/{service-slug}/components/`. Each
-component gets its own file, `{component-slug}.md`, produced from the [Internal Component
-Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md), addressed as `{service-slug}.{component-slug}` —
+component gets its own file, `{component-slug}.md`, produced from the Internal Component
+Template, addressed as `{service-slug}.{component-slug}` —
 extended to `{service-slug}.{component-slug}.{function-slug}` for one function — with the same numbered,
 `§M.N`-referenceable interaction shape as an ED document.
 
@@ -176,8 +175,8 @@ Proposed while a design task is in progress at
 to `docs/services/{service-slug}/components/{component-slug}.md` on delivery — same lifecycle as §3.1.
 
 Each function also declares, on itself, every address it may call — recorded in the component document's own
-frontmatter, keyed by that function's own `§N` (`calls:` — see the [Internal Component
-Template](../../templates/INTERNAL-COMPONENT-TEMPLATE.md)), not written inline under the numbered section it
+frontmatter, keyed by that function's own `§N` (`calls:` — see the Internal Component
+Template), not written inline under the numbered section it
 belongs to — and, the reverse, every address whose own `calls:` names it (`called_from:`, same frontmatter entry)
 — maintained together, one edit adding both sides. There is no separate call-graph document: a Service's whole
 call graph is just the union of every function's own declaration.

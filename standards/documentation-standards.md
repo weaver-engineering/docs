@@ -253,8 +253,7 @@ standing product facts for the same reason a pull request isn't the same thing a
 Feature's design directory can genuinely propose two competing shapes for the same Service before either ships,
 and nothing under `docs/services/` should have to referee that until one of them actually does.
 
-§5's `@{repo-slug}/{path}[/§M.N]` syntax settles what AgentPlugins' UC-001 (Discuss A Project Concept And
-Document It) had flagged as an open design question: each project's docs exist both as a local repo in the
+§5's `@{repo-slug}/{path}[/§M.N]` syntax settles an open design question: each project's docs exist both as a local repo in the
 weaver-engineering workspace and canonically on GitHub, so a plain relative markdown link across repos only
 resolves in one of those two contexts. The `@{repo-slug}/{path}` form sidesteps that by naming the repo
 explicitly rather than encoding a filesystem-relative or GitHub-relative path, leaving resolution (local

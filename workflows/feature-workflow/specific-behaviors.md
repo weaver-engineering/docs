@@ -1,9 +1,9 @@
 # Specific Behaviors
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step (`Design Service`) this document is an output of
-* [Design Feature Instructions §6-§9](design-feature-instructions.md) - the process that produces and checks this
-  document's content; this document defines the shape, that one defines how to get there
 * [Required Behavior Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md) - the Required Service Behaviour a Predicted Service Behaviour is
   bound from, and reconciled against
 * [Use Cases §2](use-cases.md) - what an operation is

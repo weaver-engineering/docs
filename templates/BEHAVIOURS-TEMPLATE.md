@@ -69,14 +69,14 @@ _claims:
   # explicit exclusion are all the operation's (OPERATION.md §5) — this document is a view
   # into the space they define, and states only what is required in it.
   - _target: bnd/{design-slug}/op/{operation-slug}/cell/1.1.2
-    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"}
+    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"}
     requiredEffects:
       - kind: {returns | raises | dependency-interaction | state-change | stream-output | exit-code | emits-metric}
         target: bnd/{design-slug}/op/{operation-slug}
         description: §3.1
         predicate: {field: status, operator: eq, value: pending}
     realizes:
-      - "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"
+      - "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"
 ---
 # {Operation Name} Behaviours
 

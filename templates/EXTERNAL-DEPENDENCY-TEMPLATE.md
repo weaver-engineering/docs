@@ -1,5 +1,7 @@
 # External Dependency Template
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Documentation Standards §3](../standards/documentation-standards.md) - the document shape this template follows, including the machine-authored-frontmatter allowance the `used_by:` block below uses
 * [Design Directory And HLD §3](../workflows/feature-workflow/design-directory-and-hld.md) - what an external dependency is, the thin-shim convention, and where its document lives
@@ -61,8 +63,7 @@ Purpose is left unnumbered per the documentation standard's own §3 (the first s
 implicit, unshown `0`) — numbered operations then start at `1`, so `{service-slug}.{dependency-slug}.1` always
 addresses the first real operation rather than Purpose (in prose, cited as `§1`).
 
-An ED operation never declares `calls:` — see [Internal Component
-Template](INTERNAL-COMPONENT-TEMPLATE.md) — because the whole reason External Dependency and Internal Component
+An ED operation never declares `calls:` — because the whole reason External Dependency and Internal Component
 are different document types is that one is observed and the other is decided. Giving an ED operation calls of
 its own would mean asserting something about a system this Service doesn't control and can't verify; every call
 chain necessarily terminates at an ED operation rather than passing through it.

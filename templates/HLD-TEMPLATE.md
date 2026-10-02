@@ -1,5 +1,7 @@
 # HLD Template
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape (Context, numbered sections, Rationale/Appendix) this template follows
 * [Design Directory And HLD](../workflows/feature-workflow/design-directory-and-hld.md) - what an HLD is, where it's filed, and what each of its required sections must contain
@@ -52,7 +54,7 @@ feature document — not repeated here}
 {the shapes of data this Service persists (data at rest, e.g. what an External Dependency stores) and exchanges
 (data in flight, e.g. request/response payloads) — concrete enough for behaviours to instantiate. One
 subsection per type, `### 4.M {TypeName}`, `TypeName` in PascalCase. Every function signature elsewhere in this
-design (Internal Component Template, External Dependency Template) that takes or returns a non-primitive value
+design (External Dependency Template) that takes or returns a non-primitive value
 cites this exact name — never an informal, lowercase alias invented at the call site. A structured value nested
 inside another type's own field is never inlined anonymously; it gets its own named entry here instead,
 referenced by name. Primitives (`path`, `string`, `bool`, `int`, `float`, `void`, a literal string-enum like
@@ -104,7 +106,7 @@ is itself structured cites another `### 4.N` entry by name, never an inline anon
 
 # Rationale
 
-{every candidate considered for each Key Decision in §3 and why it was discarded, not just the winner — see [Design Feature Instructions §5](../workflows/feature-workflow/design-feature-instructions.md)}
+{every candidate considered for each Key Decision in §3 and why it was discarded, not just the winner}
 ````
 
 # Rationale

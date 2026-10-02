@@ -1,12 +1,12 @@
 # Specific Behavior Template
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape this template departs
   from — this artefact is data, not a narrative document, see below
 * [Specific Behaviors](../workflows/feature-workflow/specific-behaviors.md) - what a Predicted Service Behaviour
   is, and why it has no separate prose document of its own
-* [Design Feature Instructions §6-§9](../workflows/feature-workflow/design-feature-instructions.md) - the process
-  that produces and checks the shape below
 
 Template for `reconciliation.yaml`, one file per design task, filed at
 `docs/design/{feature-slug}/{design-task-ref}/reconciliation.yaml` — sibling to `hld.md` and `chunk-scope.yaml`

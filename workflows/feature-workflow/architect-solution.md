@@ -1,5 +1,7 @@
 # Architect Solution
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Feature Workflow](feature-workflow.md) - the workflow step this document defines
 * [Weaver Engineering Workflows §1, §3, §4](../weaver-workflows.md) - Architecture as a cross-cutting
@@ -10,8 +12,6 @@
   operation condition spaces this step reads, Feature-wide
 * [The Product/Service Model](../../standards/product-service-model.md), [Service §3](../../standards/concepts/service.md)
   - the Service archetypes this step chooses between
-* [Design Feature Instructions](design-feature-instructions.md) - `Architect Service` and `Design Service`, the
-  per-Service work this step's output feeds
 * [Service Flows Template](../../templates/SERVICE-FLOWS-TEMPLATE.md) - the fill-in-the-blank shape this process
   populates
 
@@ -100,7 +100,7 @@ reason.
 Its output feeds two things directly:
 
 * **`Architect Service`**, per Service named in the flow — derives that Service's own Required Service
-  Behaviours from its slice of the flow (`design-feature-instructions.md`).
+  Behaviours from its slice of the flow.
 * **Feature-level reconciliation** (Weaver Engineering Workflows §4) — walks the flow, once every Service it
   names has its own Required Service Behaviours, to confirm the combination actually produces the Required
   Product Behaviours it was derived to satisfy. Recorded at `docs/design/{feature-slug}/feature-reconciliation.yaml`,
