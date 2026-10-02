@@ -4,7 +4,7 @@
 * [Feature Workflow](feature-workflow.md) - the workflow this step belongs to
 * [Retrospective Report](retrospective-report.md) - what a retrospective report is, when it's required, and what it must contain
 * [Retrospective Template](../../templates/RETROSPECTIVE-TEMPLATE.md) - the fill-in-the-blank shape to produce
-* [Documentation Standards](../../standards/documentation-standards.md) - the document shape and indexing the produced report must comply with
+* [Documentation Standards](../../standards/documentation-standards.md) - the document shape the produced report must comply with
 
 These are the steps an agent follows, architect-led, to run a retrospective and produce a compliant [retrospective report](retrospective-report.md). The point of the process is specifically to capture actions to take to improve — evidence-gathering and elicitation exist to surface good candidate actions, not to produce a polished narrative for its own sake.
 
@@ -36,4 +36,4 @@ For each agreed action, raise a Linear issue in the agreed project (team `Weaver
 
 ## 7 File The Report
 
-Fill in the [retrospective template](../../templates/RETROSPECTIVE-TEMPLATE.md) with the confirmed content and file it at `workflows/feedback/{workflow-slug}/task-{ref}.retro.md` in this repo (e.g. `workflows/feedback/feature-workflow/task-mag-46.retro.md`), using the primary tracking identifier from step 1 — a Linear issue id where one exists, otherwise the project-local task id — as `{ref}`. Bring the new document into compliance with the [Documentation Standards](../../standards/documentation-standards.md) — Context section, numbered body, index entries — the same as any other document added to this repo.
+Fill in the [retrospective template](../../templates/RETROSPECTIVE-TEMPLATE.md) with the confirmed content and file it at `workflows/feedback/{workflow-slug}/task-{ref}.retro.md` in this repo (e.g. `workflows/feedback/feature-workflow/task-mag-46.retro.md`), using the primary tracking identifier from step 1 — a Linear issue id where one exists, otherwise the project-local task id — as `{ref}`. Bring the new document into compliance with the [Documentation Standards](../../standards/documentation-standards.md) — Context section, numbered body — the same as any other document added to this repo.

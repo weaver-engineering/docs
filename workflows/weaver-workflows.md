@@ -1,5 +1,7 @@
 # Weaver Engineering Workflows
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [About Weaver Engineering](../about-weaver-engineering.md) - workspace overview
 * [Documentation Standards](../standards/documentation-standards.md) - the document shape this follows
@@ -184,8 +186,7 @@ that derives a capability's required behaviour directly from a Feature, with no 
 has no operation document to sit in, is likely defunct, and is being replaced rather than retrofitted; it is
 recorded here so the gap stays visible until the replacement lands.
 
-See [Feature Workflow](feature-workflow/feature-workflow.md) and [Design Feature
-Instructions](feature-workflow/design-feature-instructions.md) for how each is actually built.
+See [Feature Workflow](feature-workflow/feature-workflow.md) for how each is actually built.
 
 ## 4 The Two Reconciliations
 
@@ -239,7 +240,7 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | [Analyse Feature](feature-workflow/feature-workflow.md) | Understands a Feature's use case(s) and enumerates each operation's own condition space, with the fixtures witnessing it. | Every use case in scope has a Step Contract per operation, an operation document enumerating its condition space, and a fixture behind every cell that needs one. |
 | [Architect Feature](feature-workflow/architect-feature.md) | Decides how the Feature is actually offered for consumption. | //TODO |
 | [Architect Solution](feature-workflow/architect-solution.md) | Decides the Service topology and data flow that will satisfy the Feature's use cases, naming the functional boundary each use case is specified against. | Service Flows exist, naming every Service involved and how data moves between them. |
-| [Design Service](feature-workflow/design-feature-instructions.md) | Derives, per Service (its own `Architect Service` phase), its own Required Service Behaviours from the Service Flows; crystallizes the Service's own interface; binds those behaviours to real components/functions. | Every Service in the flow has a checksummed set of Required Service Behaviours, each with a matching Predicted Service Behaviour; both reconciliations (§4) pass. |
+| Design Service | Derives, per Service (its own `Architect Service` phase), its own Required Service Behaviours from the Service Flows; crystallizes the Service's own interface; binds those behaviours to real components/functions. | Every Service in the flow has a checksummed set of Required Service Behaviours, each with a matching Predicted Service Behaviour; both reconciliations (§4) pass. |
 | [Implement Service](chunk-cycle/chunk-cycle-workflow.md) | //TODO | //TODO |
 | [Test Service](chunk-cycle/chunk-cycle-workflow.md) | //TODO | //TODO |
 | [Deploy Service](feature-workflow/deploy-service.md) | //TODO | //TODO |
@@ -258,12 +259,7 @@ tested, and deployed before `Test Feature` exercises the assembled whole.
 | [Fixtures](feature-workflow/operation-fixtures.md) | The concrete states witnessing a condition space: what goes into an operation, what each dependency presents it with, and what it leaves and prints. Referenced by everything downstream, never re-derived. //TODO — `Architect Solution` is expected to produce fixtures of its own too; see [its own §2](feature-workflow/architect-solution.md). | Analyse Feature |
 | [Service Flows](feature-workflow/architect-solution.md) | The Service topology and data flow chosen to satisfy a Feature's use cases — the Boundaries that flow forward into Design (§1). | Architect Solution |
 | [Product Offering](../standards/concepts/product-offering.md) | The channel (UI/CLI/API) a Service's interface is actually delivered through. | Architect Feature |
-| [Functional Boundaries](feature-workflow/design-feature-instructions.md) | A Service's own interface and the components/dependencies it's built from, once crystallized by Design. | Design Service |
-| [Required Service Behaviour](feature-workflow/design-feature-instructions.md) | What a Service is required to do, derived from the Service Flows. | Design Service |
 | [Predicted Service Behaviour](feature-workflow/specific-behaviors.md) | What a Service's designed components/functions actually predict, from its own bound pseudocode. | Design Service |
-| [Service Interface](feature-workflow/design-feature-instructions.md) | The Service's own concrete interface specification — actual CLI/UI/API shape — crystallized before any gap analysis. | Design Service |
-| [System Requirements](feature-workflow/design-feature-instructions.md) | //TODO | Design Service |
-| [Integrations](feature-workflow/design-feature-instructions.md) | //TODO | Design Service |
 | [Design Docs](feature-workflow/design-directory-and-hld.md) | The design task's own directory: HLD, chunk scope, reconciliation record, and every proposal it's made. | Design Service |
 | [Chunks](feature-workflow/specification-document.md) | //TODO | Design Service |
 | [Chunk Sequence](feature-workflow/the-chunk-sequence.md) | //TODO | Design Service |
@@ -319,7 +315,6 @@ above): the boundary is that role's own, sole output, not one of two unrelated t
 produce.
 
 **Why Analysis and Architecture are both explicitly optional.** Making either mandatory would contradict how this
-whole process already works elsewhere (design-feature-instructions.md §8: this process is iterative, not a rigid
-waterfall). Stating outright what's actually lost by skipping them — reconciliation, not the ability to build
+whole process already works elsewhere. Stating outright what's actually lost by skipping them — reconciliation, not the ability to build
 anything — is what stops "was Analysis done" from reading as a compliance gate nobody can explain the cost of
 skipping.

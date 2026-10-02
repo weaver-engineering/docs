@@ -47,8 +47,8 @@ For more details see [Weaver Engineering Workflows](workflows/weaver-workflows.m
 ## Documentation Standards
 Project documentation is written to be read by AI agents as much as by architects: a fixed minimum directory
 structure per project docs repo — including a place for each of the Concepts above — a fixed document shape
-(Context, numbered sections, optional Rationale/Appendix), and a machine-maintained per-document index supporting
-full-text search — with compliance checked at PR time, not left aspirational.
+(Context, numbered sections, optional Rationale/Appendix) — with compliance checked at PR time, not left
+aspirational.
 
 For more details see [Documentation Standards](standards/documentation-standards.md).
 

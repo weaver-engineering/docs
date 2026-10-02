@@ -41,7 +41,7 @@ _claims:
     name: {Design Name}
     purpose: §1
   - _target: bnd/{design-slug}/op/{operation-slug}
-    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"}
+    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"}
     slug: {operation-slug}
     purpose: §2.1
 ---

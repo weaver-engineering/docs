@@ -1,7 +1,7 @@
 # Design Layout Standards
 
 ## Context
-* [Documentation Standards](documentation-standards.md) - the document shape, indexing and cross-reference rules this standard builds on
+* [Documentation Standards](documentation-standards.md) - the document shape and cross-reference rules this standard builds on
 * [Product Service Model](product-service-model.md) - the Product, Service and Offering the designs governed here belong to
 * [Service](concepts/service.md) - the functional boundary a design is written against
 * [Weaver Engineering Workflows](../workflows/weaver-workflows.md) - where design sits in the workflow

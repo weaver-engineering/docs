@@ -1,5 +1,7 @@
 # Feature Workflow
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [About Weaver Projects](../../about-weaver-engineering.md)
 * [Weaver Engineering Workflows](../weaver-workflows.md) - the full cross-SDLC model (three kinds of behaviour,
@@ -75,8 +77,7 @@ The entry requirement is `service-flows.md` naming this Service, or an architect
 it's required to do if Architecture was skipped. For the Service (or Services) in scope, `Architect Service`
 derives that Service's own Required Service Behaviours from its slice of the flow, then `Design Service`
 crystallizes the Service's own interface and binds those behaviours to real components and functions, producing
-Predicted Service Behaviours. The full process, including how to resume it partway through from a fresh session
-with no memory of prior ones, is defined in [Design Feature Instructions](design-feature-instructions.md).
+Predicted Service Behaviours.
 
 The output is a [design task directory](design-directory-and-hld.md) — the `hld.md` for this Service, its
 `chunk-scope.yaml` (the bounded record of exactly which behaviours this task introduced, changed, or removed),

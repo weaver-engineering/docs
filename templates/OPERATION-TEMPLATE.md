@@ -19,7 +19,7 @@ several, and a Library's operations are exposed by none at all.
 ---
 _claims:
   - _target: bnd/{design-slug}/op/{operation-slug}
-    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"}
+    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"}
     slug: {operation-slug}
     purpose: §1
   - _target: bnd/{design-slug}/op/{operation-slug}
@@ -35,12 +35,12 @@ _claims:
     _sourcing: {kind: elicited, basis: "§3"}
     realizedBy: bnd/{design-slug}/bnd/{interface-boundary-slug}/fn/{function-slug}
   - _target: bnd/{design-slug}/op/{operation-slug}
-    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"}
+    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"}
     critical: true
   # The dimensions this operation must behave over. They define the condition space; the rank
   # that turns them into a tree is stated in BEHAVIOURS.md.
   - _target: bnd/{design-slug}/op/{operation-slug}/dim/{dimension-slug}
-    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/UC-NNN-{slug}.md"}
+    _sourcing: {kind: document, basis: "@{repo-slug}/docs/analysis/use-cases/{use-case-slug}/USE-CASE.md"}
     slug: {dimension-slug}
     kind: {payload | parameter}
     rank: 1

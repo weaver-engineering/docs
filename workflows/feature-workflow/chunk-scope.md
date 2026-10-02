@@ -1,11 +1,11 @@
 # Chunk Scope
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Feature Workflow](feature-workflow.md) §3 - the `Chunk The Design` step this artefact is the entry-scope for
 * [Design Directory And HLD](design-directory-and-hld.md) §1 - the per-design-task directory this artefact is a
   sibling within
-* [Design Feature Instructions §7, §9.2](design-feature-instructions.md) - the process that decides a behaviour is
-  new/mutated/deleted, and when a design task's own work is actually complete
 * [Required Behavior Template](../../templates/REQUIRED-BEHAVIOR-TEMPLATE.md) - the `{service-slug}.{operation-slug}-N` addressing
   this artefact's own behaviours list uses
 
@@ -18,8 +18,7 @@ ever-growing design history.
 
 ## 1 Purpose
 
-Chunk Scope plays no role in design itself. Nothing in [Design Feature Instructions](design-feature-instructions.md)
-reads it, and it records no fact the design task directory doesn't already carry elsewhere — it is a pure
+Chunk Scope plays no role in design itself. It records no fact the design task directory doesn't already carry elsewhere — it is a pure
 consequence of a design task reaching completion, never an input to reaching that completion.
 
 ## 2 How It's Built

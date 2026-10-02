@@ -1,5 +1,7 @@
 # Feature Template
 
+//TODO WVR-187 — out of date: the Design Feature Instructions and the Internal Component Template were removed, and the links to them taken out of this document; prose mentions of them may remain. Needs a thorough tidy-up.
+
 ## Context
 * [Documentation Standards §2.1](../standards/documentation-standards.md) - the directory-per-entity pattern
   `docs/features/{slug}/FEATURE.md` follows
