@@ -17,11 +17,14 @@ Applies to every PR into `main` in every weaver-engineering repo, raised by an a
 ## 2 The Rule
 One PR lifecycle, regardless of which pattern (§3) applies:
 
-1. Raise a PR against `main` as soon as the first commit exists — not once the work feels done. This is what lets the architect monitor a session's cumulative output without needing direct visibility into its worktree.
-2. Push every subsequent commit to that same PR.
-3. At a lock-in point, squash to exactly one commit and force-push, having first rebased onto the current `origin/main` so nothing upstream is silently clobbered by a stale base.
-4. A human reviews and squash-merges. Agents never merge their own PRs.
-5. Immediately after merge, before any new commit, the branch is reset onto `origin/main`'s new tip — the just-merged commit's content already matches it exactly, so nothing is lost, and the branch starts its next round of work from a genuinely non-diverged base.
+1. One branch per ticket per repo, started from the current `origin/main`. The branch carries several PRs over the ticket's life, one after another.
+2. Raise a PR against `main` as soon as the first commit exists — not once the work feels done. This is what lets the architect monitor a session's cumulative output without needing direct visibility into its worktree.
+3. Push every subsequent commit to that same PR. While the architect reviews, the PR carries several commits, and `MainGate` is red because it requires exactly one — expected, not something to fix; its failure comment says why.
+4. On the architect's go-ahead, rebase onto the current `origin/main` so nothing upstream is silently clobbered by a stale base, squash to exactly one commit and force-push. `MainGate` now passes.
+5. A human reviews and merges with a merge commit, the only method `main` allows. Agents never merge their own PRs.
+6. For the next round, rebase the same branch onto `origin/main` (effectively a fast-forward, since the merged branch tip is now an ancestor of `main`) and start again from step 2 with a new PR.
+
+History is never rewritten after a merge: the squashed commit keeps its SHA and the branch tip becomes an ancestor of `main`, so the branch cannot diverge and nothing needs resetting. `git log --first-parent main` shows one merge per PR.
 
 See `weaver-engineering/TRACKING_PR.md` for the literal command sequence — this section states the rule, not the commands, so the two don't drift apart.
 
@@ -29,7 +32,7 @@ See `weaver-engineering/TRACKING_PR.md` for the literal command sequence — thi
 The rule in §2 is constant; how much scrutiny a PR gets, and when, differs by pattern.
 
 ### 3.1 Interactive / Iterative
-Docs, design, and planning work: the architect and the agent collaborate live, and the PR raised in §2 step 1 stays open for the work's whole duration. The continuously-growing PR diff *is* the review mechanism — the architect watches it change as commits land, which is how they confirm the output reflects their actual direction even when they can't see the worktree directly. There is no separate review moment to define; it's continuous by construction.
+Docs, design, and planning work: the architect and the agent collaborate live, and the PR raised in §2 step 2 stays open for the work's whole duration. The continuously-growing PR diff *is* the review mechanism — the architect watches it change as commits land, which is how they confirm the output reflects their actual direction even when they can't see the worktree directly. There is no separate review moment to define; it's continuous by construction.
 
 ### 3.2 Headless Code
 The Chunk Cycle (task→spec→test→build→ready→main): review concentrates at two existing checkpoints rather than continuously, because nobody is watching live.
@@ -44,10 +47,14 @@ The architect is responsible for the correctness of an agent's output throughout
 ## 4 Enforcement
 Two mechanisms, at different points of completeness:
 
-* `next-unit-of-work-detector`'s `checkTrackingPr` (canonical source in `agent-plugins`) verifies both that a design task's branch has an open tracking PR, and that the branch hasn't diverged from `origin/main` — catching a session that skipped the §2 step 5 reset, mechanically, rather than letting the original divergence bug recur silently.
-* Docs repos are specified (not yet implemented — see the follow-on ticket from WVR-158) to consume `@weaver-engineering/gate-checks` themselves, the same package code repos already depend on, gaining the single-commit check §2 step 3 requires as a mechanical gate rather than relying on discipline alone. This needs a lighter docs-repo check profile in `gate-checks` (title/body plus single-commit, no coverage/build requirement) — see [CI/CD Setup](ci-cd-setup.md) §2.
+* `next-unit-of-work-detector`'s `checkTrackingPr` (canonical source in `agent-plugins`) verifies both that a design task's branch has an open tracking PR, and that the branch hasn't diverged from `origin/main`. Its remedy for divergence is a rebase onto `origin/main`, and it notes that `MainGate` is expected to be red while a PR is under review.
+* Docs repos consume `@weaver-engineering/gate-checks` themselves, the same package code repos depend on, through its lighter `docs-gate` check (task-ref title, non-empty body, exactly one commit — no coverage/build requirement). That gives the single-commit requirement of §2 step 4 a mechanical gate rather than relying on discipline alone — see [CI/CD Setup](ci-cd-setup.md) §2.
 
 # Rationale
 This standard was raised as a Future Action from the WVR-95 retrospective (WVR-158), the same origin as [Definition of Ready](definition-of-ready.md) (WVR-161) and its Definition of Done sibling (WVR-160) — but where those two standards explicitly carve out headless implementation work as a different track with different mechanics, this one exists specifically to cover that different track's own review model, alongside closing a mechanical gap (tracking-PR divergence) in the interactive track's own tooling.
 
-The two problems this standard resolves — recurring tracking-PR divergence, and no defined review process for agent output — turned out to share one root cause and one fix. A PR that's opened on the first commit and kept open throughout gives the architect continuous visibility without needing worktree access; squashing it to one commit before merge, and resetting the branch immediately after, is what keeps that same long-lived branch from diverging the next time the same thing happens. Headless work can't rely on continuous visibility (nobody is watching a build agent's worktree live), so its review model instead concentrates rigor at the one checkpoint where behavioral intent is actually legible — the failing tests — and treats the final merge as a lighter confirmation that the already-locked-in correctness held, plus a live check that the result actually behaves.
+The two problems this standard resolves — recurring tracking-PR divergence, and no defined review process for agent output — turned out to share one root cause and one fix. A PR that's opened on the first commit and kept open throughout gives the architect continuous visibility without needing worktree access; squashing it to one commit before merge keeps each PR's contribution to `main` a single reviewable unit.
+
+The original fix for divergence (WVR-158) squash-merged and then reset the branch onto `main`. Because squash-merging replaces the branch's commits with a new one on `main`, the branch always diverged and every round needed history rewritten; through the DEM hackathon that made clean-up and rebases temperamental (WVR-231). Merging with a merge commit instead means the squashed commit keeps its SHA and the branch tip becomes an ancestor of `main`, so the branch never diverges and no step rewrites history after a merge. Automating a true fast-forward route is deferred until dem-ambient offers a developer service.
+
+Headless work can't rely on continuous visibility Headless work can't rely on continuous visibility (nobody is watching a build agent's worktree live), so its review model instead concentrates rigor at the one checkpoint where behavioral intent is actually legible — the failing tests — and treats the final merge as a lighter confirmation that the already-locked-in correctness held, plus a live check that the result actually behaves.
