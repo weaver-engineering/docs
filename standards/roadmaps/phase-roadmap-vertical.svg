@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 1190" width="100%" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
+<style>:root{--bg:#fff;--fg:#212121;--faint:#9e9e9e;--box:#e8f5e9;--boxline:#2e7d32;--cur:#fff8e1;--curline:#f57f17;--plan:#fafafa;--planline:#bdbdbd;--arrow:#757575;--ok:#2e7d32}@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--faint:#6e7681;--box:#12261a;--boxline:#3fb950;--cur:#2d2208;--curline:#ffb74d;--plan:#161b22;--planline:#484f58;--arrow:#8b949e;--ok:#3fb950}}.t{fill:var(--fg)}.f{fill:var(--faint)}.ok{fill:var(--ok)}</style>
+<defs><marker id="h" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--arrow)"/></marker><marker id="o" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--curline)"/></marker></defs>
+<rect width="620" height="1190" fill="var(--bg)"/>
+<rect x="30" y="24" width="150" height="44" rx="6" fill="var(--cur)" stroke="var(--curline)" stroke-width="3"/>
+<text class="t" x="105" y="50" text-anchor="middle" font-weight="600">1 hackathon</text>
+<path d="M184,46 H222" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)" stroke-dasharray="4 3"/>
+<rect x="226" y="24" width="150" height="44" rx="6" fill="var(--plan)" stroke="var(--planline)" stroke-dasharray="6 4"/>
+<text class="f" x="301" y="50" text-anchor="middle" font-weight="400">2 dem-ambient</text>
+<line x1="30" y1="102" x2="590" y2="102" stroke="var(--planline)" stroke-width="1.5"/>
+<path d="M105,72 V138" stroke="var(--curline)" stroke-width="2" marker-end="url(#o)"/>
+<rect x="30" y="146" width="560" height="112" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="168" font-weight="600">2.1 Foundations</text>
+<text class="f" x="578" y="168" text-anchor="end" font-size="11">WVR-210 to WVR-213</text>
+<text class="ok" x="42" y="200" font-size="12">✓</text>
+<text class="t" x="56" y="200" font-size="12">repos and CI, to standard</text>
+<text class="ok" x="42" y="216" font-size="12">✓</text>
+<text class="t" x="56" y="216" font-size="12">CD: main on merge, --as environments</text>
+<text class="t" x="56" y="232" font-size="12">by hand</text>
+<text class="ok" x="322" y="200" font-size="12">✓</text>
+<text class="t" x="336" y="200" font-size="12">outline architecture, use cases,</text>
+<text class="t" x="336" y="216" font-size="12">personas</text>
+<text class="ok" x="322" y="232" font-size="12">✓</text>
+<text class="t" x="336" y="232" font-size="12">section model, registries, one table,</text>
+<text class="t" x="336" y="248" font-size="12">MCP on Lambda</text>
+<path d="M310,260 V272" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="276" width="560" height="112" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="298" font-weight="600">2.2 Walking Skeleton</text>
+<text class="f" x="578" y="298" text-anchor="end" font-size="11">WVR-215</text>
+<text class="ok" x="42" y="330" font-size="12">✓</text>
+<text class="t" x="56" y="330" font-size="12">create, update and read documents over</text>
+<text class="t" x="56" y="346" font-size="12">MCP</text>
+<text class="ok" x="42" y="362" font-size="12">✓</text>
+<text class="t" x="56" y="362" font-size="12">sections, checksums, and section</text>
+<text class="t" x="56" y="378" font-size="12">reports</text>
+<text class="ok" x="322" y="330" font-size="12">✓</text>
+<text class="t" x="336" y="330" font-size="12">static bearer token, seeded registries</text>
+<text class="ok" x="322" y="346" font-size="12">✓</text>
+<text class="t" x="336" y="346" font-size="12">the dev setup guide</text>
+<path d="M310,390 V402" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="406" width="560" height="96" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="428" font-weight="600">2.3 Claims</text>
+<text class="f" x="578" y="428" text-anchor="end" font-size="11">WVR-217</text>
+<text class="ok" x="42" y="460" font-size="12">✓</text>
+<text class="t" x="56" y="460" font-size="12">named claims, anchored, with material</text>
+<text class="t" x="56" y="476" font-size="12">references</text>
+<text class="ok" x="42" y="492" font-size="12">✓</text>
+<text class="t" x="56" y="492" font-size="12">relinking by checksum on every write</text>
+<text class="ok" x="322" y="460" font-size="12">✓</text>
+<text class="t" x="336" y="460" font-size="12">soundness computed on read</text>
+<text class="ok" x="322" y="476" font-size="12">✓</text>
+<text class="t" x="336" y="476" font-size="12">self-healing resync, within a time</text>
+<text class="t" x="336" y="492" font-size="12">budget</text>
+<path d="M310,504 V516" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="520" width="560" height="128" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="542" font-weight="600">2.4 The Next Unit Of Work</text>
+<text class="f" x="578" y="542" text-anchor="end" font-size="11">WVR-218</text>
+<text class="ok" x="42" y="574" font-size="12">✓</text>
+<text class="t" x="56" y="574" font-size="12">check sets, validated when saved</text>
+<text class="ok" x="42" y="590" font-size="12">✓</text>
+<text class="t" x="56" y="590" font-size="12">work scopes, and the fold with arrays</text>
+<text class="t" x="56" y="606" font-size="12">combining</text>
+<text class="ok" x="42" y="622" font-size="12">✓</text>
+<text class="t" x="56" y="622" font-size="12">soundness and competition checks,</text>
+<text class="t" x="56" y="638" font-size="12">findings</text>
+<text class="ok" x="322" y="574" font-size="12">✓</text>
+<text class="t" x="336" y="574" font-size="12">acknowledgements, confirmed by</text>
+<text class="t" x="336" y="590" font-size="12">re-running the check</text>
+<text class="ok" x="322" y="606" font-size="12">✓</text>
+<text class="t" x="336" y="606" font-size="12">next_unit_of_work,</text>
+<text class="t" x="336" y="622" font-size="12">acknowledge_finding, read_model</text>
+<path d="M310,650 V662" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="666" width="560" height="144" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="688" font-weight="600">2.5 Plugins And Domain Checks</text>
+<text class="f" x="578" y="688" text-anchor="end" font-size="11">WVR-220</text>
+<text class="ok" x="42" y="720" font-size="12">✓</text>
+<text class="t" x="56" y="720" font-size="12">plugin, check, document store and</text>
+<text class="t" x="56" y="736" font-size="12">projection docs, agreed</text>
+<text class="ok" x="42" y="752" font-size="12">✓</text>
+<text class="t" x="56" y="752" font-size="12">the claim model in valued positions,</text>
+<text class="t" x="56" y="768" font-size="12">blind to law</text>
+<text class="ok" x="42" y="784" font-size="12">✓</text>
+<text class="t" x="56" y="784" font-size="12">plugins built in, loaded in dependency</text>
+<text class="t" x="56" y="800" font-size="12">order</text>
+<text class="ok" x="322" y="720" font-size="12">✓</text>
+<text class="t" x="336" y="720" font-size="12">the tool gateway, for plugin</text>
+<text class="t" x="336" y="736" font-size="12">resolutions' tools</text>
+<text class="ok" x="322" y="752" font-size="12">✓</text>
+<text class="t" x="336" y="752" font-size="12">the doc-standards plugin; check sets</text>
+<text class="t" x="336" y="768" font-size="12">with real levels</text>
+<path d="M310,812 V824" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="828" width="560" height="144" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="850" font-weight="600">2.6 Laws And Judgement</text>
+<text class="f" x="578" y="850" text-anchor="end" font-size="11">WVR-221</text>
+<text class="ok" x="42" y="882" font-size="12">✓</text>
+<text class="t" x="56" y="882" font-size="12">law, current unit of work and soft</text>
+<text class="t" x="56" y="898" font-size="12">resolution docs, agreed</text>
+<text class="ok" x="42" y="914" font-size="12">✓</text>
+<text class="t" x="56" y="914" font-size="12">laws' data models; claims naming their</text>
+<text class="t" x="56" y="930" font-size="12">law</text>
+<text class="ok" x="42" y="946" font-size="12">✓</text>
+<text class="t" x="56" y="946" font-size="12">the law-aware fold; judgedAgainst,</text>
+<text class="t" x="56" y="962" font-size="12">law-drift</text>
+<text class="ok" x="322" y="882" font-size="12">✓</text>
+<text class="t" x="336" y="882" font-size="12">ElastiCache; set-current-work;</text>
+<text class="t" x="336" y="898" font-size="12">dem.judge.law</text>
+<text class="ok" x="322" y="914" font-size="12">✓</text>
+<text class="t" x="336" y="914" font-size="12">the gateway offering only the current</text>
+<text class="t" x="336" y="930" font-size="12">work's tools</text>
+<text class="ok" x="322" y="946" font-size="12">✓</text>
+<text class="t" x="336" y="946" font-size="12">change requests; withdrawing soft</text>
+<text class="t" x="336" y="962" font-size="12">resolutions</text>
+<path d="M310,974 V986" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
+<rect x="30" y="990" width="560" height="176" rx="6" fill="var(--box)" stroke="var(--boxline)"/>
+<text class="t" x="42" y="1012" font-weight="600">2.7 The Console</text>
+<text class="f" x="578" y="1012" text-anchor="end" font-size="11">WVR-222</text>
+<text class="ok" x="42" y="1044" font-size="12">✓</text>
+<text class="t" x="56" y="1044" font-size="12">the console in the dem monorepo, on</text>
+<text class="t" x="56" y="1060" font-size="12">the service's own types</text>
+<text class="ok" x="42" y="1076" font-size="12">✓</text>
+<text class="t" x="56" y="1076" font-size="12">Cognito for analysts; MCP keeps its</text>
+<text class="t" x="56" y="1092" font-size="12">bearer token</text>
+<text class="ok" x="42" y="1108" font-size="12">✓</text>
+<text class="t" x="56" y="1108" font-size="12">the REST API function, beside the MCP</text>
+<text class="t" x="56" y="1124" font-size="12">function</text>
+<text class="ok" x="42" y="1140" font-size="12">✓</text>
+<text class="t" x="56" y="1140" font-size="12">registries, work scopes, documents,</text>
+<text class="t" x="56" y="1156" font-size="12">claims and findings</text>
+<text class="ok" x="322" y="1044" font-size="12">✓</text>
+<text class="t" x="336" y="1044" font-size="12">accepting and requesting changes, as</text>
+<text class="t" x="336" y="1060" font-size="12">the analyst</text>
+<text class="ok" x="322" y="1076" font-size="12">✓</text>
+<text class="t" x="336" y="1076" font-size="12">hosted on S3 and CloudFront, deployed</text>
+<text class="t" x="336" y="1092" font-size="12">with the stack</text>
+<text class="ok" x="322" y="1108" font-size="12">✓</text>
+<text class="t" x="336" y="1108" font-size="12">changes noticed by polling, until</text>
+<text class="t" x="336" y="1124" font-size="12">there is a websocket</text>
+</svg>

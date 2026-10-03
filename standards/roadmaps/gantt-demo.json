@@ -1,0 +1,146 @@
+{
+  "slices": [
+    {
+      "number": "1.1",
+      "title": "Done",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "something"
+        }
+      ]
+    }
+  ],
+  "aspects": [
+    {
+      "aspect": "the ambient service",
+      "id": "ambient",
+      "parts": [
+        {
+          "aspect": "the local service",
+          "id": "svc",
+          "parts": [
+            {
+              "aspect": "file watching",
+              "id": "watch",
+              "complexity": 3
+            },
+            {
+              "aspect": "the claim store on disk",
+              "id": "store",
+              "needs": [
+                "watch"
+              ],
+              "complexity": 5
+            },
+            {
+              "aspect": "the agent link",
+              "id": "link",
+              "parts": [
+                {
+                  "aspect": "session discovery",
+                  "id": "disc",
+                  "complexity": 2
+                },
+                {
+                  "aspect": "message relay",
+                  "id": "relay",
+                  "needs": [
+                    "disc"
+                  ],
+                  "complexity": 8
+                },
+                {
+                  "unsure": "resuming a stopped worker",
+                  "id": "resume",
+                  "needs": [
+                    "relay"
+                  ],
+                  "complexity": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "aspect": "the review UI",
+          "id": "ui",
+          "needs": [
+            "store"
+          ],
+          "parts": [
+            {
+              "aspect": "the diff view",
+              "id": "diff",
+              "complexity": 8
+            },
+            {
+              "aspect": "the editing chat head",
+              "id": "chat",
+              "needs": [
+                "relay"
+              ],
+              "parts": [
+                {
+                  "aspect": "the chat panel",
+                  "id": "panel",
+                  "complexity": 5
+                },
+                {
+                  "aspect": "applying a chosen resolution",
+                  "id": "apply",
+                  "needs": [
+                    "panel"
+                  ],
+                  "complexity": 13
+                }
+              ]
+            },
+            {
+              "unsure": "the analyst's view of the work",
+              "id": "analyst",
+              "needs": [
+                "diff"
+              ],
+              "complexity": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "aspect": "roadmap tooling",
+      "id": "tooling",
+      "parts": [
+        {
+          "aspect": "ending a phase",
+          "complexity": 3
+        },
+        {
+          "aspect": "the phase history",
+          "complexity": 2
+        }
+      ]
+    },
+    {
+      "aspect": "search",
+      "id": "search",
+      "complexity": 13
+    },
+    {
+      "aspect": "renames",
+      "needs": [
+        "search"
+      ],
+      "complexity": 5
+    },
+    {
+      "aspect": "the roadmapper agent",
+      "needs": [
+        "ui",
+        "tooling"
+      ],
+      "complexity": 8
+    }
+  ]
+}

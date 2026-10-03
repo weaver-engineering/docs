@@ -1,0 +1,64 @@
+{
+  "phases": [
+    {
+      "name": "hackathon",
+      "state": "completed"
+    },
+    {
+      "name": "dem-ambient",
+      "state": "current"
+    },
+    {
+      "name": "teams",
+      "state": "planned"
+    }
+  ],
+  "slices": [
+    {
+      "number": "2.1",
+      "title": "The Local Service",
+      "state": "planned",
+      "items": [
+        {
+          "plain": "file watching"
+        },
+        {
+          "plain": "the claim store on disk"
+        },
+        {
+          "plain": "session discovery"
+        }
+      ]
+    },
+    {
+      "number": "2.2",
+      "title": "The Review UI",
+      "state": "planned",
+      "items": [
+        {
+          "plain": "the diff view"
+        },
+        {
+          "plain": "the editing chat head"
+        }
+      ]
+    },
+    {
+      "number": "2.3",
+      "title": "Linking The Agent Team",
+      "state": "planned",
+      "items": [
+        {
+          "plain": "message relay"
+        },
+        {
+          "plain": "resuming a stopped worker"
+        },
+        {
+          "plain": "applying a chosen resolution"
+        }
+      ]
+    }
+  ],
+  "aspects": []
+}
