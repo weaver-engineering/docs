@@ -4,6 +4,7 @@
 * [Documentation Standards](documentation-standards.md) - the document shape a roadmap follows, and the directory structure it sits beside
 * [Product/Service Model](product-service-model.md) - the Product a roadmap is the build plan of
 * [dem-docs ROADMAP/](https://github.com/weaver-engineering/dem-docs/blob/main/ROADMAP/ROADMAP.md) - the first roadmap, which this standard is drawn from
+* [Planning a Roadmap](roadmaps/planning-a-roadmap.md) - the architect's guide to scoring, budgeting and recalibrating with an agent's help
 * [The roadmap skill](https://github.com/weaver-engineering/agent-plugins/tree/main/claude-skills/roadmap) - generates a roadmap's charts and ends its phases; its own `SKILL.md` is the full reference
 
 A project's **roadmap** says how its product is being built: the phases the work falls into, in each phase the slices
@@ -17,6 +18,7 @@ A roadmap is a `ROADMAP/` directory at the root of the project's docs repo, besi
 ```
 ROADMAP/ROADMAP.md              the entry document: the phases, and which is current. It never moves.
 ROADMAP/{phase-slug}/ROADMAP.md one phase's roadmap: its slices and aspects, and the charts it embeds, beside it.
+ROADMAP/{phase-slug}/actual-complexity.yaml what each slice the phase delivered actually cost (§2).
 ```
 
 `PRODUCT.md` links to the entry document from its Context, and the two stay separate: the product record says what the
@@ -49,8 +51,44 @@ and are rewritten as that changes. What is uncertain about a planned slice is th
 and when — not the things it names, which are known to be needed. **A planned slice becomes a ticket when it is next,
 and not before.**
 
-**Whenever a slice is completed, the scope of the next slice is reassessed**, so that slices do not quietly grow.
-Planning a phase is identifying its slices: a new phase's initial plan holds aspects, and no slices.
+**A slice has a budget.** The **slice budget** is a ceiling on complexity, not itself a complexity and not a number on
+the Fibonacci scale (§3). It is a cap and not a target: it exists to keep a slice from overloading an agent, and a
+slice that spends less is not a worse slice. A planned slice names the aspects it will deliver, each with its complexity; the sum of
+those complexities is the slice's **spend**, an unscored aspect counting as 1, and **a slice's spend must not exceed
+the budget.** An aspect whose slice would not fit is split into parts until the slice that delivers it does. A behaviour may be
+added to an aspect for the sake of end-to-end testing, even if it is in no use case itself, provided it lets a behaviour
+that is part of a requirement be tested end to end — a list of the configured checks, say, so that the UI aspect has
+something to test against. It is work like any other and counts in the spend. The
+budget is **45**. That is its starting value, derived from the complexity of the aspects the hackathon delivered
+(Appendix §1, Rationale §6), and it is recalibrated from the recorded actuals (below) as slices run against it.
+
+**Whenever a slice is completed, the scope of the next slice is reassessed**, so that slices do not quietly grow: its
+spend is summed again against the budget, with the completed slice's actuals in hand. Planning a phase is identifying
+its slices: a new phase's initial plan holds aspects, and no slices.
+
+**Actuals are recorded for every slice delivered.** Each phase keeps an `actual-complexity.yaml` in its folder,
+`ROADMAP/{phase-slug}/`, in which each slice the phase delivered has an entry:
+
+```yaml
+slices:
+  - slug: the slice's slug
+    complexity: the slice's spend, as planned
+    start-time: UTC date-time, ISO 8601
+    end-time: UTC date-time, ISO 8601
+    tokens-in: number
+    tokens-out: number
+    thinking-time: seconds
+    lines-added: number
+    files-changed: number
+```
+
+The entry is written **each time a slice completes, with the roadmap update**, by the first of these there is: a
+roadmapper session; an orchestrator session sitting on the roadmap and orchestrating its delivery; the worker that
+delivered the slice. `lines-added` and `files-changed` are counted from the diffs of the slice's merged pull requests.
+They give the other numbers context — a slice that arrives mostly written, as the hackathon's console did, adds many
+lines for little complexity — and are not a measure of complexity. Read beside each slice's `complexity`, the file
+shows how well complexity is being assessed and what the budget should be. An ended phase's file stays in its folder as
+it ended (§6).
 
 ## 3 Aspects That Can Wait
 
@@ -72,7 +110,8 @@ rest of it. A need on a whole means waiting for the whole to end; a whole's own 
 
 **A leaf aspect may carry a complexity**: a gut-instinct score, a Fibonacci number — 1, 2, 3, 5, 8 or 13. An unscored
 aspect counts as 1. Nothing is scored above 13: anything more complex must be broken into parts. A whole has no score
-of its own; it takes its parts' (Rationale §4).
+of its own; it takes its parts' (Rationale §4). The slice that delivers an aspect spends its complexity against the
+slice budget (§2).
 
 ## 4 The Where We Are Picture
 
@@ -219,6 +258,104 @@ eventually be released as a published plugin. It is TypeScript, run with Node an
 installed as a global skill, in `~/.claude/skills/roadmap/`, so that it is available from inside any project's docs
 repo — every project's roadmap uses the same skill.
 
+The skill also records and reads a phase's `actual-complexity.yaml` (§2), so that actuals are written the same way by
+whoever writes them; that extension is [WVR-234](https://linear.app/weaver-engineering/issue/WVR-234).
+
+# Appendix
+
+## 1 The Hackathon's Aspects, Scored
+
+The aspects each of DEM's hackathon slices delivered
+([the hackathon roadmap](https://github.com/weaver-engineering/dem-docs/blob/main/ROADMAP/hackathon/ROADMAP.md) §2),
+scored on the complexity scale (§3) after the fact, from the roadmap and the preparation retrospective, and corrected
+by the architect. The totals are each slice's spend. They are what the starting budget was derived from (Rationale §6).
+
+**2.1 Foundations — 14**
+
+| Aspect | Complexity |
+|---|---|
+| The `dem` and `dem-docs` repositories set up to standard, with CI | 3 |
+| Continuous deployment: the CDK stack on every merge, and `--as` environments | 5 |
+| The outline architecture | 3 |
+| The section model, registries, scope, table and MCP server, as decisions | 3 |
+
+**2.2 Walking Skeleton — 12**
+
+| Aspect | Complexity |
+|---|---|
+| `create_doc`, `update_doc` and `read_doc` over the MCP function, sectioning each document | 5 |
+| A section read as a report with its ancestry's Context | 2 |
+| Section checksums | 1 |
+| A static bearer token | 1 |
+| Seeding registries | 2 |
+| The dev setup guide | 1 |
+
+**2.3 Claims — 21**
+
+| Aspect | Complexity |
+|---|---|
+| Claims made: named, engine-identified, anchored | 5 |
+| Relinking by checksum on every write | 5 |
+| Soundness reported when claims are read | 3 |
+| Self-healing resync within a time budget | 5 |
+| `list_claims` by document or target | 2 |
+| Reading a whole rationale or appendix | 1 |
+
+**2.4 The Next Unit Of Work — 35**
+
+| Aspect | Complexity |
+|---|---|
+| Check sets in a versioned bucket, validated when saved | 5 |
+| Work scopes | 3 |
+| The fold, with arrays combining | 8 |
+| The `soundness` and `competition` checks | 8 |
+| Findings, with their resolutions as skills | 5 |
+| Acknowledgements, confirmed by re-running the check | 3 |
+| `next_unit_of_work`, `acknowledge_finding` and `read_model` | 3 |
+
+**2.5 Plugins And Domain Checks — 37**
+
+| Aspect | Complexity |
+|---|---|
+| The plugin, check and projection interfaces | 8 |
+| Plugins loaded in dependency order | 3 |
+| The tool gateway | 5 |
+| The document store, its bucket and the registries lens | 8 |
+| The built-in doc-standards plugin | 5 |
+| Check sets with real levels, and maturity reported | 3 |
+| The claim model in valued positions | 5 |
+
+**2.6 Laws And Judgement — 61**
+
+| Aspect | Complexity |
+|---|---|
+| Claims naming their law and its checksum, refused on save otherwise | 5 |
+| The fold filling each law's positions; plugins declaring a position twice failing to load | 5 |
+| ElastiCache Serverless for Valkey, caching the current and next unit of work per work scope | 8 |
+| `set-current-work` | 2 |
+| `dem.judge.law` and the record of what a document was judged against | 8 |
+| The `judgement` check, `unjudged-document` and `law-drift` | 5 |
+| The tool gateway offering only the current work's tools | 3 |
+| The DEM agent | 5 |
+| Change requests and `dem.change-request` | 5 |
+| Acknowledging through the gateway, and withdrawing soft resolutions | 3 |
+| Every tool named with hyphens | 1 |
+| `dem.reconcile` for competition | 5 |
+| Test-only plugins and check sets, and the fixture plugin for the end-to-end run | 3 |
+| Disambiguated stacks torn down after 48 hours inactive | 3 |
+
+**2.7 The Console — 32**
+
+| Aspect | Complexity |
+|---|---|
+| The REST API function beside the MCP function, calling the same service operations | 8 |
+| The console on S3 behind CloudFront, `/api` routed to the HTTP API, deployed by the pipeline and torn down with `--as` environments | 8 |
+| The analyst's soft resolutions over REST | 5 |
+| Cognito: analysts signing in, added by `pnpm add-analyst` | 5 |
+| The console moved into the monorepo on the service's types, its mock client kept | 3 |
+| Changes noticed by polling every 10 seconds | 2 |
+| A registry entry, written when a registry is seeded | 1 |
+
 # Rationale
 
 ## 1 Why a roadmap is a document, not tickets
@@ -273,3 +410,28 @@ to planning. A symlink to the current phase's roadmap does not work on GitHub �
 relative images break — and renaming or moving the roadmap as a phase ends would break every link to it. A folder per
 phase, with its charts embedded relatively, keeps every link good, and one entry document that never moves is the way
 in. The order of the phases is in the entry document, not in the folders' names.
+
+## 6 Why the slice budget is a complexity ceiling, and why it starts at 45
+
+The hackathon's slices grew until the last one used up one 5-hour token budget and about 97% of the next — the most a
+Claude Pro plan can sensibly hold. A budget in time or tokens cannot be set before a slice is built, but complexity can,
+because the aspects already carry it. A slice is sized by what it delivers, and the roadmapper and architect already
+score that. The budget is a ceiling in the same units, and not a Fibonacci number, because it is a sum of scores and not
+a score.
+
+**How 45 was derived.** The hackathon's aspects were scored after the fact (Appendix §1) and the slices' totals set
+against what the architect remembers of how long each took to build; the slices were not logged, which is why
+actuals are now recorded. The totals tracked the remembered build times closely enough to trust: Laws And Judgement (61)
+was the big one, and Plugins And Domain Checks (37) took about 45 minutes. The Console (32) scores lower than its
+size in lines suggests, because its UI arrived largely complete from a generated TypeScript prototype and the work was
+the REST function, Cognito and the deployment.
+
+The retrospective's guide was a slice of about 90 minutes at most, which the architect judges a little generous. The
+budget was not found by halving the largest slice, because complexity is not linear in time — twice the spend is more
+than twice the work. It was placed just above the slice that took about 45 minutes, so that no slice is more than a little
+more complex than Plugins And Domain Checks. It is a cap, not a size to aim for.
+
+**Why it is recalibrated.** 45 rests on one remembered duration and scores given after the event. Every slice delivered
+adds an entry to `actual-complexity.yaml`, and the budget is changed when the entries show that slices of a given spend
+use more of the token budget of a 5-hour window than they should, or far less. The budget is right when a slice at the
+cap fits well inside that token budget. Aspect scores are corrected the same way.
