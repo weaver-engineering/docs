@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 624" width="100%" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
+<style>:root{--bg:#fff;--fg:#212121;--faint:#9e9e9e;--grid:#eee;--bar:#90caf9;--barline:#1565c0;--sum:#455a64;--arrow:#f57f17}@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--faint:#6e7681;--grid:#21262d;--bar:#1f4e79;--barline:#58a6ff;--sum:#8b949e;--arrow:#ffb74d}}.t{fill:var(--fg)}.f{fill:var(--faint)}.h{font-weight:600}</style>
+<defs><marker id="head" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--arrow)"/></marker></defs>
+<rect width="1300" height="624" fill="var(--bg)"/>
+<line x1="360" y1="46" x2="360" y2="600" stroke="var(--grid)"/>
+<text class="f" x="360" y="40" text-anchor="middle">0</text>
+<line x1="485" y1="46" x2="485" y2="600" stroke="var(--grid)"/>
+<text class="f" x="485" y="40" text-anchor="middle">5</text>
+<line x1="610" y1="46" x2="610" y2="600" stroke="var(--grid)"/>
+<text class="f" x="610" y="40" text-anchor="middle">10</text>
+<line x1="735" y1="46" x2="735" y2="600" stroke="var(--grid)"/>
+<text class="f" x="735" y="40" text-anchor="middle">15</text>
+<line x1="860" y1="46" x2="860" y2="600" stroke="var(--grid)"/>
+<text class="f" x="860" y="40" text-anchor="middle">20</text>
+<line x1="985" y1="46" x2="985" y2="600" stroke="var(--grid)"/>
+<text class="f" x="985" y="40" text-anchor="middle">25</text>
+<line x1="1110" y1="46" x2="1110" y2="600" stroke="var(--grid)"/>
+<text class="f" x="1110" y="40" text-anchor="middle">30</text>
+<line x1="1235" y1="46" x2="1235" y2="600" stroke="var(--grid)"/>
+<text class="f" x="1235" y="40" text-anchor="middle">35</text>
+<text class="f" x="360" y="16">units of complexity, from the day the roadmap was last updated; an arrow runs from what is needed to what needs it</text>
+<text class="t h" x="12" y="71">the ambient service</text>
+<path d="M370,62 v10 M1050,62 v10 M370,67 H1050" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t h" x="30" y="97">the local service</text>
+<path d="M370,88 v10 M675,88 v10 M370,93 H675" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="48" y="123">file watching</text>
+<rect x="370" y="111" width="55" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="397.5" y="123" text-anchor="middle" font-size="11">3</text>
+<text class="t" x="48" y="149">the claim store on disk</text>
+<rect x="445" y="137" width="105" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="497.5" y="149" text-anchor="middle" font-size="11">5</text>
+<text class="t h" x="48" y="175">the agent link</text>
+<path d="M370,166 v10 M675,166 v10 M370,171 H675" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="66" y="201">session discovery</text>
+<rect x="370" y="189" width="30" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="385" y="201" text-anchor="middle" font-size="11">2</text>
+<text class="t" x="66" y="227">message relay</text>
+<rect x="420" y="215" width="180" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="510" y="227" text-anchor="middle" font-size="11">8</text>
+<text class="f" x="66" y="253">resuming a stopped worker</text>
+<rect x="620" y="241" width="55" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" stroke-dasharray="4 3" opacity="0.55"/>
+<text class="t" x="647.5" y="253" text-anchor="middle" font-size="11">3</text>
+<text class="t h" x="30" y="279">the review UI</text>
+<path d="M570,270 v10 M1050,270 v10 M570,275 H1050" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="48" y="305">the diff view</text>
+<rect x="570" y="293" width="180" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="660" y="305" text-anchor="middle" font-size="11">8</text>
+<text class="t h" x="48" y="331">the editing chat head</text>
+<path d="M620,322 v10 M1050,322 v10 M620,327 H1050" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="66" y="357">the chat panel</text>
+<rect x="620" y="345" width="105" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="672.5" y="357" text-anchor="middle" font-size="11">5</text>
+<text class="t" x="66" y="383">applying a chosen resolution</text>
+<rect x="745" y="371" width="305" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="897.5" y="383" text-anchor="middle" font-size="11">13</text>
+<text class="f" x="48" y="409">the analyst's view of the work</text>
+<rect x="770" y="397" width="180" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" stroke-dasharray="4 3" opacity="0.55"/>
+<text class="t" x="860" y="409" text-anchor="middle" font-size="11">8</text>
+<text class="t h" x="12" y="435">roadmap tooling</text>
+<path d="M370,426 v10 M425,426 v10 M370,431 H425" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="30" y="461">ending a phase</text>
+<rect x="370" y="449" width="55" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="397.5" y="461" text-anchor="middle" font-size="11">3</text>
+<text class="t" x="30" y="487">the phase history</text>
+<rect x="370" y="475" width="30" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="385" y="487" text-anchor="middle" font-size="11">2</text>
+<text class="t h" x="12" y="513">aspects on their own</text>
+<text class="t" x="30" y="539">search</text>
+<rect x="370" y="527" width="305" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="522.5" y="539" text-anchor="middle" font-size="11">13</text>
+<text class="t" x="30" y="565">renames</text>
+<rect x="695" y="553" width="105" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="747.5" y="565" text-anchor="middle" font-size="11">5</text>
+<text class="t" x="30" y="591">the roadmapper agent</text>
+<rect x="1070" y="579" width="180" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="1160" y="591" text-anchor="middle" font-size="11">8</text>
+<path d="M425,119 H428 V145 H445" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M400,197 H405.4 V223 H420" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M600,223 H607.8 V249 H620" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M550,145 H560.2 V275 H570" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M600,223 H607.8 V327 H620" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M725,353 H737.6 V379 H745" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M750,301 H765 V405 H770" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M675,535 H678 V561 H695" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M1050,275 H1055.4 V587 H1070" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M425,431 H432.8 V587 H1070" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+</svg>

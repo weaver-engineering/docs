@@ -1,0 +1,176 @@
+{
+  "phases": [
+    {
+      "name": "hackathon",
+      "state": "current"
+    },
+    {
+      "name": "dem-ambient",
+      "state": "planned"
+    }
+  ],
+  "slices": [
+    {
+      "number": "2.1",
+      "title": "Foundations",
+      "tickets": "WVR-210 to WVR-213",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "repos and CI, to standard"
+        },
+        {
+          "done": "CD: main on merge, --as environments by hand"
+        },
+        {
+          "done": "outline architecture, use cases, personas"
+        },
+        {
+          "done": "section model, registries, one table, MCP on Lambda"
+        }
+      ]
+    },
+    {
+      "number": "2.2",
+      "title": "Walking Skeleton",
+      "tickets": "WVR-215",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "create, update and read documents over MCP"
+        },
+        {
+          "done": "sections, checksums, and section reports"
+        },
+        {
+          "done": "static bearer token, seeded registries"
+        },
+        {
+          "done": "the dev setup guide"
+        }
+      ]
+    },
+    {
+      "number": "2.3",
+      "title": "Claims",
+      "tickets": "WVR-217",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "named claims, anchored, with material references"
+        },
+        {
+          "done": "relinking by checksum on every write"
+        },
+        {
+          "done": "soundness computed on read"
+        },
+        {
+          "done": "self-healing resync, within a time budget"
+        }
+      ]
+    },
+    {
+      "number": "2.4",
+      "title": "The Next Unit Of Work",
+      "tickets": "WVR-218",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "check sets, validated when saved"
+        },
+        {
+          "done": "work scopes, and the fold with arrays combining"
+        },
+        {
+          "done": "soundness and competition checks, findings"
+        },
+        {
+          "done": "acknowledgements, confirmed by re-running the check"
+        },
+        {
+          "done": "next_unit_of_work, acknowledge_finding, read_model"
+        }
+      ]
+    },
+    {
+      "number": "2.5",
+      "title": "Plugins And Domain Checks",
+      "tickets": "WVR-220",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "plugin, check, document store and projection docs, agreed"
+        },
+        {
+          "done": "the claim model in valued positions, blind to law"
+        },
+        {
+          "done": "plugins built in, loaded in dependency order"
+        },
+        {
+          "done": "the tool gateway, for plugin resolutions' tools"
+        },
+        {
+          "done": "the doc-standards plugin; check sets with real levels"
+        }
+      ]
+    },
+    {
+      "number": "2.6",
+      "title": "Laws And Judgement",
+      "tickets": "WVR-221",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "law, current unit of work and soft resolution docs, agreed"
+        },
+        {
+          "done": "laws' data models; claims naming their law"
+        },
+        {
+          "done": "the law-aware fold; judgedAgainst, law-drift"
+        },
+        {
+          "done": "ElastiCache; set-current-work; dem.judge.law"
+        },
+        {
+          "done": "the gateway offering only the current work's tools"
+        },
+        {
+          "done": "change requests; withdrawing soft resolutions"
+        }
+      ]
+    },
+    {
+      "number": "2.7",
+      "title": "The Console",
+      "tickets": "WVR-222",
+      "state": "delivered",
+      "items": [
+        {
+          "done": "the console in the dem monorepo, on the service's own types"
+        },
+        {
+          "done": "Cognito for analysts; MCP keeps its bearer token"
+        },
+        {
+          "done": "the REST API function, beside the MCP function"
+        },
+        {
+          "done": "registries, work scopes, documents, claims and findings"
+        },
+        {
+          "done": "accepting and requesting changes, as the analyst"
+        },
+        {
+          "done": "hosted on S3 and CloudFront, deployed with the stack"
+        },
+        {
+          "done": "changes noticed by polling, until there is a websocket"
+        }
+      ]
+    }
+  ],
+  "aspects": []
+}
