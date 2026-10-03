@@ -16,6 +16,7 @@ copy of its content.
 
 | Term | Definition |
 | :--- | :--- |
+| [Actual Complexity](standards/roadmaps.md#2-slices) | What a delivered slice actually cost — its time, tokens, thinking time, lines added and files changed — recorded in its phase's `actual-complexity.yaml` beside the complexity it was planned at, so the budget and the scores can be recalibrated. |
 | [Aspect That Can Wait](standards/roadmaps.md#3-aspects-that-can-wait) | A known part of a product — a capability, an open decision, a needed design — that no slice yet depends on; recorded in the roadmap, not a slice, and either sure to exist or not yet sure. It may have parts, each an aspect in its own right, and may need other aspects, parts or slices. |
 | [Benefit](workflows/feature-workflow/analysing-a-feature.md) | What a capability becomes only in relation to a persona's use case that actually exercises it — not a property of a Feature by itself. |
 | [Aspects Gantt Chart](standards/roadmaps.md#5-the-aspects-gantt-chart) | A phase roadmap's generated chart of what its aspects that can wait need before work on them can start — aspects, their parts and slices, each leaf lasting its complexity in units; replaces the earlier dependency diagram. |
@@ -53,6 +54,7 @@ copy of its content.
 | [Service](standards/concepts/service.md) | The functional execution boundary a Use Case's operations run against; owns its own interface, components, dependencies, and SLOs/SLIs. |
 | [Service Flows](workflows/feature-workflow/architect-solution.md) | The Service topology and data flow chosen, by architecting a solution, to satisfy a Feature's use cases. |
 | [Slice](standards/roadmaps.md#2-slices) | A thin, end-to-end piece of a product, delivered by a ticket or a few; records what it required the docs to define, and what it delivers. |
+| [Slice Budget](standards/roadmaps.md#2-slices) | The ceiling on a slice's spend — the sum of the complexity of the aspects it delivers — which is not itself a complexity; recalibrated from the recorded actuals. |
 | [SLO / SLI](standards/concepts/slo.md) | A quantified reliability target for one Service, and what's measured to check it. Recorded per-Service. |
 | [Step Contract](workflows/feature-workflow/use-cases.md#21-step-contracts) | A use case operation's own perceived Boundary plus a pointer to its condition space (an operation document). Replaces Technical Interpretation. |
 | [System](standards/concepts/system.md) | The compute, network, and datastore infrastructure a Service runs on. |
