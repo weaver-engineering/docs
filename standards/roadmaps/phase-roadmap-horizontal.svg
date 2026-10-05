@@ -13,27 +13,27 @@
 <line x1="30" y1="102" x2="788" y2="102" stroke="var(--planline)" stroke-width="1.5"/>
 <rect x="30" y="146" width="230" height="96" rx="6" fill="var(--plan)" stroke="var(--planline)" stroke-dasharray="6 4"/>
 <text class="t" x="42" y="168" font-weight="600">2.1 The Local Service</text>
-<text class="t" x="42" y="200" font-size="12">•</text>
+<text class="t" x="42" y="200" font-size="12">○</text>
 <text class="t" x="56" y="200" font-size="12">file watching</text>
-<text class="t" x="42" y="216" font-size="12">•</text>
+<text class="t" x="42" y="216" font-size="12">○</text>
 <text class="t" x="56" y="216" font-size="12">the claim store on disk</text>
-<text class="t" x="42" y="232" font-size="12">•</text>
+<text class="t" x="42" y="232" font-size="12">○</text>
 <text class="t" x="56" y="232" font-size="12">session discovery</text>
 <path d="M263,194 H291" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
 <rect x="294" y="146" width="230" height="96" rx="6" fill="var(--plan)" stroke="var(--planline)" stroke-dasharray="6 4"/>
 <text class="t" x="306" y="168" font-weight="600">2.2 The Review UI</text>
-<text class="t" x="306" y="200" font-size="12">•</text>
+<text class="t" x="306" y="200" font-size="12">○</text>
 <text class="t" x="320" y="200" font-size="12">the diff view</text>
-<text class="t" x="306" y="216" font-size="12">•</text>
+<text class="t" x="306" y="216" font-size="12">○</text>
 <text class="t" x="320" y="216" font-size="12">the editing chat head</text>
 <path d="M527,194 H555" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#h)"/>
 <rect x="558" y="146" width="230" height="96" rx="6" fill="var(--plan)" stroke="var(--planline)" stroke-dasharray="6 4"/>
 <text class="t" x="570" y="168" font-weight="600">2.3 Linking The Agent Team</text>
-<text class="t" x="570" y="200" font-size="12">•</text>
+<text class="t" x="570" y="200" font-size="12">○</text>
 <text class="t" x="584" y="200" font-size="12">message relay</text>
-<text class="t" x="570" y="216" font-size="12">•</text>
+<text class="t" x="570" y="216" font-size="12">○</text>
 <text class="t" x="584" y="216" font-size="12">resuming a stopped worker</text>
-<text class="t" x="570" y="232" font-size="12">•</text>
+<text class="t" x="570" y="232" font-size="12">○</text>
 <text class="t" x="584" y="232" font-size="12">applying a chosen resolution</text>
 <path d="M301,72 V138" stroke="var(--curline)" stroke-width="2" marker-end="url(#o)"/>
 </svg>

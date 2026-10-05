@@ -51,6 +51,11 @@ and are rewritten as that changes. What is uncertain about a planned slice is th
 and when — not the things it names, which are known to be needed. **A planned slice becomes a ticket when it is next,
 and not before.**
 
+**A slice is the set of aspects it delivers.** A slice may start only when every aspect in it is mature and is blocked
+by nothing outside the slice (what it needs is done, or is in the slice), and it is delivered when every aspect in it is
+done (§3). Naming a whole delivers its parts, and an aspect is in at most one slice. A planned slice may hold aspects in
+any status.
+
 **A slice has a budget.** The **slice budget** is a ceiling on complexity, not itself a complexity and not a number on
 the Fibonacci scale (§3). It is a cap and not a target: it exists to keep a slice from overloading an agent, and a
 slice that spends less is not a worse slice. A planned slice names the aspects it will deliver, each with its complexity; the sum of
@@ -60,14 +65,15 @@ added to an aspect for the sake of end-to-end testing, even if it is in no use c
 that is part of a requirement be tested end to end — a list of the configured checks, say, so that the UI aspect has
 something to test against. It is work like any other and counts in the spend. The
 budget is **45**. That is its starting value, derived from the complexity of the aspects the hackathon delivered
-(Appendix §1, Rationale §6), and it is recalibrated from the recorded actuals (below) as slices run against it.
+(the hackathon roadmap's Appendix, Rationale §6), and it is recalibrated from the recorded actuals (below) as slices run against it.
 
 **Whenever a slice is completed, the scope of the next slice is reassessed**, so that slices do not quietly grow: its
 spend is summed again against the budget, with the completed slice's actuals in hand. Planning a phase is identifying
 its slices: a new phase's initial plan holds aspects, and no slices.
 
 **Actuals are recorded for every slice delivered.** Each phase keeps an `actual-complexity.yaml` in its folder,
-`ROADMAP/{phase-slug}/`, in which each slice the phase delivered has an entry:
+`ROADMAP/{phase-slug}/`, in which each slice the phase delivered has an entry
+([an example](roadmaps/actual-complexity.yaml)):
 
 ```yaml
 slices:
@@ -76,11 +82,15 @@ slices:
     start-time: UTC date-time, ISO 8601
     end-time: UTC date-time, ISO 8601
     tokens-in: number
+    tokens-in-cached: number
     tokens-out: number
     thinking-time: seconds
     lines-added: number
     files-changed: number
 ```
+
+`complexity` is the slice's spend: the sum of the complexity of the aspects the slice delivers, taken from the roadmap's
+metadata, not passed in. `tokens-in` does not count cached reads; they are `tokens-in-cached`.
 
 The entry is written **each time a slice completes, with the roadmap update**, by the first of these there is: a
 roadmapper session; an orchestrator session sitting on the roadmap and orchestrating its delivery; the worker that
@@ -94,8 +104,8 @@ it ended (§6).
 
 **Aspects that can wait are not slices.** They are parts of the product that are known — a capability, a decision
 still open, a design that will be needed — and that no slice yet depends on. Recording them is what lets them wait
-safely; not all of them will ever become a slice of their own, and an aspect is moved into a slice when one takes it
-on.
+safely; not all of them will ever become a slice of their own, and an aspect is named in a slice's `aspects` when one
+takes it on.
 
 An aspect is either one we are **sure** the product will have, or one we are **not yet sure** is real. Each aspect
 points at the design document that records it as undecided, where one does.
@@ -103,8 +113,8 @@ points at the design document that records it as undecided, where one does.
 **An aspect may have parts.** They are the pieces it decomposes into, each an aspect in its own right, sure or not
 yet sure, to any depth.
 
-**An aspect may need others.** What it needs is what must be in place before work on it can start: other aspects,
-parts of them, or slices. Needs are a best guess, as planned slices are, and are revised as freely. Decomposing an
+**An aspect may need others.** What it needs is what must be in place before work on it can start: other aspects
+or parts of them: aspects need aspects, never slices. Needs are a best guess, as planned slices are, and are revised as freely. Decomposing an
 aspect is how the work that needs it gets started sooner: what needs only one part of an aspect need not wait for the
 rest of it. A need on a whole means waiting for the whole to end; a whole's own needs hold back all of its parts.
 
@@ -112,6 +122,12 @@ rest of it. A need on a whole means waiting for the whole to end; a whole's own 
 aspect counts as 1. Nothing is scored above 13: anything more complex must be broken into parts. A whole has no score
 of its own; it takes its parts' (Rationale §4). The slice that delivers an aspect spends its complexity against the
 slice budget (§2).
+
+**An aspect has a status**: `open` (needs investigation and understanding), `question` (further investigation or
+documentation is needed), `mature` (understood, documented and ready to build), `doing` (implementation is under way)
+or `done`. It moves `open` → `mature` or `question`; `question` → `mature` or `question`; `mature` → `doing` → `done`.
+A whole has none of its own, being as done as its parts. **Blocked is not a status**: an aspect is blocked while an
+aspect it needs, or that a whole it is part of needs, is not done.
 
 ## 4 The Where We Are Picture
 
@@ -121,8 +137,8 @@ document and linked from it. It shows:
 * **the phases**, in a chain along the top: completed ones green, the current one highlighted, planned ones faint and
   dashed, with a dashed arrow into them. A line beneath separates the phase history from the current phase's slices;
   one arrow leaves the current phase, crosses the line and ends floating above the slices;
-* **the slices**, as compact cards: each is titled with its number, name and tickets, its items are bullets — ✓ done,
-  ▶ doing, ? open question, ✕ blocked — and a planned slice is faint and dashed. A delivered slice is green and the
+* **the slices**, as compact cards: each is titled with its number, name and tickets, its aspects are bullets — ✓ done,
+  ▶ doing, ● mature, ? question, ○ open, ✕ blocked — and a planned slice is faint and dashed. A delivered slice is green and the
   current slice highlighted. Slices sit side by side with an arrowhead between each pair, up to four, then switch to a
   vertical stack with arrows between them, the bullets in two columns once a card has more than three.
 
@@ -153,7 +169,7 @@ It is drawn as an SVG, `aspects-gantt.svg`, beside the document and linked from 
 
 * **A leaf lasts its complexity**, in units: 1 if unscored. No dates are shown, only units, counted from the day the
   roadmap was last updated.
-* **Unlimited concurrency.** An aspect starts when everything it needs has ended; a delivered slice has ended at 0.
+* **Unlimited concurrency.** An aspect starts when everything it needs has ended; an aspect that is done has ended at 0, and is not drawn.
   There are no resource limits: only dependencies hold work back.
 * **A whole spans its parts**, from its earliest part's start to its latest part's end, drawn as a bracket. A whole's
   needs hold back all of its parts, and a need on a whole means waiting for the whole to end.
@@ -216,8 +232,8 @@ aspects that can wait with their gantt chart, then a Rationale. It keeps three h
 ending the phase depends on them: `## Context`, `## 2 Delivered Slices` and `## 4 Aspects That Can Wait`. Ending a phase
 carries the Context and the how-it-works prose over, clears the slices, and carries the aspects section over; if one of
 the three is missing it stops, writing nothing. A new phase's roadmap starts with no slices, and with
-every undelivered aspect carried over from the phase that ended. Needs on slices of the ended phase are dropped,
-because those slices have ended.
+every undelivered aspect carried over from the phase that ended. What the ended phase's delivered slices took is dropped, with its
+parts and any whole left with no parts, and the needs on them, because those aspects are done.
 
 **Ending a phase.** The current phase becomes completed, and the next becomes current, or is added. The next phase's
 roadmap is created from the ended one, cleared down to the undelivered aspects, with its own charts; the entry
@@ -243,13 +259,19 @@ generated chart sits beside the document as an SVG, linked from between its own 
 | `gantt <doc\|json>` | prints the aspects gantt chart, changing nothing |
 | `focus <doc\|json> <id>...` | prints a focused gantt chart of the named aspects and what they need (§5), changing nothing |
 | `end-phase <entry-doc> <slug>` | ends the current phase and starts the next (§6) |
+| `record <phase-roadmap\|folder> <slice-slug> --start-time T --end-time T --tokens-in N --tokens-in-cached N --tokens-out N --thinking-time N --lines-added N --files-changed N` | appends a delivered slice's actuals to the phase's `actual-complexity.yaml` (§2), creating it if absent, and writes the slice's complexity as the sum of the complexity of the aspects the slice delivers (an unscored aspect counting as 1); refuses a slug that is not a delivered slice of the phase, a slice that has no aspects, a slug already recorded, an end before the start, a time that is not UTC ISO 8601, a count that is not a non-negative number, a complexity passed in, and a phase that has ended |
+| `report <phase-roadmap\|folder>` | prints each slice's complexity beside its duration, tokens, thinking time, lines added and files changed, with the phase's totals and its duration and tokens per unit of complexity, changing nothing |
 
 The metadata lists the `phases` (each a name and a state: `completed`, `current` or `planned`), the slices — each with its
-section number, title, tickets, state (`delivered`, `current` or `planned`) and items (`done`, `doing`, `question`,
-`blocked` or `plain`) — and the aspects, each plain text for one we are sure of or `unsure` for one we are not, or in a
-long form that adds an `id`, its `parts`, its `needs` and its `complexity`. `apply` refuses a need that names no aspect
-or slice, two aspects with one id, an aspect needing itself or its own part or whole, needs that form a cycle, a
-complexity that is not 1, 2, 3, 5, 8 or 13, and a complexity on an aspect that has parts. Updating a roadmap is:
+section number, title, tickets, state (`delivered`, `current` or `planned`) and `aspects`, a list of the ids of the
+aspects it delivers — and the aspects, each plain text for one we are sure of or `unsure` for one we are not, or in a
+long form that adds an `id`, its `parts`, its `needs`, its `complexity` and its `status`. The aspects stay in the
+roadmap's top-level `aspects`; a slice only names them. A slice's spend (§2) is the sum of the complexity of the leaves
+it delivers, an unscored one counting as 1, and `record` writes it as the entry's `complexity`. `apply` refuses a need
+that names no aspect, or that names a slice, two aspects with one id, an aspect needing itself or its own part or whole,
+needs that form a cycle, a complexity that is not 1, 2, 3, 5, 8 or 13, a complexity on an aspect that has parts, a status
+that moves other than along the workflow in §3 (compared with the metadata stored in the document), an aspect in more
+than one slice, and a slice that is current or delivered while breaking the rule in §2. Updating a roadmap is:
 extract the metadata, change it, apply it, bring the prose into line, and check. `check` is run on the entry document
 and the current phase's roadmap; an ended phase is left alone, and `apply` is never run on one.
 
@@ -258,103 +280,9 @@ eventually be released as a published plugin. It is TypeScript, run with Node an
 installed as a global skill, in `~/.claude/skills/roadmap/`, so that it is available from inside any project's docs
 repo — every project's roadmap uses the same skill.
 
-The skill also records and reads a phase's `actual-complexity.yaml` (§2), so that actuals are written the same way by
-whoever writes them; that extension is [WVR-234](https://linear.app/weaver-engineering/issue/WVR-234).
-
-# Appendix
-
-## 1 The Hackathon's Aspects, Scored
-
-The aspects each of DEM's hackathon slices delivered
-([the hackathon roadmap](https://github.com/weaver-engineering/dem-docs/blob/main/ROADMAP/hackathon/ROADMAP.md) §2),
-scored on the complexity scale (§3) after the fact, from the roadmap and the preparation retrospective, and corrected
-by the architect. The totals are each slice's spend. They are what the starting budget was derived from (Rationale §6).
-
-**2.1 Foundations — 14**
-
-| Aspect | Complexity |
-|---|---|
-| The `dem` and `dem-docs` repositories set up to standard, with CI | 3 |
-| Continuous deployment: the CDK stack on every merge, and `--as` environments | 5 |
-| The outline architecture | 3 |
-| The section model, registries, scope, table and MCP server, as decisions | 3 |
-
-**2.2 Walking Skeleton — 12**
-
-| Aspect | Complexity |
-|---|---|
-| `create_doc`, `update_doc` and `read_doc` over the MCP function, sectioning each document | 5 |
-| A section read as a report with its ancestry's Context | 2 |
-| Section checksums | 1 |
-| A static bearer token | 1 |
-| Seeding registries | 2 |
-| The dev setup guide | 1 |
-
-**2.3 Claims — 21**
-
-| Aspect | Complexity |
-|---|---|
-| Claims made: named, engine-identified, anchored | 5 |
-| Relinking by checksum on every write | 5 |
-| Soundness reported when claims are read | 3 |
-| Self-healing resync within a time budget | 5 |
-| `list_claims` by document or target | 2 |
-| Reading a whole rationale or appendix | 1 |
-
-**2.4 The Next Unit Of Work — 35**
-
-| Aspect | Complexity |
-|---|---|
-| Check sets in a versioned bucket, validated when saved | 5 |
-| Work scopes | 3 |
-| The fold, with arrays combining | 8 |
-| The `soundness` and `competition` checks | 8 |
-| Findings, with their resolutions as skills | 5 |
-| Acknowledgements, confirmed by re-running the check | 3 |
-| `next_unit_of_work`, `acknowledge_finding` and `read_model` | 3 |
-
-**2.5 Plugins And Domain Checks — 37**
-
-| Aspect | Complexity |
-|---|---|
-| The plugin, check and projection interfaces | 8 |
-| Plugins loaded in dependency order | 3 |
-| The tool gateway | 5 |
-| The document store, its bucket and the registries lens | 8 |
-| The built-in doc-standards plugin | 5 |
-| Check sets with real levels, and maturity reported | 3 |
-| The claim model in valued positions | 5 |
-
-**2.6 Laws And Judgement — 61**
-
-| Aspect | Complexity |
-|---|---|
-| Claims naming their law and its checksum, refused on save otherwise | 5 |
-| The fold filling each law's positions; plugins declaring a position twice failing to load | 5 |
-| ElastiCache Serverless for Valkey, caching the current and next unit of work per work scope | 8 |
-| `set-current-work` | 2 |
-| `dem.judge.law` and the record of what a document was judged against | 8 |
-| The `judgement` check, `unjudged-document` and `law-drift` | 5 |
-| The tool gateway offering only the current work's tools | 3 |
-| The DEM agent | 5 |
-| Change requests and `dem.change-request` | 5 |
-| Acknowledging through the gateway, and withdrawing soft resolutions | 3 |
-| Every tool named with hyphens | 1 |
-| `dem.reconcile` for competition | 5 |
-| Test-only plugins and check sets, and the fixture plugin for the end-to-end run | 3 |
-| Disambiguated stacks torn down after 48 hours inactive | 3 |
-
-**2.7 The Console — 32**
-
-| Aspect | Complexity |
-|---|---|
-| The REST API function beside the MCP function, calling the same service operations | 8 |
-| The console on S3 behind CloudFront, `/api` routed to the HTTP API, deployed by the pipeline and torn down with `--as` environments | 8 |
-| The analyst's soft resolutions over REST | 5 |
-| Cognito: analysts signing in, added by `pnpm add-analyst` | 5 |
-| The console moved into the monorepo on the service's types, its mock client kept | 3 |
-| Changes noticed by polling every 10 seconds | 2 |
-| A registry entry, written when a registry is seeded | 1 |
+The skill records and reads a phase's `actual-complexity.yaml` (§2) with `record` and `report`, so that actuals are
+written the same way by whoever writes them. `record` decides whether a phase has ended from the entry document, so
+`ROADMAP/ROADMAP.md` must be present and name the phase.
 
 # Rationale
 
@@ -419,7 +347,7 @@ because the aspects already carry it. A slice is sized by what it delivers, and 
 score that. The budget is a ceiling in the same units, and not a Fibonacci number, because it is a sum of scores and not
 a score.
 
-**How 45 was derived.** The hackathon's aspects were scored after the fact (Appendix §1) and the slices' totals set
+**How 45 was derived.** The hackathon's aspects were scored after the fact (the scores are in [the hackathon roadmap's Appendix](https://github.com/weaver-engineering/dem-docs/blob/main/ROADMAP/hackathon/ROADMAP.md#appendix)) and the slices' totals set
 against what the architect remembers of how long each took to build; the slices were not logged, which is why
 actuals are now recorded. The totals tracked the remembered build times closely enough to trust: Laws And Judgement (61)
 was the big one, and Plugins And Domain Checks (37) took about 45 minutes. The Console (32) scores lower than its
@@ -435,3 +363,19 @@ more complex than Plugins And Domain Checks. It is a cap, not a size to aim for.
 adds an entry to `actual-complexity.yaml`, and the budget is changed when the entries show that slices of a given spend
 use more of the token budget of a 5-hour window than they should, or far less. The budget is right when a slice at the
 cap fits well inside that token budget. Aspect scores are corrected the same way.
+
+## 7 Why aspects have a status, and a slice is a set of aspects
+
+Slices first listed items of their own, each marked done, doing or blocked, and those bullets duplicated the aspects:
+the same piece of the product was described once in a slice and once, with its complexity and needs, as an aspect. A
+slice's spend then had to be passed in by hand. Making a slice the set of aspects it delivers, named by id, leaves each
+aspect in one place with its complexity, status and needs, so the spend, the card's bullets and the recorded actuals are
+all computed from the same thing.
+
+The status says how far an aspect is from being built, not whether it is waiting. `open` and `question` are
+understanding, `mature` is ready to build, `doing` and `done` are the build. Moves are restricted to that order, so a
+roadmap cannot claim work started on something no one has understood. **Blocked is derived and not a status** because it
+is a fact about other aspects: it changes when something it needs is done, with no one editing the blocked aspect. A slice
+starts only when every aspect in it is mature and unblocked from outside, which is how a slice is kept from stalling an
+agent part-way through. Needs name aspects and not slices, because a slice is only a grouping of aspects and may be
+regrouped; an aspect waits on what it truly needs.

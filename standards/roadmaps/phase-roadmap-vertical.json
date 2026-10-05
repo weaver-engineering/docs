@@ -15,19 +15,11 @@
       "title": "Foundations",
       "tickets": "WVR-210 to WVR-213",
       "state": "delivered",
-      "items": [
-        {
-          "done": "repos and CI, to standard"
-        },
-        {
-          "done": "CD: main on merge, --as environments by hand"
-        },
-        {
-          "done": "outline architecture, use cases, personas"
-        },
-        {
-          "done": "section model, registries, one table, MCP on Lambda"
-        }
+      "aspects": [
+        "repos-and-ci-to-standard",
+        "cd-main-on-merge-as-environments-by-hand",
+        "outline-architecture-use-cases-personas",
+        "section-model-registries-one-table-mcp-on-lambda"
       ]
     },
     {
@@ -35,19 +27,11 @@
       "title": "Walking Skeleton",
       "tickets": "WVR-215",
       "state": "delivered",
-      "items": [
-        {
-          "done": "create, update and read documents over MCP"
-        },
-        {
-          "done": "sections, checksums, and section reports"
-        },
-        {
-          "done": "static bearer token, seeded registries"
-        },
-        {
-          "done": "the dev setup guide"
-        }
+      "aspects": [
+        "create-update-and-read-documents-over-mcp",
+        "sections-checksums-and-section-reports",
+        "static-bearer-token-seeded-registries",
+        "the-dev-setup-guide"
       ]
     },
     {
@@ -55,19 +39,11 @@
       "title": "Claims",
       "tickets": "WVR-217",
       "state": "delivered",
-      "items": [
-        {
-          "done": "named claims, anchored, with material references"
-        },
-        {
-          "done": "relinking by checksum on every write"
-        },
-        {
-          "done": "soundness computed on read"
-        },
-        {
-          "done": "self-healing resync, within a time budget"
-        }
+      "aspects": [
+        "named-claims-anchored-with-material-references",
+        "relinking-by-checksum-on-every-write",
+        "soundness-computed-on-read",
+        "self-healing-resync-within-a-time-budget"
       ]
     },
     {
@@ -75,22 +51,12 @@
       "title": "The Next Unit Of Work",
       "tickets": "WVR-218",
       "state": "delivered",
-      "items": [
-        {
-          "done": "check sets, validated when saved"
-        },
-        {
-          "done": "work scopes, and the fold with arrays combining"
-        },
-        {
-          "done": "soundness and competition checks, findings"
-        },
-        {
-          "done": "acknowledgements, confirmed by re-running the check"
-        },
-        {
-          "done": "next_unit_of_work, acknowledge_finding, read_model"
-        }
+      "aspects": [
+        "check-sets-validated-when-saved",
+        "work-scopes-and-the-fold-with-arrays-combining",
+        "soundness-and-competition-checks-findings",
+        "acknowledgements-confirmed-by-re-running-the-check",
+        "next-unit-of-work-acknowledge-finding-read-model"
       ]
     },
     {
@@ -98,22 +64,12 @@
       "title": "Plugins And Domain Checks",
       "tickets": "WVR-220",
       "state": "delivered",
-      "items": [
-        {
-          "done": "plugin, check, document store and projection docs, agreed"
-        },
-        {
-          "done": "the claim model in valued positions, blind to law"
-        },
-        {
-          "done": "plugins built in, loaded in dependency order"
-        },
-        {
-          "done": "the tool gateway, for plugin resolutions' tools"
-        },
-        {
-          "done": "the doc-standards plugin; check sets with real levels"
-        }
+      "aspects": [
+        "plugin-check-document-store-and-projection-docs-agreed",
+        "the-claim-model-in-valued-positions-blind-to-law",
+        "plugins-built-in-loaded-in-dependency-order",
+        "the-tool-gateway-for-plugin-resolutions-tools",
+        "the-doc-standards-plugin-check-sets-with-real-levels"
       ]
     },
     {
@@ -121,25 +77,13 @@
       "title": "Laws And Judgement",
       "tickets": "WVR-221",
       "state": "delivered",
-      "items": [
-        {
-          "done": "law, current unit of work and soft resolution docs, agreed"
-        },
-        {
-          "done": "laws' data models; claims naming their law"
-        },
-        {
-          "done": "the law-aware fold; judgedAgainst, law-drift"
-        },
-        {
-          "done": "ElastiCache; set-current-work; dem.judge.law"
-        },
-        {
-          "done": "the gateway offering only the current work's tools"
-        },
-        {
-          "done": "change requests; withdrawing soft resolutions"
-        }
+      "aspects": [
+        "law-current-unit-of-work-and-soft-resolution-docs-agreed",
+        "laws-data-models-claims-naming-their-law",
+        "the-law-aware-fold-judgedagainst-law-drift",
+        "elasticache-set-current-work-dem-judge-law",
+        "the-gateway-offering-only-the-current-work-s-tools",
+        "change-requests-withdrawing-soft-resolutions"
       ]
     },
     {
@@ -147,30 +91,192 @@
       "title": "The Console",
       "tickets": "WVR-222",
       "state": "delivered",
-      "items": [
-        {
-          "done": "the console in the dem monorepo, on the service's own types"
-        },
-        {
-          "done": "Cognito for analysts; MCP keeps its bearer token"
-        },
-        {
-          "done": "the REST API function, beside the MCP function"
-        },
-        {
-          "done": "registries, work scopes, documents, claims and findings"
-        },
-        {
-          "done": "accepting and requesting changes, as the analyst"
-        },
-        {
-          "done": "hosted on S3 and CloudFront, deployed with the stack"
-        },
-        {
-          "done": "changes noticed by polling, until there is a websocket"
-        }
+      "aspects": [
+        "the-console-in-the-dem-monorepo-on-the-service-s-own-types",
+        "cognito-for-analysts-mcp-keeps-its-bearer-token",
+        "the-rest-api-function-beside-the-mcp-function",
+        "registries-work-scopes-documents-claims-and-findings",
+        "accepting-and-requesting-changes-as-the-analyst",
+        "hosted-on-s3-and-cloudfront-deployed-with-the-stack",
+        "changes-noticed-by-polling-until-there-is-a-websocket"
       ]
     }
   ],
-  "aspects": []
+  "aspects": [
+    {
+      "aspect": "repos and CI, to standard",
+      "id": "repos-and-ci-to-standard",
+      "status": "done"
+    },
+    {
+      "aspect": "CD: main on merge, --as environments by hand",
+      "id": "cd-main-on-merge-as-environments-by-hand",
+      "status": "done"
+    },
+    {
+      "aspect": "outline architecture, use cases, personas",
+      "id": "outline-architecture-use-cases-personas",
+      "status": "done"
+    },
+    {
+      "aspect": "section model, registries, one table, MCP on Lambda",
+      "id": "section-model-registries-one-table-mcp-on-lambda",
+      "status": "done"
+    },
+    {
+      "aspect": "create, update and read documents over MCP",
+      "id": "create-update-and-read-documents-over-mcp",
+      "status": "done"
+    },
+    {
+      "aspect": "sections, checksums, and section reports",
+      "id": "sections-checksums-and-section-reports",
+      "status": "done"
+    },
+    {
+      "aspect": "static bearer token, seeded registries",
+      "id": "static-bearer-token-seeded-registries",
+      "status": "done"
+    },
+    {
+      "aspect": "the dev setup guide",
+      "id": "the-dev-setup-guide",
+      "status": "done"
+    },
+    {
+      "aspect": "named claims, anchored, with material references",
+      "id": "named-claims-anchored-with-material-references",
+      "status": "done"
+    },
+    {
+      "aspect": "relinking by checksum on every write",
+      "id": "relinking-by-checksum-on-every-write",
+      "status": "done"
+    },
+    {
+      "aspect": "soundness computed on read",
+      "id": "soundness-computed-on-read",
+      "status": "done"
+    },
+    {
+      "aspect": "self-healing resync, within a time budget",
+      "id": "self-healing-resync-within-a-time-budget",
+      "status": "done"
+    },
+    {
+      "aspect": "check sets, validated when saved",
+      "id": "check-sets-validated-when-saved",
+      "status": "done"
+    },
+    {
+      "aspect": "work scopes, and the fold with arrays combining",
+      "id": "work-scopes-and-the-fold-with-arrays-combining",
+      "status": "done"
+    },
+    {
+      "aspect": "soundness and competition checks, findings",
+      "id": "soundness-and-competition-checks-findings",
+      "status": "done"
+    },
+    {
+      "aspect": "acknowledgements, confirmed by re-running the check",
+      "id": "acknowledgements-confirmed-by-re-running-the-check",
+      "status": "done"
+    },
+    {
+      "aspect": "next_unit_of_work, acknowledge_finding, read_model",
+      "id": "next-unit-of-work-acknowledge-finding-read-model",
+      "status": "done"
+    },
+    {
+      "aspect": "plugin, check, document store and projection docs, agreed",
+      "id": "plugin-check-document-store-and-projection-docs-agreed",
+      "status": "done"
+    },
+    {
+      "aspect": "the claim model in valued positions, blind to law",
+      "id": "the-claim-model-in-valued-positions-blind-to-law",
+      "status": "done"
+    },
+    {
+      "aspect": "plugins built in, loaded in dependency order",
+      "id": "plugins-built-in-loaded-in-dependency-order",
+      "status": "done"
+    },
+    {
+      "aspect": "the tool gateway, for plugin resolutions' tools",
+      "id": "the-tool-gateway-for-plugin-resolutions-tools",
+      "status": "done"
+    },
+    {
+      "aspect": "the doc-standards plugin; check sets with real levels",
+      "id": "the-doc-standards-plugin-check-sets-with-real-levels",
+      "status": "done"
+    },
+    {
+      "aspect": "law, current unit of work and soft resolution docs, agreed",
+      "id": "law-current-unit-of-work-and-soft-resolution-docs-agreed",
+      "status": "done"
+    },
+    {
+      "aspect": "laws' data models; claims naming their law",
+      "id": "laws-data-models-claims-naming-their-law",
+      "status": "done"
+    },
+    {
+      "aspect": "the law-aware fold; judgedAgainst, law-drift",
+      "id": "the-law-aware-fold-judgedagainst-law-drift",
+      "status": "done"
+    },
+    {
+      "aspect": "ElastiCache; set-current-work; dem.judge.law",
+      "id": "elasticache-set-current-work-dem-judge-law",
+      "status": "done"
+    },
+    {
+      "aspect": "the gateway offering only the current work's tools",
+      "id": "the-gateway-offering-only-the-current-work-s-tools",
+      "status": "done"
+    },
+    {
+      "aspect": "change requests; withdrawing soft resolutions",
+      "id": "change-requests-withdrawing-soft-resolutions",
+      "status": "done"
+    },
+    {
+      "aspect": "the console in the dem monorepo, on the service's own types",
+      "id": "the-console-in-the-dem-monorepo-on-the-service-s-own-types",
+      "status": "done"
+    },
+    {
+      "aspect": "Cognito for analysts; MCP keeps its bearer token",
+      "id": "cognito-for-analysts-mcp-keeps-its-bearer-token",
+      "status": "done"
+    },
+    {
+      "aspect": "the REST API function, beside the MCP function",
+      "id": "the-rest-api-function-beside-the-mcp-function",
+      "status": "done"
+    },
+    {
+      "aspect": "registries, work scopes, documents, claims and findings",
+      "id": "registries-work-scopes-documents-claims-and-findings",
+      "status": "done"
+    },
+    {
+      "aspect": "accepting and requesting changes, as the analyst",
+      "id": "accepting-and-requesting-changes-as-the-analyst",
+      "status": "done"
+    },
+    {
+      "aspect": "hosted on S3 and CloudFront, deployed with the stack",
+      "id": "hosted-on-s3-and-cloudfront-deployed-with-the-stack",
+      "status": "done"
+    },
+    {
+      "aspect": "changes noticed by polling, until there is a websocket",
+      "id": "changes-noticed-by-polling-until-there-is-a-websocket",
+      "status": "done"
+    }
+  ]
 }
