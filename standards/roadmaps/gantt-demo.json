@@ -4,10 +4,8 @@
       "number": "1.1",
       "title": "Done",
       "state": "delivered",
-      "items": [
-        {
-          "done": "something"
-        }
+      "aspects": [
+        "something"
       ]
     }
   ],
@@ -141,6 +139,11 @@
         "tooling"
       ],
       "complexity": 8
+    },
+    {
+      "aspect": "something",
+      "id": "something",
+      "status": "done"
     }
   ]
 }
