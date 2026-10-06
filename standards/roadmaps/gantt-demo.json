@@ -1,7 +1,7 @@
 {
   "slices": [
     {
-      "number": "1.1",
+      "slug": "done",
       "title": "Done",
       "state": "delivered",
       "aspects": [
@@ -11,138 +11,165 @@
   ],
   "aspects": [
     {
-      "aspect": "the ambient service",
       "id": "ambient",
+      "name": "the ambient service",
+      "description": "about the ambient service",
       "parts": [
         {
-          "aspect": "the local service",
           "id": "svc",
+          "name": "the local service",
+          "description": "about the local service",
           "parts": [
             {
-              "aspect": "file watching",
               "id": "watch",
+              "name": "file watching",
+              "description": "about file watching",
               "complexity": 3
             },
             {
-              "aspect": "the claim store on disk",
               "id": "store",
+              "name": "the claim store on disk",
+              "description": "about the claim store on disk",
+              "complexity": 5,
               "needs": [
                 "watch"
-              ],
-              "complexity": 5
+              ]
             },
             {
-              "aspect": "the agent link",
               "id": "link",
+              "name": "the agent link",
+              "description": "about the agent link",
               "parts": [
                 {
-                  "aspect": "session discovery",
                   "id": "disc",
+                  "name": "session discovery",
+                  "description": "about session discovery",
                   "complexity": 2
                 },
                 {
-                  "aspect": "message relay",
                   "id": "relay",
+                  "name": "message relay",
+                  "description": "about message relay",
+                  "complexity": 8,
                   "needs": [
                     "disc"
-                  ],
-                  "complexity": 8
+                  ]
                 },
                 {
-                  "unsure": "resuming a stopped worker",
                   "id": "resume",
+                  "name": "resuming a stopped worker",
+                  "description": "about resuming a stopped worker",
+                  "unsure": true,
+                  "complexity": 3,
                   "needs": [
                     "relay"
-                  ],
-                  "complexity": 3
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "aspect": "the review UI",
           "id": "ui",
+          "name": "the review UI",
+          "description": "about the review UI",
           "needs": [
             "store"
           ],
           "parts": [
             {
-              "aspect": "the diff view",
               "id": "diff",
+              "name": "the diff view",
+              "description": "about the diff view",
               "complexity": 8
             },
             {
-              "aspect": "the editing chat head",
               "id": "chat",
+              "name": "the editing chat head",
+              "description": "about the editing chat head",
               "needs": [
                 "relay"
               ],
               "parts": [
                 {
-                  "aspect": "the chat panel",
                   "id": "panel",
+                  "name": "the chat panel",
+                  "description": "about the chat panel",
                   "complexity": 5
                 },
                 {
-                  "aspect": "applying a chosen resolution",
                   "id": "apply",
+                  "name": "applying a chosen resolution",
+                  "description": "about applying a chosen resolution",
+                  "complexity": 13,
                   "needs": [
                     "panel"
-                  ],
-                  "complexity": 13
+                  ]
                 }
               ]
             },
             {
-              "unsure": "the analyst's view of the work",
               "id": "analyst",
+              "name": "the analyst's view of the work",
+              "description": "about the analyst's view of the work",
+              "unsure": true,
+              "complexity": 8,
               "needs": [
                 "diff"
-              ],
-              "complexity": 8
+              ]
             }
           ]
         }
       ]
     },
     {
-      "aspect": "roadmap tooling",
       "id": "tooling",
+      "name": "roadmap tooling",
+      "description": "about roadmap tooling",
       "parts": [
         {
-          "aspect": "ending a phase",
+          "id": "ending-a-phase",
+          "name": "ending a phase",
+          "description": "about ending a phase",
           "complexity": 3
         },
         {
-          "aspect": "the phase history",
+          "id": "the-phase-history",
+          "name": "the phase history",
+          "description": "about the phase history",
           "complexity": 2
         }
       ]
     },
     {
-      "aspect": "search",
       "id": "search",
+      "name": "search",
+      "description": "about search",
       "complexity": 13
     },
     {
-      "aspect": "renames",
+      "id": "renames",
+      "name": "renames",
+      "description": "about renames",
+      "complexity": 5,
       "needs": [
         "search"
-      ],
-      "complexity": 5
+      ]
     },
     {
-      "aspect": "the roadmapper agent",
+      "id": "the-roadmapper-agent",
+      "name": "the roadmapper agent",
+      "description": "about the roadmapper agent",
+      "complexity": 8,
       "needs": [
         "ui",
         "tooling"
-      ],
-      "complexity": 8
+      ]
     },
     {
-      "aspect": "something",
       "id": "something",
+      "name": "something",
+      "description": "about something",
       "status": "done"
     }
   ]

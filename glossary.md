@@ -16,7 +16,7 @@ copy of its content.
 
 | Term | Definition |
 | :--- | :--- |
-| [Actual Complexity](standards/roadmaps.md#2-slices) | What a delivered slice actually cost — its time, tokens, thinking time, lines added and files changed — recorded in its phase's `actual-complexity.yaml` beside the complexity it was planned at, so the budget and the scores can be recalibrated. |
+| [Actual Complexity](standards/roadmaps.md#2-slices) | What a delivered slice actually cost — its time, tokens, thinking time, lines added and files changed — recorded in the delivered slice's entry in its phase's `roadmap.json` beside the complexity it was planned at, so the budget and the scores can be recalibrated. |
 | [Aspect Status](standards/roadmaps.md#3-aspects-that-can-wait) | How far a leaf aspect is from being built: `open`, `question`, `mature`, `doing` or `done`, moving only along a fixed workflow. Blocked is not a status; it is derived from what the aspect needs not yet being done. |
 | [Aspect That Can Wait](standards/roadmaps.md#3-aspects-that-can-wait) | A known part of a product — a capability, an open decision, a needed design — that no slice yet depends on; recorded in the roadmap, not a slice, and either sure to exist or not yet sure. It may have parts, each an aspect in its own right, and may need other aspects or their parts, never slices. |
 | [Benefit](workflows/feature-workflow/analysing-a-feature.md) | What a capability becomes only in relation to a persona's use case that actually exercises it — not a property of a Feature by itself. |

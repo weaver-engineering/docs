@@ -1,7 +1,7 @@
 # Planning a Roadmap
 
 ## Context
-* [Roadmaps](../roadmaps.md) - the definition this guide applies: slices, the slice budget, aspects, complexity and `actual-complexity.yaml`
+* [Roadmaps](../roadmaps.md) - the definition this guide applies: slices, the slice budget, aspects, complexity and the recorded actuals
 * [Glossary](../../glossary.md) - one-line definitions of the terms used here
 
 This is guidance for the architect planning a roadmap with an agent's help. It is not the roadmapper agent's standing
@@ -48,7 +48,7 @@ When an aspect would push a slice over the budget, or is too large to leave room
 
 ## 4 Reading the Actuals
 
-After a slice completes, its entry is in `actual-complexity.yaml` (Roadmaps §2). Before planning the next slice:
+After a slice completes, its actuals are in its entry in the phase's `roadmap.json` (Roadmaps §2). Before planning the next slice:
 
 * **Compare spend with cost.** For each slice, set `complexity` beside the elapsed time between `start-time` and
   `end-time`, and beside `tokens-in`, `tokens-out` and `thinking-time`. Slices of similar spend should cost similar
