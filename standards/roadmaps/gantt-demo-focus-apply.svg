@@ -1,52 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 364" width="100%" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
-<style>:root{--bg:#fff;--fg:#212121;--faint:#9e9e9e;--grid:#eee;--bar:#90caf9;--barline:#1565c0;--sum:#455a64;--arrow:#f57f17}@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--faint:#6e7681;--grid:#21262d;--bar:#1f4e79;--barline:#58a6ff;--sum:#8b949e;--arrow:#ffb74d}}.t{fill:var(--fg)}.f{fill:var(--faint)}.h{font-weight:600}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 384" width="100%" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
+<style>:root{--bg:#fff;--fg:#212121;--faint:#9e9e9e;--grid:#eee;--bar:#90caf9;--barline:#1565c0;--cur:#ffe082;--curline:#f57f17;--plan:#bdbdbd;--planline:#616161;--sum:#455a64;--arrow:#f57f17}@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--faint:#6e7681;--grid:#21262d;--bar:#1f4e79;--barline:#58a6ff;--cur:#6b4f0f;--curline:#ffb74d;--plan:#484f58;--planline:#8b949e;--sum:#8b949e;--arrow:#ffb74d}}.t{fill:var(--fg)}.f{fill:var(--faint)}.h{font-weight:600}</style>
 <defs><marker id="head" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--arrow)"/></marker></defs>
-<rect width="1300" height="364" fill="var(--bg)"/>
-<line x1="360" y1="46" x2="360" y2="340" stroke="var(--grid)"/>
-<text class="f" x="360" y="40" text-anchor="middle">0</text>
-<line x1="520.71" y1="46" x2="520.71" y2="340" stroke="var(--grid)"/>
-<text class="f" x="520.71" y="40" text-anchor="middle">5</text>
-<line x1="681.43" y1="46" x2="681.43" y2="340" stroke="var(--grid)"/>
-<text class="f" x="681.43" y="40" text-anchor="middle">10</text>
-<line x1="842.14" y1="46" x2="842.14" y2="340" stroke="var(--grid)"/>
-<text class="f" x="842.14" y="40" text-anchor="middle">15</text>
-<line x1="1002.86" y1="46" x2="1002.86" y2="340" stroke="var(--grid)"/>
-<text class="f" x="1002.86" y="40" text-anchor="middle">20</text>
-<line x1="1163.57" y1="46" x2="1163.57" y2="340" stroke="var(--grid)"/>
-<text class="f" x="1163.57" y="40" text-anchor="middle">25</text>
+<rect width="1300" height="384" fill="var(--bg)"/>
+<line x1="360" y1="66" x2="360" y2="360" stroke="var(--grid)"/>
+<text class="f" x="360" y="60" text-anchor="middle">0</text>
+<line x1="520.71" y1="66" x2="520.71" y2="360" stroke="var(--grid)"/>
+<text class="f" x="520.71" y="60" text-anchor="middle">5</text>
+<line x1="681.43" y1="66" x2="681.43" y2="360" stroke="var(--grid)"/>
+<text class="f" x="681.43" y="60" text-anchor="middle">10</text>
+<line x1="842.14" y1="66" x2="842.14" y2="360" stroke="var(--grid)"/>
+<text class="f" x="842.14" y="60" text-anchor="middle">15</text>
+<line x1="1002.86" y1="66" x2="1002.86" y2="360" stroke="var(--grid)"/>
+<text class="f" x="1002.86" y="60" text-anchor="middle">20</text>
+<line x1="1163.57" y1="66" x2="1163.57" y2="360" stroke="var(--grid)"/>
+<text class="f" x="1163.57" y="60" text-anchor="middle">25</text>
 <text class="f" x="360" y="16">units of complexity, from the day the roadmap was last updated; an arrow runs from what is needed to what needs it</text>
-<text class="t h" x="12" y="71">the ambient service</text>
-<path d="M370,62 v10 M1250,62 v10 M370,67 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
-<text class="t h" x="30" y="97">the local service</text>
-<path d="M370,88 v10 M767.86,88 v10 M370,93 H767.86" stroke="var(--sum)" stroke-width="2" fill="none"/>
-<text class="t" x="48" y="123">file watching</text>
-<rect x="370" y="111" width="76.43" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="408.21" y="123" text-anchor="middle" font-size="11">3</text>
-<text class="t" x="48" y="149">the claim store on disk</text>
-<rect x="466.43" y="137" width="140.71" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="536.79" y="149" text-anchor="middle" font-size="11">5</text>
-<text class="t h" x="48" y="175">the agent link</text>
-<path d="M370,166 v10 M767.86,166 v10 M370,171 H767.86" stroke="var(--sum)" stroke-width="2" fill="none"/>
-<text class="t" x="66" y="201">session discovery</text>
-<rect x="370" y="189" width="44.29" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="392.14" y="201" text-anchor="middle" font-size="11">2</text>
-<text class="t" x="66" y="227">message relay</text>
-<rect x="434.29" y="215" width="237.14" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="552.86" y="227" text-anchor="middle" font-size="11">8</text>
-<text class="t h" x="30" y="253">the review UI</text>
-<path d="M627.14,244 v10 M1250,244 v10 M627.14,249 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
-<text class="t h" x="48" y="279">the editing chat head</text>
-<path d="M691.43,270 v10 M1250,270 v10 M691.43,275 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
-<text class="t" x="66" y="305">the chat panel</text>
-<rect x="691.43" y="293" width="140.71" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="761.79" y="305" text-anchor="middle" font-size="11">5</text>
-<text class="t" x="66" y="331">applying a chosen resolution</text>
-<rect x="2" y="315" width="1296" height="24" rx="4" fill="none" stroke="var(--arrow)" stroke-width="2"/>
-<rect x="852.14" y="319" width="397.86" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
-<text class="t" x="1051.07" y="331" text-anchor="middle" font-size="11">13</text>
-<path d="M446.43,119 H449.43 V145 H466.43" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
-<path d="M414.29,197 H419.69 V223 H434.29" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
-<path d="M607.14,145 H614.94 V249 H627.14" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
-<path d="M671.43,223 H681.63 V275 H691.43" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
-<path d="M832.14,301 H844.74 V327 H852.14" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<rect x="360" y="28" width="22" height="12" rx="3" fill="var(--cur)" stroke="var(--curline)" opacity="1"/>
+<text class="f" x="388" y="38" font-size="11">the current slice</text>
+<rect x="514" y="28" width="22" height="12" rx="3" fill="var(--plan)" stroke="var(--planline)" opacity="0.85"/>
+<text class="f" x="542" y="38" font-size="11">planned slices, fainter the further out</text>
+<rect x="800" y="28" width="22" height="12" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="f" x="828" y="38" font-size="11">in no slice yet</text>
+<text class="t h" x="12" y="91">the ambient service</text>
+<path d="M370,82 v10 M1250,82 v10 M370,87 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t h" x="30" y="117">the local service</text>
+<path d="M370,108 v10 M767.86,108 v10 M370,113 H767.86" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="48" y="143">file watching</text>
+<rect x="370" y="131" width="76.43" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="408.21" y="143" text-anchor="middle" font-size="11">3</text>
+<text class="t" x="48" y="169">the claim store on disk</text>
+<rect x="466.43" y="157" width="140.71" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="536.79" y="169" text-anchor="middle" font-size="11">5</text>
+<text class="t h" x="48" y="195">the agent link</text>
+<path d="M370,186 v10 M767.86,186 v10 M370,191 H767.86" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="66" y="221">session discovery</text>
+<rect x="370" y="209" width="44.29" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="392.14" y="221" text-anchor="middle" font-size="11">2</text>
+<text class="t" x="66" y="247">message relay</text>
+<rect x="434.29" y="235" width="237.14" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="552.86" y="247" text-anchor="middle" font-size="11">8</text>
+<text class="t h" x="30" y="273">the review UI</text>
+<path d="M627.14,264 v10 M1250,264 v10 M627.14,269 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t h" x="48" y="299">the editing chat head</text>
+<path d="M691.43,290 v10 M1250,290 v10 M691.43,295 H1250" stroke="var(--sum)" stroke-width="2" fill="none"/>
+<text class="t" x="66" y="325">the chat panel</text>
+<rect x="691.43" y="313" width="140.71" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="761.79" y="325" text-anchor="middle" font-size="11">5</text>
+<text class="t" x="66" y="351">applying a chosen resolution</text>
+<rect x="2" y="335" width="1296" height="24" rx="4" fill="none" stroke="var(--arrow)" stroke-width="2"/>
+<rect x="852.14" y="339" width="397.86" height="16" rx="3" fill="var(--bar)" stroke="var(--barline)" opacity="1"/>
+<text class="t" x="1051.07" y="351" text-anchor="middle" font-size="11">13</text>
+<path d="M446.43,139 H449.43 V165 H466.43" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M414.29,217 H419.69 V243 H434.29" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M607.14,165 H614.94 V269 H627.14" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M671.43,243 H681.63 V295 H691.43" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
+<path d="M832.14,321 H844.74 V347 H852.14" fill="none" stroke="var(--arrow)" stroke-width="1.5" marker-end="url(#head)"/>
 </svg>
